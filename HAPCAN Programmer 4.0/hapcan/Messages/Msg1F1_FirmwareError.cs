@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hapcan.Programmer.Hapcan.Messages
+﻿namespace Hapcan.Programmer.Hapcan.Messages
 {
     class Msg1F1_FirmwareError
     {
@@ -26,7 +20,7 @@ namespace Hapcan.Programmer.Hapcan.Messages
             var error = _frame.Data[5];
             var chsum = _frame.Data[6] * 256 * 256 + _frame.Data[7] * 256 + _frame.Data[8];
             var desc = "unknown";
-            
+
             if ((error & 0x04) == 0x04)                     //bit <3>
                 desc = string.Format("incorrect firmware checksum, expected checksum: 0x{0:X6}, ", chsum);
             else if ((error & 0x08) == 0x08)                //bit <4>

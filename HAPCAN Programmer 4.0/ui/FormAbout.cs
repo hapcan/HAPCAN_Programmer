@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hapcan.Programmer
@@ -26,7 +19,7 @@ namespace Hapcan.Programmer
             richTextAppInfo.AppendText("Version: " + Application.ProductVersion + Environment.NewLine);
             richTextAppInfo.AppendText("The software for setting up the HAPCAN system." + Environment.NewLine);
             richTextAppInfo.AppendText(Environment.NewLine);
-            richTextAppInfo.AppendText("Copyright © HAPCAN 2021" + Environment.NewLine);
+            richTextAppInfo.AppendText("Copyright © HAPCAN 2004-2021" + Environment.NewLine);
             richTextAppInfo.AppendText(Environment.NewLine);
             richTextAppInfo.AppendText("www.hapcan.com");
         }

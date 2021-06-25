@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Hapcan.Programmer.Hapcan.Messages
 {
-    class Msg10D_DescriptionResponse
+    class Msg10D_DescriptionResponse : MsgBase
     {
-        private HapcanFrame _frame;
-
-        public Msg10D_DescriptionResponse(HapcanFrame frame)
+        public Msg10D_DescriptionResponse(HapcanFrame frame) : base(frame)
         {
-            _frame = frame;
+            NodeDescription = GetText(frame);
         }
+
+        public string NodeDescription { get; }
 
         public string GetDescription()
         {
+            return string.Format("SYSTEM - Description frame: {0}", NodeDescription);
+        }
+
+        private string GetText(HapcanFrame frame)
+        {
             var desc = "";
-            char[] chars = Encoding.UTF8.GetChars(_frame.Data);
+            char[] chars = Encoding.UTF8.GetChars(frame.Data);
             for (int i = 5; i <= 12; i++)
             {
                 desc += chars[i];
             }
-            return string.Format("SYSTEM - Description frame: {0}", desc);
+            return desc;
         }
     }
 }

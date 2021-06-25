@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hapcan.Programmer.Hapcan;
-
-namespace Hapcan.Programmer.Hapcan.Messages
+﻿namespace Hapcan.Programmer.Hapcan.Messages
 {
     public class Messages
     {
@@ -25,6 +18,7 @@ namespace Hapcan.Programmer.Hapcan.Messages
                 case 0x020: desc = new Msg020_ExitNodeFromProgramming(_frame).GetDescription(); break;
                 case 0x030: desc = new Msg030_ProgrammingAddress(_frame).GetDescription(); break;
                 case 0x040: desc = new Msg040_ProgrammingData(_frame).GetDescription(); break;
+                case 0x0F0: desc = new Msg0F0_ProgrammingError(_frame).GetDescription(); break;
                 //system
                 case 0x100: desc = new Msg100_EnterProgramming(_frame).GetDescription(); break;
                 case 0x101: desc = new Msg101_RebootGroup(_frame).GetDescription(); break;
@@ -47,6 +41,7 @@ namespace Hapcan.Programmer.Hapcan.Messages
                 case 0x113: desc = new Msg113_UptimeToNode(_frame).GetDescription(); break;
                 case 0x114: desc = new Msg114_HealthToGroup(_frame).GetDescription(); break;
                 case 0x115: desc = new Msg115_HealthToNode(_frame).GetDescription(); break;
+                case 0x1F1: desc = new Msg1F1_FirmwareError(_frame).GetDescription(); break;
                 //device
                 case 0x300: desc = new Msg300_Rtc(_frame).GetDesription(); break;
                 case 0x301: desc = new Msg301_Button(_frame).GetDesription(); break;
@@ -54,8 +49,6 @@ namespace Hapcan.Programmer.Hapcan.Messages
                 case 0x304: desc = new Msg304_Temperature(_frame).GetDesription(); break;
 
 
-                case 0x0F0: desc = new Msg0F0_ProgrammingError(_frame).GetDescription(); break;
-                case 0x1F1: desc = new Msg1F1_FirmwareError(_frame).GetDescription(); break;
                 default: desc = string.Format("Unknown frame type 0x{0:X}", frameType); break;
             }
             return string.Format("{0} - {1}", GetNodeId(), desc);

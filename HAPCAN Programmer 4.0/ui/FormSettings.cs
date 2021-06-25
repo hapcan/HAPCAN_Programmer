@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using Hapcan.Programmer.Hapcan;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Hapcan.Programmer.Hapcan;
 
 namespace Hapcan.Programmer
 {
@@ -39,10 +33,10 @@ namespace Hapcan.Programmer
                 comboBoxGroupFrom.Items.Add(i);
                 comboBoxGroupTo.Items.Add(i);
             }
-            comboBoxGroupFrom.SelectedIndex = _project.Connection.GroupFrom-1;
-            comboBoxGroupTo.SelectedIndex = _project.Connection.GroupTo-1;
+            comboBoxGroupFrom.SelectedIndex = _project.Connection.GroupFrom - 1;
+            comboBoxGroupTo.SelectedIndex = _project.Connection.GroupTo - 1;
             //connected/disconnected
-            if (_project.Connection.Connected)
+            if (_project.Connection.IsConnected())
                 btnConnect.Enabled = false;
             else
                 btnDisconnect.Enabled = false;
@@ -83,14 +77,14 @@ namespace Hapcan.Programmer
         {
             btnDisconnect.Enabled = false;
             btnConnect.Enabled = true;
-            _project.Disconnect();
+            _project.Connection.Disconnect();
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
         {
             btnDisconnect.Enabled = true;
             btnConnect.Enabled = false;
-            await _project.ConnectAsync();
+            await _project.Connection.ConnectAsync();
         }
 
         private async void btnSave_Click(object sender, EventArgs e)
@@ -99,9 +93,9 @@ namespace Hapcan.Programmer
             _project.Connection.IP = textBoxIntIp.Text;
             if (Int32.TryParse(textBoxIntPort.Text, out int port))
                 _project.Connection.Port = port;
-            _project.Connection.Com = comboBoxIntCom.SelectedIndex+1;
-            _project.Connection.GroupFrom = comboBoxGroupFrom.SelectedIndex + 1;
-            _project.Connection.GroupTo = comboBoxGroupTo.SelectedIndex + 1;
+            _project.Connection.Com = comboBoxIntCom.SelectedIndex + 1;
+            _project.Connection.GroupFrom = (byte)(comboBoxGroupFrom.SelectedIndex + 1);
+            _project.Connection.GroupTo = (byte)(comboBoxGroupTo.SelectedIndex + 1);
             await _project.SaveAsync(_project.ProjectFilePath);
         }
 

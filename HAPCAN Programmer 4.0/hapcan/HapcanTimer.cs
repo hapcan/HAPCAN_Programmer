@@ -15,7 +15,7 @@ namespace Hapcan.Programmer.Hapcan
         public int GetRemainingSeconds(byte timer)
         {
             int seconds = 0;
-            if(timer <= 60)
+            if (timer <= 60)
             {
                 seconds = timer;
             }

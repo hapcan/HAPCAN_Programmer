@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Hapcan.Programmer.Hapcan
 {
@@ -13,12 +9,11 @@ namespace Hapcan.Programmer.Hapcan
     {
         private static readonly ObjectIDGenerator ObjectIDGenerator = new ObjectIDGenerator();
 
-
         //CONSTRUCTORS
         /// <summary>
         /// The frame constructor
         /// </summary>
-        /// <param name="data">Frame data buffer byte[15] or byte[12]</param>
+        /// <param name="data">Frame data as array byte[15] or byte[12]</param>
         /// <param name="rxtx">Frame type Rx (received) if true or Tx (transmitted) if false</param>
         public HapcanFrame(byte[] data, bool rxtx)
         {
@@ -29,7 +24,7 @@ namespace Hapcan.Programmer.Hapcan
                 ID = ObjectIDGenerator.GetId(this, out bool firstTime);
                 this.Time = DateTime.Now;
                 this.RxTx = rxtx == true ? "Rx" : "Tx";
-                Data = this.CopyDataToData(data);
+                Data = this.SetArrayToData(data);
                 Description = "";
             }
         }
@@ -116,7 +111,7 @@ namespace Hapcan.Programmer.Hapcan
             foreach (char chr in msg)
             {
                 if (IsCharHex(chr) == false)
-                    return false;                 
+                    return false;
             }
             //check data length
             if (msg.Length != 24)
@@ -146,8 +141,8 @@ namespace Hapcan.Programmer.Hapcan
         }
 
         //copy 12 byte or 15 byte array to Data
-        private byte[] CopyDataToData(byte[] dataIn)
-        { 
+        private byte[] SetArrayToData(byte[] dataIn)
+        {
             var data = new byte[15];
             if (dataIn.Length == 15)
             {

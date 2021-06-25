@@ -1,12 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Text;
-using System.Xml.Serialization;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Threading;
+using System.Xml.Serialization;
 
 namespace Hapcan
 {

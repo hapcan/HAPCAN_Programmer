@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
+﻿using Hapcan.Programmer.Hapcan;
+using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Hapcan.Programmer.Hapcan;
 
 namespace Hapcan.Programmer
 {
@@ -39,10 +28,12 @@ namespace Hapcan.Programmer
             var project = new Project();
             _project = await project.OpenAsync(projectFilePath).ConfigureAwait(true);
             _project.ProjectFilePath = projectFilePath;
+            _project.SubscribeEvents();
             //get project settings
             Logger.LogTimeFormat = _project.Settings.TimeFormat;
             //subscribe to connection event
-            _project.Connection.ConnectionChanged += OnConnectionChanged;
+            _project.Connection.ConnectionConnected += OnConnectionChanged;
+            _project.Connection.ConnectionDisconnected += OnConnectionChanged;
         }
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -102,7 +93,7 @@ namespace Hapcan.Programmer
                     frm.Show();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Log("Application error", "Loading form " + frm.Text + " error: " + ex.ToString());
             }
@@ -117,7 +108,7 @@ namespace Hapcan.Programmer
 
         private void btnNodes_Click(object sender, EventArgs e)
         {
-            LoadContainer(new FormNodes(),sender as Button);
+            LoadContainer(new FormNodes(_project), sender as Button);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -165,7 +156,7 @@ namespace Hapcan.Programmer
             }
             else
             {
-                if (conn.Connected)
+                if (conn.IsConnected())
                     textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
                 else
                     textBottom.Text = "Not connected";

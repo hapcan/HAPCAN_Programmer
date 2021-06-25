@@ -1,18 +1,15 @@
-﻿using Hapcan.Programmer.Hapcan.Messages;
+﻿using Hapcan.Programmer.Hapcan;
+using Hapcan.Programmer.Hapcan.Messages;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Hapcan.Programmer.Hapcan;
 
 namespace Hapcan.Programmer
 {
     [XmlRoot("HapcanProgrammerProject")]
     public class Project
-    { 
+    {
         //PROPERTIES
         [XmlElement(ElementName = "Settings")]
         public Settings Settings { get; set; }
@@ -25,7 +22,7 @@ namespace Hapcan.Programmer
         [XmlIgnore]
         public HapcanFrameList<HapcanFrame> FrameList { get; set; }
         [XmlIgnore]
-        public string ProjectFilePath {get; set;}
+        public string ProjectFilePath { get; set; }
 
         //CONSTRUCTOR
         public Project()
@@ -51,7 +48,8 @@ namespace Hapcan.Programmer
             {
                 Logger.Log("Application error", "Opening project exception. " + ex.ToString());
             }
-            if(project == null)
+            //no project file? create it
+            if (project == null)
                 project = new Project();
             return project;
         }
@@ -61,7 +59,7 @@ namespace Hapcan.Programmer
         {
             bool res = false;
             try
-            { 
+            {
                 var projfile = new ProjectFile<Project>();
                 res = await projfile.SerializeAsync(this, filename);
                 Logger.Log("Application info", "Project saved to " + Path.GetFullPath(filename));
@@ -73,73 +71,44 @@ namespace Hapcan.Programmer
             return res;
         }
 
-        //interface - connect
-        public async Task ConnectAsync()
+        //subscribe to its message receive event
+        public void SubscribeEvents()
         {
-            try
-            {
-                //subscribe to its message receive event
-                var conn = this.Connection;
-                conn.MessageReceived -= OnMessageReceived;
-                conn.MessageReceived += OnMessageReceived;
-                if (conn.Interface == HapcanConnection.InterfaceType.Ethernet)
-                {       
-                    Logger.Log("Connection info", "Connecting to " + conn.IP + ":" + conn.Port + "...");
-                    await conn.ConnectAsync();
-                    Logger.Log("Connection info", "Connected to " + conn.IP + ":" + conn.Port);
-                }
-                else if (conn.Interface == HapcanConnection.InterfaceType.RS232)
-                {
-                    Logger.Log("Connection info", "Connecting to Com " + conn.Com + "...");
-                    await conn.ConnectAsync();
-                    Logger.Log("Connection info", "Connected to Com " + conn.Com);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("Connection error", "Connecting exception. " + ex.ToString());
-            }
+            var conn = this.Connection;
+            conn.MessageReceived += OnMessageReceived;
+            conn.MessageSent += OnMessageSent;
+            conn.ConnectionException += OnConnectionException;
+            conn.ConnectionConnected += OnConnectionConnected;
+            conn.ConnectionDisconnected += OnConnectionDisconnected;
+
         }
 
-        //interface - receive
-        private void OnMessageReceived(HapcanConnection conn)
+        public void OnConnectionDisconnected(HapcanConnection conn)
         {
-            var frame = new HapcanFrame(conn.ReceiveBuffer, true);
+            Logger.Log("Connection info", "Connection closed.");
+        }
+        public void OnConnectionConnected(HapcanConnection conn)
+        {
+            Logger.Log("Connection info", "Connected to " + conn.IP + ":" + conn.Port);
+        }
+        //interface - received
+        private void OnMessageReceived(HapcanFrame frame)
+        {
             frame.Description = new Messages(frame).GetDescription();
             this.FrameList.Add(frame);
             Logger.Log("Frame", "RX <- " + frame.GetDataString(15));
         }
-
-        //interface - disconnect
-        public void Disconnect()
+        //interface - sent
+        private void OnMessageSent(HapcanFrame frame)
         {
-            var conn = this.Connection;
-            conn.Disconnect();
-            Logger.Log("Connection info", "Connection closed.");
+            frame.Description = new Messages(frame).GetDescription();
+            this.FrameList.Add(frame);
+            Logger.Log("Frame", "TX -> " + frame.GetDataString(15));
         }
-
-        //interface - send
-        public async Task SendAsync(HapcanFrame frame)
+        //interface - exception
+        private void OnConnectionException(Exception ex)
         {
-            try
-            {
-                var conn = this.Connection;
-                //check if socket is connected
-                if (!conn.IsConnected())
-                    await this.ConnectAsync();
-                //send frame
-                if (conn.IsConnected())
-                {
-                    await conn.SendAsync(frame);
-                    frame.Description = new Messages(frame).GetDescription();
-                    this.FrameList.Add(frame);
-                    Logger.Log("Frame", "TX -> " + frame.GetDataString(15));
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("Connection error", "Sending exception. " + ex.ToString());
-            }
+            Logger.Log("Connection error", ex.ToString());
         }
     }
 }

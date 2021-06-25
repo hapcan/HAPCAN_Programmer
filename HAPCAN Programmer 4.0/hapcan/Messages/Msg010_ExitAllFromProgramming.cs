@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hapcan.Programmer.Hapcan.Messages
+﻿namespace Hapcan.Programmer.Hapcan.Messages
 {
     class Msg010_ExitAllFromProgramming
     {
@@ -16,7 +10,7 @@ namespace Hapcan.Programmer.Hapcan.Messages
         }
         public Msg010_ExitAllFromProgramming()
         {
-            _frame = new HapcanFrame(new byte[] { 0x01,0x00,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF }, false);
+            _frame = new HapcanFrame(new byte[] { 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, false);
         }
 
         public HapcanFrame GetFrame()

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -11,6 +8,8 @@ namespace Hapcan.Programmer.Hapcan
 {
     //declare a delegate type for the event
     public delegate void ConnectionEvent(HapcanConnection obj);
+    public delegate void ConnectionFrameEvent(HapcanFrame obj);
+    public delegate void ConnectionExceptionEvent(Exception obj);
 
     public class HapcanConnection
     {
@@ -18,11 +17,13 @@ namespace Hapcan.Programmer.Hapcan
         byte[] _buffer;
         Socket _socket;
         bool _activeReceiving;
-        bool _connected;
 
         //EVENTS
-        public event ConnectionEvent MessageReceived;       //message received event
-        public event ConnectionEvent ConnectionChanged;     //connection connected/disconnected
+        public event ConnectionFrameEvent MessageReceived;          //message received event
+        public event ConnectionFrameEvent MessageSent;              //message ent event
+        public event ConnectionEvent ConnectionConnected;           //connection connected
+        public event ConnectionEvent ConnectionDisconnected;        //connection disconnected
+        public event ConnectionExceptionEvent ConnectionException;  //connection exception occurred
 
         //CONSTRUCTORS
         /// <summary>
@@ -33,7 +34,7 @@ namespace Hapcan.Programmer.Hapcan
             Interface = InterfaceType.Ethernet;
             IP = "192.168.0.100";
             Port = 1001;
-            Connected = false;
+            Timeout = 1000;
             //interface id on CAN bus
             NodeTx = 240;
             GroupTx = 240;
@@ -53,7 +54,7 @@ namespace Hapcan.Programmer.Hapcan
             Interface = intface;
             IP = ip;
             Port = port;
-            Connected = false;
+            Timeout = 1000;
             //interface id on CAN bus
             NodeTx = 240;
             GroupTx = 240;
@@ -70,6 +71,8 @@ namespace Hapcan.Programmer.Hapcan
         public string IP { get; set; }
         [XmlAttribute("Port")]
         public int Port { get; set; }
+        [XmlAttribute("Timeout")]
+        public int Timeout { get; set; }
         [XmlAttribute("Com")]
         public int Com { get; set; }
         [XmlAttribute("NodeTx")]
@@ -77,29 +80,9 @@ namespace Hapcan.Programmer.Hapcan
         [XmlAttribute("GroupTx")]
         public byte GroupTx { get; set; }
         [XmlAttribute("GroupFrom")]
-        public int GroupFrom { get; set; }
+        public byte GroupFrom { get; set; }
         [XmlAttribute("GroupTo")]
-        public int GroupTo { get; set; }
-        [XmlIgnore]
-        public byte[] ReceiveBuffer { get { return _buffer; } }
-        [XmlIgnore]
-        public bool Connected
-        {
-            get
-            {
-                return _connected; 
-            }           
-            private set
-            {
-                if (value != _connected)
-                {
-                    _connected = value;
-                    //raise event
-                    if (ConnectionChanged != null)
-                        ConnectionChanged(this);
-                }
-            }
-        }
+        public byte GroupTo { get; set; }
 
 
         //METHODS
@@ -128,7 +111,7 @@ namespace Hapcan.Programmer.Hapcan
         /// <returns>True if it is valid, otherwise false.</returns>
         public static bool IsPortValid(string port)
         {
-            if(Int32.TryParse(port, out var portint))
+            if (Int32.TryParse(port, out var portint))
             {
                 if (portint >= 1 && portint <= 65536)
                     return true;
@@ -163,24 +146,23 @@ namespace Hapcan.Programmer.Hapcan
                     _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     await _socket.ConnectAsync(ethModule).ConfigureAwait(continueOnCapturedContext: false);
                     //start
-                    _  = Task.Run(() => StartReceivingTask()).ConfigureAwait(false);           
+                    _ = Task.Run(() => StartReceivingTask()).ConfigureAwait(false);
                     //update status
-                    Connected = true;
- 
+                    ConnectionConnected?.Invoke(this);    //raise event
                     return true;
                 }
                 else if (this.Interface == InterfaceType.RS232)
                 {
-                      throw new NotImplementedException("RS232 interface not implemented yet.");
-                    //return false;
+                    ConnectionException?.Invoke(new Exception("RS232 interface not implemented yet."));    //raise event
+                    return false;
                 }
                 else { return false; }
             }
             catch (Exception ex)
             {
-                //update status
-                Connected = false;
-                throw new Exception("", ex);
+                ConnectionException?.Invoke(ex);    //raise event
+                Disconnect();                       //update status
+                return false;
             }
         }
 
@@ -206,8 +188,8 @@ namespace Hapcan.Programmer.Hapcan
                         _socket.Receive(_buffer, 15, SocketFlags.None);
                         if (_buffer[0] == (byte)HapcanFrame.ByteType.StartByte && _buffer[14] == (byte)HapcanFrame.ByteType.StopByte)
                         {
-                            if (MessageReceived != null)      //event handler exists?               
-                                MessageReceived(this);        //raise event
+                            var frame = new HapcanFrame(_buffer, true);
+                            MessageReceived?.Invoke(frame);        //raise event
                         }
                         else
                         {
@@ -222,10 +204,8 @@ namespace Hapcan.Programmer.Hapcan
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("rx", ex.ToString());
-                    //update status
-                    Connected = false;
-                    throw new Exception("", ex);
+                    ConnectionException?.Invoke(ex);    //raise event
+                    Disconnect();                       //update status
                 }
             }
         }
@@ -247,19 +227,20 @@ namespace Hapcan.Programmer.Hapcan
         /// <returns>Task(true) if disconnected or Task(false) if disconnecting fails.</returns>
         public bool Disconnect()
         {
-            if (_socket == null || _socket.Connected == false)
+            if (_socket == null)
                 return true;
 
             //stop receiving Task
             _activeReceiving = false;
             //shutdown socket
-            _socket.Shutdown(SocketShutdown.Both);
+            if (_socket.Connected)
+                _socket.Shutdown(SocketShutdown.Both);
             _socket.Close();
             //update status
-            Connected = false;
+            ConnectionDisconnected?.Invoke(this);    //raise event
             return true;
         }
-        
+
         /// <summary>
         /// Sends frame to the HAPCAN interface
         /// </summary>
@@ -267,10 +248,24 @@ namespace Hapcan.Programmer.Hapcan
         /// <returns></returns>
         public async Task SendAsync(HapcanFrame frame)
         {
-            await _socket.SendAsync(new ArraySegment<byte>(frame.Data), SocketFlags.None);
+            try
+            {
+                //check if socket is connected
+                if (!this.IsConnected())
+                    await this.ConnectAsync();
+                //send frame
+                if (this.IsConnected())
+                {
+                    await _socket.SendAsync(new ArraySegment<byte>(frame.Data), SocketFlags.None);
+                    if (MessageSent != null)      //event handler exists?               
+                        MessageSent(frame);       //raise event
+                }
+            }
+            catch (Exception ex)
+            {
+                ConnectionException?.Invoke(ex);    //raise event
+                Disconnect();                       //update status
+            }
         }
-
-
-
     }
 }

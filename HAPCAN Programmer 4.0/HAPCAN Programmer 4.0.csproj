@@ -66,7 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hapcan\Flows\SearchNodes.cs" />
     <Compile Include="Hapcan\HapcanConnection.cs" />
+    <Compile Include="Hapcan\HapcanNode.cs" />
     <Compile Include="Hapcan\HapcanTimer.cs" />
     <Compile Include="Hapcan\Messages\Msg020_ExitNodeFromProgramming.cs" />
     <Compile Include="Hapcan\Messages\Msg040_ProgrammingData.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Hapcan\Messages\Msg301_Button.cs" />
     <Compile Include="Hapcan\Messages\Msg304_Temperature.cs" />
     <Compile Include="Hapcan\Messages\Msg010_ExitAllFromProgramming.cs" />
+    <Compile Include="Hapcan\Messages\MsgBase.cs" />
     <Compile Include="Other\Logger.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Other\PropertyComparer.cs" />
@@ -215,5 +218,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

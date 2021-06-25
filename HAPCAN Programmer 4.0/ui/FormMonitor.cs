@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Hapcan.Programmer.Hapcan;
+using Hapcan.Programmer.Hapcan.Messages;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Hapcan.Programmer.Hapcan;
-using Hapcan.Programmer.Hapcan.Messages;
 
 namespace Hapcan.Programmer
 {
@@ -20,10 +16,10 @@ namespace Hapcan.Programmer
         public FormMonitor(Project project)
         {
             _project = project;
+            _monitorList = _project.FrameList;
             InitializeComponent();
-            _monitorList = project.FrameList;
+            this.UpdateGrid();
             _monitorList.ListChanged += this.OnListChanged;
-            this.UpdateGrid(); 
         }
 
         private void FormMonitor_Load(object sender, EventArgs e)
@@ -36,7 +32,8 @@ namespace Hapcan.Programmer
                 if (i == 0) comboBoxGroup.Items.Add("All"); else comboBoxGroup.Items.Add(i);
             }
             comboBoxNode.SelectedIndex = 0;
-            comboBoxGroup.SelectedIndex = 1;
+            comboBoxGroup.SelectedIndex = 1; 
+
         }
 
         private void GridRefreshTimer_Tick_1(object sender, EventArgs e)
@@ -64,7 +61,7 @@ namespace Hapcan.Programmer
             if (checkBoxPause.Checked == true)
                 return;
             //set timer to refresh grid
-            if(GridRefreshTimer.Interval > 1)       //refresh interval, which pospones grid refreshing
+            if (GridRefreshTimer.Interval > 1)       //refresh interval, which pospones grid refreshing
                 GridRefreshTimer.Interval--;
             GridRefreshTimer.Enabled = true;
         }
@@ -79,7 +76,7 @@ namespace Hapcan.Programmer
         }
         private void textBoxSearch_Leave(object sender, EventArgs e)
         {
-            if(textBoxSearch.Text == "")
+            if (textBoxSearch.Text == "")
                 textBoxSearch.Text = "Search";
         }
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
@@ -106,18 +103,18 @@ namespace Hapcan.Programmer
         private async void btnSend_Click(object sender, EventArgs e)
         {
             var frm = new HapcanFrame(textBoxTxMsg.Text, false);
-            await _project.SendAsync(frm);
+            await _project.Connection.SendAsync(frm);
             this.UpdateGrid();
         }
 
         private void textBoxTxMsg_KeyPress(object sender, KeyPressEventArgs e)
         {
             //allow max 24 chars
-            string msg = textBoxTxMsg.Text.Replace(" ","");
+            string msg = textBoxTxMsg.Text.Replace(" ", "");
             if (msg.Length == 24 && e.KeyChar != '\b' && textBoxTxMsg.SelectionLength == 0)
                 e.Handled = true;
             //allowed characters
-            if(HapcanFrame.IsCharHex(e.KeyChar) == false && e.KeyChar !='\b' && e.KeyChar != ' ')
+            if (HapcanFrame.IsCharHex(e.KeyChar) == false && e.KeyChar != '\b' && e.KeyChar != ' ')
                 e.Handled = true;
         }
 
