@@ -1,4 +1,4 @@
-﻿using Hapcan.Programmer.Hapcan;
+﻿using Hapcan.General;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -14,6 +14,7 @@ namespace Hapcan.Programmer
         private string _appDataPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "HAPCAN", Application.ProductName);
 
+        Form _activeForm;
 
         public FormMain()
         {
@@ -83,14 +84,15 @@ namespace Hapcan.Programmer
                 panelPointer.Top = btn.Top;
                 panelPointer.BringToFront();
                 //show frame in container
-                if (this.splitContainer1.Panel1.Controls.Count > 0)
-                    this.splitContainer1.Panel1.Controls.RemoveAt(0);
+                if (_activeForm != null)
+                    _activeForm.Close();
                 if (frm != null)
                 {
                     frm.TopLevel = false;
                     frm.Dock = DockStyle.Fill;
                     this.splitContainer1.Panel1.Controls.Add(frm);
                     frm.Show();
+                    _activeForm = frm;
                 }
             }
             catch (Exception ex)
@@ -131,9 +133,11 @@ namespace Hapcan.Programmer
             if (checkBoxLogs.Checked)
             {
                 splitContainer1.Panel2Collapsed = false;
-                formLogs = new FormLogs();
-                formLogs.TopLevel = false;
-                formLogs.Dock = DockStyle.Fill;
+                formLogs = new FormLogs()
+                {
+                    TopLevel = false,
+                    Dock = DockStyle.Fill
+                };
                 splitContainer1.Panel2.Controls.Add(formLogs);
                 formLogs.Show();
             }

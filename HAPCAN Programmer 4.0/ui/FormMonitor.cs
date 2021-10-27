@@ -1,5 +1,5 @@
-﻿using Hapcan.Programmer.Hapcan;
-using Hapcan.Programmer.Hapcan.Messages;
+﻿using Hapcan.General;
+using Hapcan.Messages;
 using System;
 using System.Data;
 using System.Drawing;
@@ -10,7 +10,7 @@ namespace Hapcan.Programmer
 {
     public partial class FormMonitor : Form
     {
-        private readonly HapcanFrameList<HapcanFrame> _monitorList;
+        private readonly HapcanList<HapcanFrame> _monitorList;
         private readonly Project _project;
 
         public FormMonitor(Project project)
@@ -18,8 +18,6 @@ namespace Hapcan.Programmer
             _project = project;
             _monitorList = _project.FrameList;
             InitializeComponent();
-            this.UpdateGrid();
-            _monitorList.ListChanged += this.OnListChanged;
         }
 
         private void FormMonitor_Load(object sender, EventArgs e)
@@ -32,14 +30,22 @@ namespace Hapcan.Programmer
                 if (i == 0) comboBoxGroup.Items.Add("All"); else comboBoxGroup.Items.Add(i);
             }
             comboBoxNode.SelectedIndex = 0;
-            comboBoxGroup.SelectedIndex = 1; 
-
+            comboBoxGroup.SelectedIndex = 1;
+            //load frames
+            this.UpdateGrid();
+            //subscribe the event
+            _monitorList.ListChanged += this.OnListChanged;
+        }
+        private void FormMonitor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //unsubscribe the event
+            _monitorList.ListChanged -= this.OnListChanged;
         }
 
-        private void GridRefreshTimer_Tick_1(object sender, EventArgs e)
+        private void PostponeGridRefreshTimer_Tick(object sender, EventArgs e)
         {
-            GridRefreshTimer.Interval = 100;
-            GridRefreshTimer.Enabled = false;
+            PostponeGridRefreshTimer.Interval = 100;
+            PostponeGridRefreshTimer.Enabled = false;
             //refresh grid
             SearchInGrid(textBoxSearch.Text);
         }
@@ -61,9 +67,11 @@ namespace Hapcan.Programmer
             if (checkBoxPause.Checked == true)
                 return;
             //set timer to refresh grid
-            if (GridRefreshTimer.Interval > 1)       //refresh interval, which pospones grid refreshing
-                GridRefreshTimer.Interval--;
-            GridRefreshTimer.Enabled = true;
+            if (PostponeGridRefreshTimer.Interval > 1)       //refresh interval, which pospones grid refreshing
+                PostponeGridRefreshTimer.Interval--;
+            PostponeGridRefreshTimer.Enabled = true;
+
+            SearchInGrid(textBoxSearch.Text);
         }
         private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
         {
@@ -91,18 +99,23 @@ namespace Hapcan.Programmer
             dataGridView1.DataSource = new SortableBindingList<HapcanFrame>(_monitorList.
                          OrderBy(o => o.Time).
                          Where(o => o.Time.ToString().Contains(search.ToLowerInvariant()) == true ||
-                                    o.RxTx.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
-                                    o.FrameData.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                                    o.FrameSourceText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                                    o.FrameDataText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                                     o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
+            
             //grid
+            dataGridView1.Columns["FrameSourceText"].HeaderText = "Source";
+            dataGridView1.Columns["FrameDataText"].HeaderText = "Data";
             dataGridView1.Columns[1].DefaultCellStyle.Format = _project.Settings.TimeFormat;
+            
             //select last row
             if (dataGridView1.RowCount > 0)
                 dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.RowCount - 1].Cells[0];
+            labelMsgNo.Text = "Messages: " + dataGridView1.Rows.Count;
         }
         private async void btnSend_Click(object sender, EventArgs e)
         {
-            var frm = new HapcanFrame(textBoxTxMsg.Text, false);
+            var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PC);
             await _project.Connection.SendAsync(frm);
             this.UpdateGrid();
         }
@@ -121,7 +134,7 @@ namespace Hapcan.Programmer
         private void textBoxTxMsg_TextChanged(object sender, EventArgs e)
         {
             string msg = textBoxTxMsg.Text;
-            if (HapcanFrame.IsDataCorrect(msg))
+            if (HapcanFrame.IsDataTextCorrect(msg))
             {
                 panelTxMsg.BackColor = textBoxTxMsg.BackColor;
                 btnSend.Enabled = true;
@@ -131,9 +144,9 @@ namespace Hapcan.Programmer
                     str = str.Insert(i, " ");
                 textBoxTxMsg.Text = str;
                 //calculate checksum
-                var frm = new HapcanFrame(msg, false);
+                var frm = new HapcanFrame(msg, HapcanFrame.FrameSource.PC);
                 if (frm != null)
-                    label2.Text = frm.Data[13].ToString("X2");
+                    label2.Text = frm.GetFrameChecksum().ToString("X2");
             }
             else
             {
@@ -165,35 +178,35 @@ namespace Hapcan.Programmer
 
             switch (comboBoxFrame.SelectedIndex)
             {
-                case 0: textBoxTxMsg.Text = new Msg010_ExitAllFromProgramming().GetFrame().GetDataString(12); DisableAll(); break;
-                case 1: textBoxTxMsg.Text = new Msg020_ExitNodeFromProgramming(nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 4: textBoxTxMsg.Text = new Msg100_EnterProgramming(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 5: textBoxTxMsg.Text = new Msg101_RebootGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 6: textBoxTxMsg.Text = new Msg102_RebootNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 7: textBoxTxMsg.Text = new Msg103_HardwareTypeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 8: textBoxTxMsg.Text = new Msg104_HardwareTypeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 9: textBoxTxMsg.Text = new Msg105_FirmwareTypeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 10: textBoxTxMsg.Text = new Msg106_FirmwareTypeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 11: textBoxTxMsg.Text = new Msg107_SetDefaultIdToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 12: textBoxTxMsg.Text = new Msg108_StatusToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 13: textBoxTxMsg.Text = new Msg109_StatusToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 14: textBoxTxMsg.Text = new Msg10A_ControlToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 15: textBoxTxMsg.Text = new Msg10B_VoltageToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 16: textBoxTxMsg.Text = new Msg10C_VoltageToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 17: textBoxTxMsg.Text = new Msg10D_DescriptionToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 18: textBoxTxMsg.Text = new Msg10E_DescriptionToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 19: textBoxTxMsg.Text = new Msg10F_ProcessorIdToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 20: textBoxTxMsg.Text = new Msg111_ProcessorIdToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 21: textBoxTxMsg.Text = new Msg112_UptimeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(12); DisableNode(); break;
-                case 22: textBoxTxMsg.Text = new Msg113_UptimeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(12); EnableAll(); break;
-                case 23: textBoxTxMsg.Text = new Msg114_HealthToGroup(nodeTx, groupTx, groupRx, 0x01).GetFrame().GetDataString(12); DisableNode(); break;
-                case 24: textBoxTxMsg.Text = new Msg115_HealthToNode(nodeTx, groupTx, nodeRx, groupRx, 0x01).GetFrame().GetDataString(12); EnableAll(); break;
+                case 0: textBoxTxMsg.Text = new Msg010_ExitAllFromProgramming().GetFrame().GetDataString(); DisableAll(); break;
+                case 1: textBoxTxMsg.Text = new Msg020_ExitNodeFromProgramming(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 4: textBoxTxMsg.Text = new Msg100_EnterProgramming(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 5: textBoxTxMsg.Text = new Msg101_RebootGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 6: textBoxTxMsg.Text = new Msg102_RebootNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 7: textBoxTxMsg.Text = new Msg103_HardwareTypeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 8: textBoxTxMsg.Text = new Msg104_HardwareTypeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 9: textBoxTxMsg.Text = new Msg105_FirmwareTypeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 10: textBoxTxMsg.Text = new Msg106_FirmwareTypeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 11: textBoxTxMsg.Text = new Msg107_SetDefaultIdToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 12: textBoxTxMsg.Text = new Msg108_StatusToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 13: textBoxTxMsg.Text = new Msg109_StatusToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 14: textBoxTxMsg.Text = new Msg10A_ControlToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 15: textBoxTxMsg.Text = new Msg10B_VoltageToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 16: textBoxTxMsg.Text = new Msg10C_VoltageToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 17: textBoxTxMsg.Text = new Msg10D_DescriptionToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 18: textBoxTxMsg.Text = new Msg10E_DescriptionToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 19: textBoxTxMsg.Text = new Msg10F_ProcessorIdToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 20: textBoxTxMsg.Text = new Msg111_ProcessorIdToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 21: textBoxTxMsg.Text = new Msg112_UptimeToGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
+                case 22: textBoxTxMsg.Text = new Msg113_UptimeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+                case 23: textBoxTxMsg.Text = new Msg114_HealthToGroup(nodeTx, groupTx, groupRx, 0x01).GetFrame().GetDataString(); DisableNode(); break;
+                case 24: textBoxTxMsg.Text = new Msg115_HealthToNode(nodeTx, groupTx, nodeRx, groupRx, 0x01).GetFrame().GetDataString(); EnableAll(); break;
             }
 
         }
-
+        //Control Node and Group number comboboxes
         private void DisableAll()
         {
             comboBoxNode.Visible = false;
@@ -209,6 +222,7 @@ namespace Hapcan.Programmer
             comboBoxNode.Visible = true;
             comboBoxGroup.Visible = true;
         }
+
 
 
     }

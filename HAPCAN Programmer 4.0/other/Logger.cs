@@ -47,7 +47,7 @@ namespace Hapcan
 
         //METHODS
         /// <summary>
-        /// Puts new log in format "DateTime [level] loging text".
+        /// Puts new log in format "DateTime [lev] log".
         /// </summary>
         /// <param name="lev">Logging level</param>
         /// <param name="log">Logging text</param>
@@ -92,9 +92,11 @@ namespace Hapcan
                 //add new line
                 _logText.AppendLine(text);
                 //remove old line
-                if (_logText.ToString().Split('\n').Length > _logTextSize)
+                string[] lines = _logText.ToString().Split('\n');
+                if (lines.Length > _logTextSize)
                 {
-                    _logText.Remove(0, _logText.ToString().Split('\n').FirstOrDefault().Length);
+                    for (var i = _logTextSize; i < lines.Length; i++)
+                        _logText.Remove(0, _logText.ToString().Split('\n').FirstOrDefault().Length + 1);
                 }
             }
         }

@@ -31,9 +31,9 @@ namespace Hapcan.Programmer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMonitor));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelTop = new System.Windows.Forms.Panel();
             this.checkBoxPause = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -55,7 +55,8 @@ namespace Hapcan.Programmer
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.GridRefreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.PostponeGridRefreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.labelMsgNo = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -81,6 +82,7 @@ namespace Hapcan.Programmer
             // 
             this.checkBoxPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxPause.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxPause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.checkBoxPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBoxPause.FlatAppearance.BorderSize = 0;
             this.checkBoxPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -94,7 +96,7 @@ namespace Hapcan.Programmer
             this.checkBoxPause.Text = " Pause";
             this.checkBoxPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBoxPause.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.checkBoxPause.UseVisualStyleBackColor = true;
+            this.checkBoxPause.UseVisualStyleBackColor = false;
             this.checkBoxPause.CheckedChanged += new System.EventHandler(this.checkBoxPause_CheckedChanged);
             // 
             // panel2
@@ -160,6 +162,7 @@ namespace Hapcan.Programmer
             // panelBottom
             // 
             this.panelBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.panelBottom.Controls.Add(this.labelMsgNo);
             this.panelBottom.Controls.Add(this.btnSend);
             this.panelBottom.Controls.Add(this.label6);
             this.panelBottom.Controls.Add(this.label5);
@@ -186,7 +189,7 @@ namespace Hapcan.Programmer
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSend.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(1130, 17);
+            this.btnSend.Location = new System.Drawing.Point(1130, 23);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(80, 30);
             this.btnSend.TabIndex = 1;
@@ -200,7 +203,7 @@ namespace Hapcan.Programmer
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label6.Location = new System.Drawing.Point(1059, 3);
+            this.label6.Location = new System.Drawing.Point(1059, 9);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(42, 12);
             this.label6.TabIndex = 18;
@@ -211,7 +214,7 @@ namespace Hapcan.Programmer
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label5.Location = new System.Drawing.Point(1001, 3);
+            this.label5.Location = new System.Drawing.Point(1001, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(39, 12);
             this.label5.TabIndex = 18;
@@ -222,7 +225,7 @@ namespace Hapcan.Programmer
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(506, 3);
+            this.label4.Location = new System.Drawing.Point(506, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 12);
             this.label4.TabIndex = 18;
@@ -237,7 +240,7 @@ namespace Hapcan.Programmer
             this.comboBoxGroup.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxGroup.FormattingEnabled = true;
             this.comboBoxGroup.ItemHeight = 18;
-            this.comboBoxGroup.Location = new System.Drawing.Point(1062, 19);
+            this.comboBoxGroup.Location = new System.Drawing.Point(1062, 25);
             this.comboBoxGroup.Name = "comboBoxGroup";
             this.comboBoxGroup.Size = new System.Drawing.Size(52, 26);
             this.comboBoxGroup.TabIndex = 17;
@@ -252,7 +255,7 @@ namespace Hapcan.Programmer
             this.comboBoxNode.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxNode.FormattingEnabled = true;
             this.comboBoxNode.ItemHeight = 18;
-            this.comboBoxNode.Location = new System.Drawing.Point(1004, 19);
+            this.comboBoxNode.Location = new System.Drawing.Point(1004, 25);
             this.comboBoxNode.Name = "comboBoxNode";
             this.comboBoxNode.Size = new System.Drawing.Size(52, 26);
             this.comboBoxNode.TabIndex = 17;
@@ -293,7 +296,7 @@ namespace Hapcan.Programmer
             "0x113 - uptime request to node",
             "0x114 - health check request to group",
             "0x115 - health check request to node"});
-            this.comboBoxFrame.Location = new System.Drawing.Point(508, 19);
+            this.comboBoxFrame.Location = new System.Drawing.Point(508, 25);
             this.comboBoxFrame.Name = "comboBoxFrame";
             this.comboBoxFrame.Size = new System.Drawing.Size(490, 26);
             this.comboBoxFrame.TabIndex = 17;
@@ -303,7 +306,7 @@ namespace Hapcan.Programmer
             // 
             this.panelTxMsg.BackColor = System.Drawing.SystemColors.Window;
             this.panelTxMsg.Controls.Add(this.textBoxTxMsg);
-            this.panelTxMsg.Location = new System.Drawing.Point(59, 15);
+            this.panelTxMsg.Location = new System.Drawing.Point(59, 21);
             this.panelTxMsg.Name = "panelTxMsg";
             this.panelTxMsg.Padding = new System.Windows.Forms.Padding(4);
             this.panelTxMsg.Size = new System.Drawing.Size(360, 31);
@@ -332,7 +335,7 @@ namespace Hapcan.Programmer
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(459, 19);
+            this.label3.Location = new System.Drawing.Point(459, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 22);
             this.label3.TabIndex = 4;
@@ -343,7 +346,7 @@ namespace Hapcan.Programmer
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(429, 19);
+            this.label2.Location = new System.Drawing.Point(429, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 22);
             this.label2.TabIndex = 4;
@@ -354,7 +357,7 @@ namespace Hapcan.Programmer
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(23, 19);
+            this.label1.Location = new System.Drawing.Point(23, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 22);
             this.label1.TabIndex = 3;
@@ -365,32 +368,32 @@ namespace Hapcan.Programmer
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(82)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(1);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.GrayText;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(5, 2, 2, 5);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView1.EnableHeadersVisualStyles = false;
@@ -400,14 +403,25 @@ namespace Hapcan.Programmer
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowHeadersWidth = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1228, 396);
             this.dataGridView1.TabIndex = 5;
-            this.dataGridView1.VirtualMode = true;
             // 
-            // GridRefreshTimer
+            // PostponeGridRefreshTimer
             // 
-            this.GridRefreshTimer.Tick += new System.EventHandler(this.GridRefreshTimer_Tick_1);
+            this.PostponeGridRefreshTimer.Tick += new System.EventHandler(this.PostponeGridRefreshTimer_Tick);
+            // 
+            // labelMsgNo
+            // 
+            this.labelMsgNo.AutoSize = true;
+            this.labelMsgNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMsgNo.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labelMsgNo.Location = new System.Drawing.Point(3, 3);
+            this.labelMsgNo.Name = "labelMsgNo";
+            this.labelMsgNo.Size = new System.Drawing.Size(54, 12);
+            this.labelMsgNo.TabIndex = 19;
+            this.labelMsgNo.Text = "Messages: ";
             // 
             // FormMonitor
             // 
@@ -420,6 +434,7 @@ namespace Hapcan.Programmer
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormMonitor";
             this.Text = "FormMonitor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMonitor_FormClosing);
             this.Load += new System.EventHandler(this.FormMonitor_Load);
             this.panelTop.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -458,6 +473,7 @@ namespace Hapcan.Programmer
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Timer GridRefreshTimer;
+        private System.Windows.Forms.Timer PostponeGridRefreshTimer;
+        private System.Windows.Forms.Label labelMsgNo;
     }
 }

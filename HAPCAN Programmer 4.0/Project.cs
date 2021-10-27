@@ -1,6 +1,7 @@
-﻿using Hapcan.Programmer.Hapcan;
-using Hapcan.Programmer.Hapcan.Messages;
+﻿using Hapcan.General;
+using Hapcan.Messages;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -17,10 +18,12 @@ namespace Hapcan.Programmer
         [XmlElement(ElementName = "Connection")]
         public HapcanConnection Connection { get; set; }
 
-        //      [XmlElement(ElementName = "Nodes")]
-        //      public HapcanNodes HapcanNodes { get; set; }
+        [XmlArray(ElementName = "Nodes")]
+        [XmlArrayItem(ElementName = "Node")]
+        public List<HapcanNode> NodeList { get; set; }
+
         [XmlIgnore]
-        public HapcanFrameList<HapcanFrame> FrameList { get; set; }
+        public HapcanList<HapcanFrame> FrameList { get; set; }
         [XmlIgnore]
         public string ProjectFilePath { get; set; }
 
@@ -29,7 +32,8 @@ namespace Hapcan.Programmer
         {
             Settings = new Settings();
             Connection = new HapcanConnection();
-            FrameList = new HapcanFrameList<HapcanFrame>();
+            FrameList = new HapcanList<HapcanFrame>();
+            NodeList = new List<HapcanNode>();
         }
 
         //METHODS
@@ -75,9 +79,10 @@ namespace Hapcan.Programmer
         public void SubscribeEvents()
         {
             var conn = this.Connection;
-            conn.MessageReceived += OnMessageReceived;
+            conn.CanbusMessageReceived += OnMessageReceived;
+            conn.InterfaceMessageReceived += OnMessageReceived;
             conn.MessageSent += OnMessageSent;
-            conn.ConnectionException += OnConnectionException;
+            conn.ConnectionError += OnConnectionError;
             conn.ConnectionConnected += OnConnectionConnected;
             conn.ConnectionDisconnected += OnConnectionDisconnected;
 
@@ -94,19 +99,17 @@ namespace Hapcan.Programmer
         //interface - received
         private void OnMessageReceived(HapcanFrame frame)
         {
-            frame.Description = new Messages(frame).GetDescription();
             this.FrameList.Add(frame);
-            Logger.Log("Frame", "RX <- " + frame.GetDataString(15));
+            Logger.Log("Frame", frame.GetDataStringWithStartStopChecksum());
         }
         //interface - sent
         private void OnMessageSent(HapcanFrame frame)
         {
-            frame.Description = new Messages(frame).GetDescription();
             this.FrameList.Add(frame);
-            Logger.Log("Frame", "TX -> " + frame.GetDataString(15));
+            Logger.Log("Frame", frame.GetDataStringWithStartStopChecksum());
         }
         //interface - exception
-        private void OnConnectionException(Exception ex)
+        private void OnConnectionError(Exception ex)
         {
             Logger.Log("Connection error", ex.ToString());
         }

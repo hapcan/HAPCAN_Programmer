@@ -1,3 +1,4 @@
+using Hapcan.General;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,8 +54,7 @@ namespace Hapcan
             List<T> itemsList = (List<T>)this.Items;
 
             Type propertyType = property.PropertyType;
-            PropertyComparer<T> comparer;
-            if (!this.comparers.TryGetValue(propertyType, out comparer))
+            if (!this.comparers.TryGetValue(propertyType, out PropertyComparer<T> comparer))
             {
                 comparer = new PropertyComparer<T>(property, direction);
                 this.comparers.Add(propertyType, comparer);
@@ -92,6 +92,11 @@ namespace Hapcan
             }
 
             return -1;
+        }
+
+        public static implicit operator SortableBindingList<T>(SortableBindingList<HapcanNode> v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{372B9F78-FDA9-4069-9E77-22E6B40076B4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Hapcan.Programmer</RootNamespace>
+    <RootNamespace>Hapcan</RootNamespace>
     <AssemblyName>HAPCAN Programmer 4.0</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -27,6 +27,7 @@
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,50 +67,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hapcan\Flows\SearchNodes.cs" />
-    <Compile Include="Hapcan\HapcanConnection.cs" />
-    <Compile Include="Hapcan\HapcanNode.cs" />
-    <Compile Include="Hapcan\HapcanTimer.cs" />
-    <Compile Include="Hapcan\Messages\Msg020_ExitNodeFromProgramming.cs" />
-    <Compile Include="Hapcan\Messages\Msg040_ProgrammingData.cs" />
-    <Compile Include="Hapcan\Messages\Msg030_ProgrammingAddress.cs" />
-    <Compile Include="Hapcan\Messages\Msg100_EnterProgramming.cs" />
-    <Compile Include="Hapcan\Messages\Msg101_RebootGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg102_RebootNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg0F0_ProgrammingError.cs" />
-    <Compile Include="Hapcan\Messages\Msg10A_ControlToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg114_HealthResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg112_UptimeResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg10F_ProcessorIdResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg10D_DescriptionResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg10B_VoltageResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg115_HealthToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg114_HealthToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg113_UptimeToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg112_UptimeToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg111_ProcessorIdToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg10F_ProcessorIdToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg10E_DescriptionToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg10D_DescritionToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg10C_VoltageToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg10B_VoltageToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg108_StatusToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg107_SetDefaultIdToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg109_StatusToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg1F1_FirmwareError.cs" />
-    <Compile Include="Hapcan\Messages\Msg105_FirmwareTypeResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg106_FirmwareTypeToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg105_FirmwareTypeToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg104_HardwareTypeToNode.cs" />
-    <Compile Include="Hapcan\Messages\Msg103_HardwareTypeToGroup.cs" />
-    <Compile Include="Hapcan\Messages\Msg103_HardwareTypeResponse.cs" />
-    <Compile Include="Hapcan\Messages\Msg300_Rtc.cs" />
-    <Compile Include="Hapcan\Messages\Messages.cs" />
-    <Compile Include="Hapcan\Messages\Msg302_Relay.cs" />
-    <Compile Include="Hapcan\Messages\Msg301_Button.cs" />
-    <Compile Include="Hapcan\Messages\Msg304_Temperature.cs" />
-    <Compile Include="Hapcan\Messages\Msg010_ExitAllFromProgramming.cs" />
-    <Compile Include="Hapcan\Messages\MsgBase.cs" />
+    <Compile Include="Flows\ScanForInterface.cs" />
+    <Compile Include="Flows\ScanForNodes.cs" />
+    <Compile Include="General\HapcanConnection.cs" />
+    <Compile Include="General\HapcanNode.cs" />
+    <Compile Include="General\HapcanTimer.cs" />
+    <Compile Include="Messages\Interface\IntMsg020_ExitInterfaceFromProgramming.cs" />
+    <Compile Include="Messages\Interface\IntMsg104_HardwareTypeToInterface.cs" />
+    <Compile Include="Messages\Interface\IntMsg104_HardwareTypeResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg020_ExitNodeFromProgramming.cs" />
+    <Compile Include="Messages\Canbus\System\Msg040_ProgrammingData.cs" />
+    <Compile Include="Messages\Canbus\System\Msg030_ProgrammingAddress.cs" />
+    <Compile Include="Messages\Canbus\System\Msg100_EnterProgramming.cs" />
+    <Compile Include="Messages\Canbus\System\Msg101_RebootGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg102_RebootNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg0F0_ProgrammingError.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10A_ControlToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg114_HealthResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg112_UptimeResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10F_ProcessorIdResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10D_DescriptionResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10B_VoltageResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg115_HealthToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg114_HealthToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg113_UptimeToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg112_UptimeToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg111_ProcessorIdToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10F_ProcessorIdToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10E_DescriptionToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10D_DescritionToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10C_VoltageToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg10B_VoltageToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg108_StatusToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg107_SetDefaultIdToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg109_StatusToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg1F1_FirmwareError.cs" />
+    <Compile Include="Messages\Canbus\System\Msg105_FirmwareTypeResponse.cs" />
+    <Compile Include="Messages\Canbus\System\Msg106_FirmwareTypeToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg105_FirmwareTypeToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg104_HardwareTypeToNode.cs" />
+    <Compile Include="Messages\Canbus\System\Msg103_HardwareTypeToGroup.cs" />
+    <Compile Include="Messages\Canbus\System\Msg103_HardwareTypeResponse.cs" />
+    <Compile Include="Messages\Canbus\Device\Msg300_Rtc.cs" />
+    <Compile Include="Messages\HapcanMessages.cs" />
+    <Compile Include="Messages\Canbus\Device\Msg302_Relay.cs" />
+    <Compile Include="Messages\Canbus\Device\Msg301_Button.cs" />
+    <Compile Include="Messages\Canbus\Device\Msg304_Temperature.cs" />
+    <Compile Include="Messages\Canbus\System\Msg010_ExitAllFromProgramming.cs" />
+    <Compile Include="Messages\Canbus\MsgBase.cs" />
+    <Compile Include="Messages\Interface\IntMsg106_FirmwareTypeToInterface.cs" />
+    <Compile Include="Messages\Interface\IntMsg106_FirmwareTypeResponse.cs" />
+    <Compile Include="Messages\Interface\IntMsg10C_VoltageToInterface.cs" />
+    <Compile Include="Messages\Interface\IntMsg10C_VoltageResponse.cs" />
+    <Compile Include="Messages\Interface\IntMsg10E_DescriptionResponse.cs" />
+    <Compile Include="Messages\Interface\IntMsg10E_DescriptionToInterface.cs" />
+    <Compile Include="Messages\Interface\IntMsg1F1_FirmwareError.cs" />
     <Compile Include="Other\Logger.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Other\PropertyComparer.cs" />
@@ -124,6 +136,12 @@
     </Compile>
     <Compile Include="UI\FormLogs.Designer.cs">
       <DependentUpon>FormLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FormProgressReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormProgressReport.Designer.cs">
+      <DependentUpon>FormProgressReport.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FormSettings.cs">
       <SubType>Form</SubType>
@@ -160,6 +178,9 @@
     <EmbeddedResource Include="UI\FormLogs.resx">
       <DependentUpon>FormLogs.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormProgressReport.resx">
+      <DependentUpon>FormProgressReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,8 +206,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Hapcan\HapcanFrame.cs" />
-    <Compile Include="Hapcan\HapcanFrameList.cs" />
+    <Compile Include="General\HapcanFrame.cs" />
+    <Compile Include="General\HapcanList.cs" />
     <None Include="Properties\DataSources\Hapcan.Frame.datasource" />
     <None Include="Properties\DataSources\Hapcan.HapcanFrame.datasource" />
     <None Include="Properties\DataSources\Hapcan.Programmer.Hapcan.HapcanFrame.datasource" />
