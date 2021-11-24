@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public partial class FormAbout : Form
     {

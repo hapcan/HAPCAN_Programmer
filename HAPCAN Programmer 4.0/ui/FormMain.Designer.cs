@@ -1,5 +1,5 @@
 ﻿
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     partial class FormMain
     {
@@ -31,16 +31,15 @@ namespace Hapcan.Programmer
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panelTop = new System.Windows.Forms.Panel();
-            this.btnMenu = new System.Windows.Forms.Button();
             this.btnMin = new System.Windows.Forms.Button();
             this.btnMax = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.picLogo = new System.Windows.Forms.PictureBox();
+            this.btnMenu = new System.Windows.Forms.Button();
             this.panelMenu = new System.Windows.Forms.Panel();
             this.checkBoxLogs = new System.Windows.Forms.CheckBox();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.panelPointer = new System.Windows.Forms.Panel();
             this.btnMonitor = new System.Windows.Forms.Button();
             this.btnNodes = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
@@ -49,6 +48,8 @@ namespace Hapcan.Programmer
             this.panel1 = new System.Windows.Forms.Panel();
             this.picResizer = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.panelPointer = new System.Windows.Forms.Panel();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.panelMenu.SuspendLayout();
@@ -62,7 +63,6 @@ namespace Hapcan.Programmer
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panelTop.Controls.Add(this.btnMenu);
             this.panelTop.Controls.Add(this.btnMin);
             this.panelTop.Controls.Add(this.btnMax);
             this.panelTop.Controls.Add(this.btnExit);
@@ -73,20 +73,6 @@ namespace Hapcan.Programmer
             this.panelTop.Size = new System.Drawing.Size(1200, 50);
             this.panelTop.TabIndex = 0;
             this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTop_MouseDown);
-            // 
-            // btnMenu
-            // 
-            this.btnMenu.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMenu.BackgroundImage")));
-            this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnMenu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMenu.FlatAppearance.BorderSize = 0;
-            this.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMenu.Location = new System.Drawing.Point(14, 9);
-            this.btnMenu.Name = "btnMenu";
-            this.btnMenu.Size = new System.Drawing.Size(32, 32);
-            this.btnMenu.TabIndex = 3;
-            this.btnMenu.UseVisualStyleBackColor = true;
-            this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
             // 
             // btnMin
             // 
@@ -140,7 +126,7 @@ namespace Hapcan.Programmer
             // 
             this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLogo.Image = ((System.Drawing.Image)(resources.GetObject("picLogo.Image")));
-            this.picLogo.Location = new System.Drawing.Point(65, 9);
+            this.picLogo.Location = new System.Drawing.Point(9, 9);
             this.picLogo.Name = "picLogo";
             this.picLogo.Size = new System.Drawing.Size(119, 31);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -148,14 +134,32 @@ namespace Hapcan.Programmer
             this.picLogo.TabStop = false;
             this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
             // 
+            // btnMenu
+            // 
+            this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnMenu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMenu.FlatAppearance.BorderSize = 0;
+            this.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenu.Image = ((System.Drawing.Image)(resources.GetObject("btnMenu.Image")));
+            this.btnMenu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMenu.Location = new System.Drawing.Point(0, 0);
+            this.btnMenu.Name = "btnMenu";
+            this.btnMenu.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.btnMenu.Size = new System.Drawing.Size(180, 50);
+            this.btnMenu.TabIndex = 3;
+            this.btnMenu.UseVisualStyleBackColor = true;
+            this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
+            // 
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(0)))));
+            this.panelMenu.Controls.Add(this.panelPointer);
+            this.panelMenu.Controls.Add(this.btnMenu);
             this.panelMenu.Controls.Add(this.checkBoxLogs);
             this.panelMenu.Controls.Add(this.btnSettings);
             this.panelMenu.Controls.Add(this.btnAbout);
-            this.panelMenu.Controls.Add(this.panelPointer);
             this.panelMenu.Controls.Add(this.btnMonitor);
+            this.panelMenu.Controls.Add(this.btnConnect);
             this.panelMenu.Controls.Add(this.btnNodes);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 50);
@@ -173,10 +177,10 @@ namespace Hapcan.Programmer
             this.checkBoxLogs.ForeColor = System.Drawing.SystemColors.Control;
             this.checkBoxLogs.Image = ((System.Drawing.Image)(resources.GetObject("checkBoxLogs.Image")));
             this.checkBoxLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.checkBoxLogs.Location = new System.Drawing.Point(0, 200);
+            this.checkBoxLogs.Location = new System.Drawing.Point(0, 250);
             this.checkBoxLogs.Name = "checkBoxLogs";
             this.checkBoxLogs.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.checkBoxLogs.Size = new System.Drawing.Size(200, 50);
+            this.checkBoxLogs.Size = new System.Drawing.Size(180, 50);
             this.checkBoxLogs.TabIndex = 10;
             this.checkBoxLogs.Text = "  Logs";
             this.checkBoxLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -192,10 +196,10 @@ namespace Hapcan.Programmer
             this.btnSettings.ForeColor = System.Drawing.SystemColors.Control;
             this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSettings.Location = new System.Drawing.Point(0, 150);
+            this.btnSettings.Location = new System.Drawing.Point(0, 200);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.btnSettings.Size = new System.Drawing.Size(200, 50);
+            this.btnSettings.Size = new System.Drawing.Size(180, 50);
             this.btnSettings.TabIndex = 8;
             this.btnSettings.Text = "  Settings";
             this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -212,25 +216,16 @@ namespace Hapcan.Programmer
             this.btnAbout.ForeColor = System.Drawing.SystemColors.Control;
             this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
             this.btnAbout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbout.Location = new System.Drawing.Point(0, 250);
+            this.btnAbout.Location = new System.Drawing.Point(0, 300);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.btnAbout.Size = new System.Drawing.Size(200, 50);
+            this.btnAbout.Size = new System.Drawing.Size(180, 50);
             this.btnAbout.TabIndex = 7;
             this.btnAbout.Text = "  About";
             this.btnAbout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
-            // panelPointer
-            // 
-            this.panelPointer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panelPointer.Location = new System.Drawing.Point(0, 50);
-            this.panelPointer.Name = "panelPointer";
-            this.panelPointer.Size = new System.Drawing.Size(10, 50);
-            this.panelPointer.TabIndex = 6;
-            this.panelPointer.Visible = false;
             // 
             // btnMonitor
             // 
@@ -241,10 +236,10 @@ namespace Hapcan.Programmer
             this.btnMonitor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnMonitor.Image = ((System.Drawing.Image)(resources.GetObject("btnMonitor.Image")));
             this.btnMonitor.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitor.Location = new System.Drawing.Point(0, 100);
+            this.btnMonitor.Location = new System.Drawing.Point(0, 150);
             this.btnMonitor.Name = "btnMonitor";
             this.btnMonitor.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.btnMonitor.Size = new System.Drawing.Size(200, 50);
+            this.btnMonitor.Size = new System.Drawing.Size(180, 50);
             this.btnMonitor.TabIndex = 5;
             this.btnMonitor.Text = "  Monitor";
             this.btnMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -261,10 +256,10 @@ namespace Hapcan.Programmer
             this.btnNodes.ForeColor = System.Drawing.SystemColors.Control;
             this.btnNodes.Image = ((System.Drawing.Image)(resources.GetObject("btnNodes.Image")));
             this.btnNodes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNodes.Location = new System.Drawing.Point(0, 50);
+            this.btnNodes.Location = new System.Drawing.Point(0, 100);
             this.btnNodes.Name = "btnNodes";
             this.btnNodes.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.btnNodes.Size = new System.Drawing.Size(200, 50);
+            this.btnNodes.Size = new System.Drawing.Size(180, 50);
             this.btnNodes.TabIndex = 4;
             this.btnNodes.Text = "  Nodes";
             this.btnNodes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -353,6 +348,35 @@ namespace Hapcan.Programmer
             this.splitContainer1.SplitterDistance = 322;
             this.splitContainer1.TabIndex = 5;
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConnect.FlatAppearance.BorderSize = 0;
+            this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConnect.ForeColor = System.Drawing.SystemColors.Control;
+            this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
+            this.btnConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConnect.Location = new System.Drawing.Point(0, 50);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.btnConnect.Size = new System.Drawing.Size(180, 50);
+            this.btnConnect.TabIndex = 4;
+            this.btnConnect.Text = "  Connect";
+            this.btnConnect.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // panelPointer
+            // 
+            this.panelPointer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.panelPointer.Location = new System.Drawing.Point(0, 100);
+            this.panelPointer.Name = "panelPointer";
+            this.panelPointer.Size = new System.Drawing.Size(10, 50);
+            this.panelPointer.TabIndex = 11;
+            this.panelPointer.Visible = false;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -392,11 +416,11 @@ namespace Hapcan.Programmer
         private System.Windows.Forms.Button btnMin;
         private System.Windows.Forms.Button btnMax;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnNodes;
         private System.Windows.Forms.Button btnMenu;
         private System.Windows.Forms.Button btnMonitor;
         private System.Windows.Forms.Panel panelBottom;
-        private System.Windows.Forms.Panel panelPointer;
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -405,6 +429,7 @@ namespace Hapcan.Programmer
         private System.Windows.Forms.PictureBox picResizer;
         private System.Windows.Forms.TextBox textBottom;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelPointer;
     }
 }
 

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public class FormBase : Form
     {

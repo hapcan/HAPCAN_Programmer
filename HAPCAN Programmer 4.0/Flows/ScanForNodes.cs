@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hapcan.Flows
@@ -15,7 +16,7 @@ namespace Hapcan.Flows
     public class ScanForNodes
     {
         //EVENTS
-        public event ScanForNodesEvent ScanForNodesProgressReport;          //progress event
+        public event ScanForNodesEvent ScanForNodesProgress;          //progress event
 
         readonly HapcanConnection _connection;
         readonly ConcurrentQueue<HapcanFrame> _queue;
@@ -25,7 +26,7 @@ namespace Hapcan.Flows
         int _responsetime;
         bool _calculateResponseTime = true;
 
-        public bool CancelScan { get; set; }
+
         public byte GroupFrom { get; set; }
         public byte GroupTo { get; set; }
         public byte ReportGroup { get; private set; }
@@ -49,9 +50,8 @@ namespace Hapcan.Flows
             _queue.Enqueue(frame);
         }
 
-        public async Task<List<HapcanNode>> StartAsync()
+        public async Task<List<HapcanNode>> StartAsync(CancellationTokenSource cts)
         {
-            CancelScan = false;
             //subscribe the event
             _connection.CanbusMessageReceived += OnMessageReceived;
 
@@ -68,12 +68,12 @@ namespace Hapcan.Flows
                     await VoltageRequest((byte)i);
                     await DescriptionRequest((byte)i);
                 }
-                if (CancelScan)
+                if (cts.Token.IsCancellationRequested)
                     break;
                 //update task progress data
                 ReportGroup = (byte)i;
                 ReportProgress = (byte)(i * 100 / (GroupTo - GroupFrom + 1));
-                ScanForNodesProgressReport?.Invoke(this);    //raise event
+                ScanForNodesProgress?.Invoke(this);    //raise event
             }
 
             //unsubscribe the event

@@ -54,6 +54,9 @@
     <ApplicationIcon>hapcan_programmer_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CircularProgressBar, Version=2.8.0.16, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>packages\CircularProgressBar.2.8.0.16\lib\net40\CircularProgressBar.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -65,6 +68,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Flows\ScanForInterface.cs" />
@@ -122,14 +128,23 @@
     <Compile Include="Messages\Interface\IntMsg10E_DescriptionResponse.cs" />
     <Compile Include="Messages\Interface\IntMsg10E_DescriptionToInterface.cs" />
     <Compile Include="Messages\Interface\IntMsg1F1_FirmwareError.cs" />
-    <Compile Include="Other\Logger.cs" />
+    <Compile Include="UI\FormScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Project.cs" />
-    <Compile Include="Other\PropertyComparer.cs" />
-    <Compile Include="Other\ProjectFile.cs" />
-    <Compile Include="Other\SortableBindingList.cs" />
+    <Compile Include="Utils\PropertyComparer.cs" />
+    <Compile Include="Utils\ProjectFile.cs" />
+    <Compile Include="Utils\SortableBindingList.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\FormBase.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormInformation.Designer.cs">
+      <DependentUpon>FormInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FormLogs.cs">
       <SubType>Form</SubType>
@@ -137,11 +152,11 @@
     <Compile Include="UI\FormLogs.Designer.cs">
       <DependentUpon>FormLogs.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FormProgressReport.cs">
+    <Compile Include="UI\FormProgress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FormProgressReport.Designer.cs">
-      <DependentUpon>FormProgressReport.cs</DependentUpon>
+    <Compile Include="UI\FormProgress.Designer.cs">
+      <DependentUpon>FormProgress.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FormSettings.cs">
       <SubType>Form</SubType>
@@ -175,11 +190,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UI\FormInformation.resx">
+      <DependentUpon>FormInformation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FormLogs.resx">
       <DependentUpon>FormLogs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormProgressReport.resx">
-      <DependentUpon>FormProgressReport.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FormProgress.resx">
+      <DependentUpon>FormProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormScan.resx">
+      <DependentUpon>FormScan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
@@ -208,6 +229,7 @@
     </Compile>
     <Compile Include="General\HapcanFrame.cs" />
     <Compile Include="General\HapcanList.cs" />
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\Hapcan.Frame.datasource" />
     <None Include="Properties\DataSources\Hapcan.HapcanFrame.datasource" />
     <None Include="Properties\DataSources\Hapcan.Programmer.Hapcan.HapcanFrame.datasource" />
@@ -226,6 +248,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="hapcan_programmer_icon.ico" />
+    <None Include="Resources\disc_32.png" />
+    <None Include="Resources\conn_32.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

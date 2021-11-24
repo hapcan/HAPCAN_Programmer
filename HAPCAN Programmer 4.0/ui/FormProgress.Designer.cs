@@ -29,15 +29,16 @@ namespace Hapcan.Programmer.UI
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProgressReport));
             this.panelTop = new System.Windows.Forms.Panel();
-            this.labelTop = new System.Windows.Forms.Label();
+            this.labelTitle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelProgressBase = new System.Windows.Forms.Panel();
             this.panelProgressValue = new System.Windows.Forms.Panel();
             this.labelProgress2 = new System.Windows.Forms.Label();
             this.labelProgress1 = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelInfo = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelProgressBase.SuspendLayout();
@@ -47,7 +48,7 @@ namespace Hapcan.Programmer.UI
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.Gray;
-            this.panelTop.Controls.Add(this.labelTop);
+            this.panelTop.Controls.Add(this.labelTitle);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
@@ -55,24 +56,24 @@ namespace Hapcan.Programmer.UI
             this.panelTop.TabIndex = 0;
             this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTop_MouseDown);
             // 
-            // labelTop
+            // labelTitle
             // 
-            this.labelTop.AutoSize = true;
-            this.labelTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTop.ForeColor = System.Drawing.Color.Silver;
-            this.labelTop.Location = new System.Drawing.Point(10, 6);
-            this.labelTop.Name = "labelTop";
-            this.labelTop.Size = new System.Drawing.Size(63, 16);
-            this.labelTop.TabIndex = 0;
-            this.labelTop.Text = "labelTop";
-            this.labelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.labelTop_MouseDown);
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.ForeColor = System.Drawing.Color.Silver;
+            this.labelTitle.Location = new System.Drawing.Point(10, 6);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(63, 16);
+            this.labelTitle.TabIndex = 0;
+            this.labelTitle.Text = "labelTitle";
+            this.labelTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.labelTop_MouseDown);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.panel1.Controls.Add(this.panelProgressBase);
             this.panel1.Controls.Add(this.buttonCancel);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.labelInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 30);
             this.panel1.Name = "panel1";
@@ -134,30 +135,29 @@ namespace Hapcan.Programmer.UI
             this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = false;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // label1
+            // labelInfo
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(12, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
+            this.labelInfo.AutoSize = true;
+            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInfo.ForeColor = System.Drawing.Color.White;
+            this.labelInfo.Location = new System.Drawing.Point(12, 50);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(54, 15);
+            this.labelInfo.TabIndex = 1;
+            this.labelInfo.Text = "labelInfo";
             // 
-            // FormReport
+            // FormProgressReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 110);
-            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FormReport";
-            this.ShowIcon = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormProgressReport";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormReport";
             this.panelTop.ResumeLayout(false);
@@ -174,12 +174,12 @@ namespace Hapcan.Programmer.UI
 
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panel1;
-        public System.Windows.Forms.Label labelTop;
         private System.Windows.Forms.Panel panelProgressBase;
         private System.Windows.Forms.Panel panelProgressValue;
         public System.Windows.Forms.Label labelProgress2;
         public System.Windows.Forms.Label labelProgress1;
-        public System.Windows.Forms.Label label1;
         public System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label labelTitle;
+        private System.Windows.Forms.Label labelInfo;
     }
 }

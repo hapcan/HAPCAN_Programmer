@@ -10,12 +10,20 @@ using System.Threading.Tasks;
 
 namespace Hapcan.Flows
 {
-    class ScanForInterface
+    //declare a delegate type for the event
+    public delegate void ScanForInterfaceEvent(ScanForInterface obj);
+
+    public class ScanForInterface
     {
+        //EVENTS
+        public event ScanForInterfaceEvent ScanForInterfaceProgressReport;          //progress event
+
         readonly HapcanConnection _connection;
         readonly ConcurrentQueue<HapcanFrame> _queue;
         int _responsetime;
         bool _calculateResponseTime = true;
+
+        public bool ReportProgress { get; private set; }
 
         public ScanForInterface(HapcanConnection conn)
         {
@@ -45,10 +53,17 @@ namespace Hapcan.Flows
                 await FirmwareTypeRequest(node);
                 await VoltageRequest(node);
                 await DescriptionRequest(node);
+                ReportProgress = true;
             }        
+            else
+                ReportProgress = false;
 
             //unsubscribe the event
             _connection.InterfaceMessageReceived -= OnInterfaceMessageReceived;
+
+            //raise event
+            ScanForInterfaceProgressReport?.Invoke(this);    
+
             return node;
         }
 

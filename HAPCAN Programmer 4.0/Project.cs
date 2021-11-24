@@ -1,5 +1,5 @@
-﻿using Hapcan.General;
-using Hapcan.Messages;
+﻿using Hapcan.Flows;
+using Hapcan.General;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +24,7 @@ namespace Hapcan.Programmer
 
         [XmlIgnore]
         public HapcanList<HapcanFrame> FrameList { get; set; }
+
         [XmlIgnore]
         public string ProjectFilePath { get; set; }
 
@@ -75,6 +76,25 @@ namespace Hapcan.Programmer
             return res;
         }
 
+        //connect to interface
+        public async Task ConnectToInterface()
+        {
+            await this.Connection.ConnectAsync();
+
+            //start scanning for interface
+            var scanInt = new ScanForInterface(this.Connection);
+            var _interfaceNode = await scanInt.StartAsync();
+            if (_interfaceNode == null)
+            {
+                var msg = "Scanning for interface failed.";
+                Logger.Log("Nodes", msg);
+                return;
+            }
+            this.NodeList.Clear();
+            this.NodeList.Add(_interfaceNode);
+
+        }
+
         //subscribe to its message receive event
         public void SubscribeEvents()
         {
@@ -83,18 +103,27 @@ namespace Hapcan.Programmer
             conn.InterfaceMessageReceived += OnMessageReceived;
             conn.MessageSent += OnMessageSent;
             conn.ConnectionError += OnConnectionError;
+            conn.ConnectionConnecting += OnConnectionConnecting;
             conn.ConnectionConnected += OnConnectionConnected;
             conn.ConnectionDisconnected += OnConnectionDisconnected;
-
         }
-
         public void OnConnectionDisconnected(HapcanConnection conn)
         {
             Logger.Log("Connection info", "Connection closed.");
         }
+        public void OnConnectionConnecting(HapcanConnection conn)
+        {
+            if (conn.Interface == HapcanConnection.InterfaceType.Ethernet)
+                Logger.Log("Connection info", "Connecting to " + conn.IP + ":" + conn.Port);
+            else
+                Logger.Log("Connection info", "Connecting to COM " + conn.Com);
+        }
         public void OnConnectionConnected(HapcanConnection conn)
         {
-            Logger.Log("Connection info", "Connected to " + conn.IP + ":" + conn.Port);
+            if (conn.Interface == HapcanConnection.InterfaceType.Ethernet)
+                Logger.Log("Connection info", "Connected to " + conn.IP + ":" + conn.Port);
+            else
+                Logger.Log("Connection info", "Connected to COM " + conn.Com);
         }
         //interface - received
         private void OnMessageReceived(HapcanFrame frame)

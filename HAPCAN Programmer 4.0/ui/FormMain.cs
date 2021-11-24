@@ -1,9 +1,12 @@
 ﻿using Hapcan.General;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public partial class FormMain : FormBase
     {
@@ -15,11 +18,10 @@ namespace Hapcan.Programmer
             Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "HAPCAN", Application.ProductName);
 
         Form _activeForm;
+        FormInformation _infoForm;
 
         public FormMain()
         {
-            Logger.LogFilePath = Path.Combine(_appDataPath, "Logs", Application.ProductName + ".log");
-            Logger.Log("Application info", "Application started");
             InitializeComponent();
         }
         private async void FormMain_Load(object sender, EventArgs e)
@@ -30,11 +32,15 @@ namespace Hapcan.Programmer
             _project = await project.OpenAsync(projectFilePath).ConfigureAwait(true);
             _project.ProjectFilePath = projectFilePath;
             _project.SubscribeEvents();
-            //get project settings
+            //set logger
             Logger.LogTimeFormat = _project.Settings.TimeFormat;
+            Logger.LogFilePath = Path.Combine(_appDataPath, "Logs", Application.ProductName + ".log");
+            Logger.Log("Application info", "Application started");
             //subscribe to connection event
-            _project.Connection.ConnectionConnected += OnConnectionChanged;
-            _project.Connection.ConnectionDisconnected += OnConnectionChanged;
+            _project.Connection.ConnectionConnecting += OnConnectionConnecting;
+            _project.Connection.ConnectionConnected += OnConnectionConnected;
+            _project.Connection.ConnectionDisconnected += OnConnectionDisconnected;
+            _project.Connection.ConnectionError += OnConnectionError;
         }
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -100,12 +106,20 @@ namespace Hapcan.Programmer
                 Logger.Log("Application error", "Loading form " + frm.Text + " error: " + ex.ToString());
             }
         }
+        //Menu
         private void btnMenu_Click(object sender, EventArgs e)
         {
             if (panelMenu.Width == 60)
                 panelMenu.Width = 180;
             else
                 panelMenu.Width = 60;
+        }
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (!_project.Connection.IsConnected())
+                _ = _project.Connection.ConnectAsync();
+            else
+                _project.Connection.Disconnect();
         }
 
         private void btnNodes_Click(object sender, EventArgs e)
@@ -150,22 +164,71 @@ namespace Hapcan.Programmer
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.hapcan.com");
+            System.Diagnostics.Process.Start("https://www.hapcan.com");
         }
-        private void OnConnectionChanged(HapcanConnection conn)
+
+        //update UI when connection event
+        private void OnConnectionConnecting(HapcanConnection conn)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => OnConnectionChanged(conn)));
+                this.Invoke(new Action(() => OnConnectionConnecting(conn)));
             }
             else
             {
-                if (conn.IsConnected())
-                    textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
-                else
-                    textBottom.Text = "Not connected";
+                //info form
+                if (_infoForm != null)
+                    _infoForm.Close();
+                _infoForm = new FormInformation();
+                _infoForm.Show(this);
+                _infoForm.Display("Connecting...", "", true);
             }
         }
+        private void OnConnectionError (Exception ex)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnConnectionError(ex)));
+            }
+            else
+            {
+                //info form
+                _infoForm.Display("Not connected", ex.Message, false);
+            }
+        }
+        private void OnConnectionConnected(HapcanConnection conn)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnConnectionConnected(conn)));
+            }
+            else
+            {
+                btnConnect.Text = "  Disconnect";
+                btnConnect.BackColor = Color.FromArgb(255,169,128);
+                btnConnect.Image = global::Hapcan.Properties.Resources.conn_32;
+                textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
+                //info form
+                _infoForm.Display("Connected", "", false);
+                Thread.Sleep(1000);
+                _infoForm.Dispose();
+            }
+        }
+        private void OnConnectionDisconnected(HapcanConnection conn)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnConnectionDisconnected(conn)));
+            }
+            else
+            {
+                btnConnect.Text = "  Connect";
+                btnConnect.BackColor = Color.FromArgb(255,80,0);
+                btnConnect.Image = global::Hapcan.Properties.Resources.disc_32;
+                textBottom.Text = "Not connected";
+            }
+        }
+
 
     }
 }

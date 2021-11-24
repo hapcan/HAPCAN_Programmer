@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public partial class FormMonitor : Form
     {
@@ -22,6 +22,20 @@ namespace Hapcan.Programmer
 
         private void FormMonitor_Load(object sender, EventArgs e)
         {
+            //load in 100ms
+            var timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += OnLoadTimer;
+            timer.Start();
+        }
+
+        private void OnLoadTimer(object sender, EventArgs e)
+        {
+            //dispose timer
+            var timer = (Timer)sender;
+            timer.Dispose();
+
+            //fill controls
             comboBoxFrame.SelectedIndex = 7;
             //node id
             for (int i = 0; i < 256; i++)
@@ -31,11 +45,12 @@ namespace Hapcan.Programmer
             }
             comboBoxNode.SelectedIndex = 0;
             comboBoxGroup.SelectedIndex = 1;
-            //load frames
-            this.UpdateGrid();
             //subscribe the event
             _monitorList.ListChanged += this.OnListChanged;
+            //load frames
+            this.UpdateGrid();
         }
+
         private void FormMonitor_FormClosing(object sender, FormClosingEventArgs e)
         {
             //unsubscribe the event
@@ -106,7 +121,7 @@ namespace Hapcan.Programmer
             //grid
             dataGridView1.Columns["FrameSourceText"].HeaderText = "Source";
             dataGridView1.Columns["FrameDataText"].HeaderText = "Data";
-            dataGridView1.Columns[1].DefaultCellStyle.Format = _project.Settings.TimeFormat;
+            dataGridView1.Columns["Time"].DefaultCellStyle.Format = _project.Settings.TimeFormat;
             
             //select last row
             if (dataGridView1.RowCount > 0)

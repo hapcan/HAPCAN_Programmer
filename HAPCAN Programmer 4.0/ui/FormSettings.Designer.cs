@@ -1,5 +1,5 @@
 ﻿
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     partial class FormSettings
     {
@@ -56,8 +56,6 @@ namespace Hapcan.Programmer
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.btnDisconnect = new System.Windows.Forms.Button();
             this.panel10 = new System.Windows.Forms.Panel();
             this.richTextBox5 = new System.Windows.Forms.RichTextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -88,7 +86,7 @@ namespace Hapcan.Programmer
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(27, 330);
+            this.label4.Location = new System.Drawing.Point(27, 316);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(150, 23);
             this.label4.TabIndex = 23;
@@ -248,7 +246,7 @@ namespace Hapcan.Programmer
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.comboBoxGroupFrom);
-            this.panel2.Location = new System.Drawing.Point(28, 371);
+            this.panel2.Location = new System.Drawing.Point(28, 357);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(322, 100);
             this.panel2.TabIndex = 27;
@@ -329,7 +327,7 @@ namespace Hapcan.Programmer
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel4.Controls.Add(this.richTextBox2);
-            this.panel4.Location = new System.Drawing.Point(373, 371);
+            this.panel4.Location = new System.Drawing.Point(373, 357);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(10);
             this.panel4.Size = new System.Drawing.Size(323, 100);
@@ -394,40 +392,6 @@ namespace Hapcan.Programmer
             this.richTextBox4.Text = "For the Ethernet interface enter its connection port number. The default one is 1" +
     "001.";
             // 
-            // btnConnect
-            // 
-            this.btnConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
-            this.btnConnect.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConnect.FlatAppearance.BorderSize = 0;
-            this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConnect.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
-            this.btnConnect.Location = new System.Drawing.Point(256, 273);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(94, 30);
-            this.btnConnect.TabIndex = 30;
-            this.btnConnect.Text = " Connect";
-            this.btnConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnConnect.UseVisualStyleBackColor = false;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-            // 
-            // btnDisconnect
-            // 
-            this.btnDisconnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
-            this.btnDisconnect.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDisconnect.FlatAppearance.BorderSize = 0;
-            this.btnDisconnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDisconnect.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnDisconnect.Image = ((System.Drawing.Image)(resources.GetObject("btnDisconnect.Image")));
-            this.btnDisconnect.Location = new System.Drawing.Point(156, 273);
-            this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(94, 30);
-            this.btnDisconnect.TabIndex = 30;
-            this.btnDisconnect.Text = " Disconnect";
-            this.btnDisconnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDisconnect.UseVisualStyleBackColor = false;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
-            // 
             // panel10
             // 
             this.panel10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
@@ -476,8 +440,6 @@ namespace Hapcan.Programmer
             this.ClientSize = new System.Drawing.Size(1000, 500);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.panel10);
-            this.Controls.Add(this.btnDisconnect);
-            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel5);
@@ -533,8 +495,6 @@ namespace Hapcan.Programmer
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.RichTextBox richTextBox4;
-        private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.RichTextBox richTextBox5;

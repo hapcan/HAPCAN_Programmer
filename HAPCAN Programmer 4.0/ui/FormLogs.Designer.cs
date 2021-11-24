@@ -1,5 +1,5 @@
 ﻿
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     partial class FormLogs
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -14,7 +15,7 @@ namespace Hapcan.General
     public class HapcanConnection
     {
         //FIELDS
-        byte[] _buffer;
+     //   byte[] _buffer;
         Socket _socket;
         bool _activeReceiving;
 
@@ -22,6 +23,7 @@ namespace Hapcan.General
         public event ConnectionFrameEvent InterfaceMessageReceived; //message from inteface received event
         public event ConnectionFrameEvent CanbusMessageReceived;    //message from canbus received event
         public event ConnectionFrameEvent MessageSent;              //message sent event
+        public event ConnectionEvent ConnectionConnecting;          //connection starting
         public event ConnectionEvent ConnectionConnected;           //connection connected
         public event ConnectionEvent ConnectionDisconnected;        //connection disconnected
         public event ConnectionErrorEvent ConnectionError;          //connection error occurred
@@ -122,6 +124,9 @@ namespace Hapcan.General
             //already connected?
             if (_socket != null && _socket.Connected == true)
                 return true;
+            
+            //connection starting 
+            ConnectionConnecting?.Invoke(this);         //raise event
 
             //make sure previous task is terminated
             _activeReceiving = false;
@@ -136,8 +141,10 @@ namespace Hapcan.General
                     //connect socket
                     _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     await _socket.ConnectAsync(ethModule).ConfigureAwait(continueOnCapturedContext: false);
-                    //start
-                    _ = Task.Run(() => StartReceivingTask()).ConfigureAwait(false);
+                    //start receiving in new thread
+                    var receiveThread = new Thread(StartReceiving);
+                    receiveThread.IsBackground = true;
+                    receiveThread.Start();
                     //update status
                     ConnectionConnected?.Invoke(this);    //raise event
                     return true;
@@ -145,6 +152,7 @@ namespace Hapcan.General
                 else if (this.Interface == InterfaceType.RS232)
                 {
                     ConnectionError?.Invoke(new Exception("RS232 interface not implemented yet."));    //raise event
+                    Disconnect();                       //update status
                     return false;
                 }
                 else { return false; }
@@ -161,8 +169,10 @@ namespace Hapcan.General
         /// Starts permanent receiving messages from the HAPCAN interface.
         /// </summary>
         /// <returns>Task</returns>
-        private async Task StartReceivingTask()
+        private void StartReceiving()
         {
+            byte[] rxBuffer;
+
             //allow receiving
             _activeReceiving = true;
 
@@ -174,26 +184,26 @@ namespace Hapcan.General
                     //interface 13-byte frame
                     if (_socket.Available >= 13)
                     {
-                        _buffer = new byte[13];
-                        _socket.Receive(_buffer, 0, 13, SocketFlags.None);
-                        if (_buffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
-                            _buffer[12] == (byte)HapcanFrame.ByteType.StopByte &&
-                            _buffer[11] == GetChecksum(_buffer))
+                        rxBuffer = new byte[13];
+                        _socket.Receive(rxBuffer, 0, 13, SocketFlags.None);
+                        if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
+                            rxBuffer[12] == (byte)HapcanFrame.ByteType.StopByte &&
+                            rxBuffer[11] == GetChecksum(rxBuffer))
                         { 
-                            var buffer = RemoveStartStopChecksum(_buffer);      //remove start, stop and checksum bytes
+                            var buffer = RemoveStartStopChecksum(rxBuffer);      //remove start, stop and checksum bytes
                             var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Interface);
                             InterfaceMessageReceived?.Invoke(frame);            //raise event
                         }
                         //canbus 15-byte frame
                         else if (_socket.Available >= 2)
                         {
-                            Array.Resize(ref _buffer, 15);
-                            _socket.Receive(_buffer, 13, 2, SocketFlags.None);  //read additional 2 bytes
-                            if (_buffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
-                                _buffer[14] == (byte)HapcanFrame.ByteType.StopByte &&
-                                _buffer[13] == GetChecksum(_buffer))
+                            Array.Resize(ref rxBuffer, 15);
+                            _socket.Receive(rxBuffer, 13, 2, SocketFlags.None);  //read additional 2 bytes
+                            if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
+                                rxBuffer[14] == (byte)HapcanFrame.ByteType.StopByte &&
+                                rxBuffer[13] == GetChecksum(rxBuffer))
                             {
-                                var buffer = RemoveStartStopChecksum(_buffer);  //remove start, stop and checksum bytes
+                                var buffer = RemoveStartStopChecksum(rxBuffer);  //remove start, stop and checksum bytes
                                 var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Canbus);
                                 CanbusMessageReceived?.Invoke(frame);           //raise event
                             }
@@ -201,13 +211,13 @@ namespace Hapcan.General
                         else
                         {
                             //read as long as it gets stop byte at the end of frame
-                            while (_socket.Available > 0 && _buffer[0] != (byte)HapcanFrame.ByteType.StopByte)
-                                _socket.Receive(_buffer, 1, SocketFlags.None);
+                            while (_socket.Available > 0 && rxBuffer[0] != (byte)HapcanFrame.ByteType.StopByte)
+                                _socket.Receive(rxBuffer, 1, SocketFlags.None);
                         }
                     }
                     else
                         //offload processor a bit
-                        await Task.Delay(1).ConfigureAwait(continueOnCapturedContext: false);
+                        Thread.Sleep(1);
                 }
                 catch (Exception ex)
                 {

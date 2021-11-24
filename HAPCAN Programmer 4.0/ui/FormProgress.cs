@@ -18,10 +18,34 @@ namespace Hapcan.Programmer.UI
         {
             InitializeComponent();
             Text = Application.ProductName;
-            label1.Text = "";
-            labelTop.Text = "";
+            labelInfo.Text = "";
+            labelTitle.Text = "";
+            Progress = 0;
         }
-
+        public string Title
+        {
+            get
+            {
+                return labelTitle.Text; 
+            }
+            set
+            {
+                labelTitle.Text = value;
+                this.Refresh();
+            }
+        }
+        public string Info
+        {
+            get
+            {
+                return labelInfo.Text;
+            }
+            set
+            {
+                labelInfo.Text = value;
+                this.Refresh();
+            }
+        }
         public int Progress
         {
             get
@@ -37,10 +61,6 @@ namespace Hapcan.Programmer.UI
             }
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
-        }
 
 
         //move form
@@ -53,7 +73,6 @@ namespace Hapcan.Programmer.UI
         {
             base.FormMove_MouseDown(sender, e);
         }
-
 
     }
 }

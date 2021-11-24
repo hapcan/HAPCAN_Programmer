@@ -1,5 +1,5 @@
 ﻿
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     partial class FormNodes
     {
@@ -195,7 +195,6 @@ namespace Hapcan.Programmer
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView1.Size = new System.Drawing.Size(800, 407);
             this.dataGridView1.TabIndex = 6;
-            this.dataGridView1.VirtualMode = true;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
             // textBottom

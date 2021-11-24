@@ -1,14 +1,10 @@
-﻿using Hapcan.Flows;
-using Hapcan.General;
-using Hapcan.Messages;
-using Hapcan.Programmer.UI;
+﻿using Hapcan.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public partial class FormNodes : Form
     {
@@ -23,52 +19,41 @@ namespace Hapcan.Programmer
         }
         private void FormNodes_Load(object sender, EventArgs e)
         {
+            //load in 100ms
+            var timer = new System.Windows.Forms.Timer();
+            timer.Interval = 100;
+            timer.Tick += OnLoadTimer;
+            timer.Start();
+        }
+
+        private void OnLoadTimer(object sender, EventArgs e)
+        {
+            //dispose timer
+            var timer = (System.Windows.Forms.Timer)sender;
+            timer.Dispose();
+
             //show project nodes
             UpdateGrid(_project.NodeList, string.Empty);
         }
 
+
         private async void btnScan_Click(object sender, EventArgs e)
         {
-            //start scanning for interface
-            var scanInt = new ScanForInterface(_project.Connection);
-            _interfaceNode = await scanInt.StartAsync();
-            if (_interfaceNode == null)
-            {
-                var msg = "Scanning for interface failed.";
-                MessageBox.Show(msg);
-                Logger.Log("Nodes", msg);
-                return;
-            }
+            //clear grid
             _project.NodeList.Clear();
-            _project.NodeList.Add(_interfaceNode);
             UpdateGrid(_project.NodeList, string.Empty);
 
-            ScanForNodes();
+            //make sure there is connection
+            if (await _project.Connection.ConnectAsync() == false)
+                return;
+
+            //scan for nodes
+            var scan = new FormScan(this, _project);
+            scan.ShowDialog();
+            scan.Dispose();
         }
 
-        private void ScanForNodes()
-        {
-            //start scanning for nodes
-            var scan = new ScanForNodes(_project.Connection);
-            scan.ScanForNodesProgressReport += ProgressReport;              //subscribe to progress event
-            _ = scan.StartAsync();                                          //start scaning task
-
-            //show progress
-            _frmProgressReport = new FormProgressReport();
-            ProgressReport(scan);                                           //initialize values to display
-            _frmProgressReport.ShowDialog();
-
-            //wait for canceling or window closing
-            if (_frmProgressReport.DialogResult == DialogResult.Cancel)
-            {
-                scan.ScanForNodesProgressReport -= ProgressReport;          //unsubscribe progress event
-                scan.CancelScan = true;                                     //stop scanning task if was canceled                   
-                _project.NodeList = new List<HapcanNode>(scan.NodeList);    //set nodes to project
-                UpdateGrid(_project.NodeList, string.Empty);
-                _frmProgressReport.Dispose();
-            }
-        }
-        private void UpdateGrid(List<HapcanNode> list, string search)
+        internal void UpdateGrid(List<HapcanNode> list, string search)
         {
             if (list == null)
                 return;
@@ -84,8 +69,8 @@ namespace Hapcan.Programmer
                           o.FullFirmwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                           o.FullBootloaderVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                           o.ModuleVoltage.ToString("0.00 V").ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
-                          string.Format("{0:X8}h",o.SerialNumber).ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
-              
+                          string.Format("{0:X8}h", o.SerialNumber).ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
+
             //grid format
             dataGridView1.Columns["FullNodeGroupNumber"].HeaderText = "(Node,Group)";
             dataGridView1.Columns["SerialNumber"].HeaderText = "Serial number";
@@ -139,25 +124,7 @@ namespace Hapcan.Programmer
             }
         }
 
-        private void ProgressReport(ScanForNodes sfn)
-        {
-            _frmProgressReport.labelTop.Text = string.Format("Scanning for nodes in groups {0}-{1}. At the moment group {2}",
-                                    sfn.GroupFrom, sfn.GroupTo, sfn.ReportGroup);
-            _frmProgressReport.label1.Text = string.Format("Found {0} nodes", sfn.NodeList.Count);
-            _frmProgressReport.Progress = sfn.ReportProgress;
 
-            if (_frmProgressReport.Progress == 100)
-                _frmProgressReport.buttonCancel.Text = "Close";
-
-            //refresh only when new node
-            if (sfn.NodeList.Count != dataGridView1.RowCount)
-            {
-                //insert interface to list
-                if (sfn.NodeList.Contains(_interfaceNode) == false)
-                    sfn.NodeList.Insert(0, _interfaceNode);
-                UpdateGrid(sfn.NodeList, string.Empty);
-            }
-        }
 
         //Search box
         private void textBoxSearch_Enter(object sender, EventArgs e)

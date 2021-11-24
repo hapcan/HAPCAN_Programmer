@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Hapcan.Programmer
+namespace Hapcan.Programmer.UI
 {
     public partial class FormSettings : Form
     {
@@ -35,11 +35,6 @@ namespace Hapcan.Programmer
             }
             comboBoxGroupFrom.SelectedIndex = _project.Connection.GroupFrom - 1;
             comboBoxGroupTo.SelectedIndex = _project.Connection.GroupTo - 1;
-            //connected/disconnected
-            if (_project.Connection.IsConnected())
-                btnConnect.Enabled = false;
-            else
-                btnDisconnect.Enabled = false;
         }
         private void comboBoxIntType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -70,21 +65,6 @@ namespace Hapcan.Programmer
                 panelIntPort.BackColor = Color.Red;
             else
                 panelIntPort.BackColor = Color.FromArgb(225, 225, 225);
-        }
-
-
-        private void btnDisconnect_Click(object sender, EventArgs e)
-        {
-            btnDisconnect.Enabled = false;
-            btnConnect.Enabled = true;
-            _project.Connection.Disconnect();
-        }
-
-        private async void btnConnect_Click(object sender, EventArgs e)
-        {
-            btnDisconnect.Enabled = true;
-            btnConnect.Enabled = false;
-            await _project.Connection.ConnectAsync();
         }
 
         private async void btnSave_Click(object sender, EventArgs e)
