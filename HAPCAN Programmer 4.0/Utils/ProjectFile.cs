@@ -2,76 +2,74 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
-namespace Hapcan
+namespace Hapcan;
+
+public class ProjectFile<T>
 {
-    public class ProjectFile<T>
+    private static readonly object _lockproj = new object();
+
+    /// <summary>
+    /// Reads (xml deserializes) T type project from file.
+    /// </summary>
+    /// <param name="filename">Project file path.</param>
+    /// <returns>Task with project instance</returns>
+    public async Task<T> DeserializeAsync(string filepath)
     {
-        private static readonly object _lockproj = new object();
-
-        /// <summary>
-        /// Reads (xml deserializes) T type project from file.
-        /// </summary>
-        /// <param name="filename">Project file path.</param>
-        /// <returns>Task with project instance</returns>
-        public async Task<T> DeserializeAsync(string filepath)
-        {
-            return await Task.Run(
-                () =>
+        return await Task.Run(
+            () =>
+            {
+                lock (_lockproj)
                 {
-                    lock (_lockproj)
+                    T project = default(T);
+                    try
                     {
-                        T project = default(T);
-                        try
-                        {
-                            using (StreamReader sr = new StreamReader(filepath, Encoding.UTF8))
-                            {
-                                XmlSerializer ser = new XmlSerializer(typeof(T));
-                                project = (T)ser.Deserialize(sr);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("", ex);
-                        }
-                        return project;
+                        using var sr = new StreamReader(filepath, Encoding.UTF8);
+                        var ser = new XmlSerializer(typeof(T));
+                        project = (T)ser.Deserialize(sr);
                     }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("", ex);
+                    }
+                    return project;
                 }
-            );
-        }
+            }
+        );
+    }
 
-        /// <summary>
-        /// Saves (xml serializes) T type project into the file.
-        /// </summary>
-        /// <param name="project">T type project instance.</param>
-        /// <param name="filepath">Project file path.</param>
-        /// <returns>True if save was successful, otherwise false.</returns>
-        public async Task<bool> SerializeAsync(T project, string filepath)
-        {
-            return await Task.Run(
-                () =>
+    /// <summary>
+    /// Saves (xml serializes) T type project into the file.
+    /// </summary>
+    /// <param name="project">T type project instance.</param>
+    /// <param name="filepath">Project file path.</param>
+    /// <returns>True if save was successful, otherwise false.</returns>
+    public async Task<bool> SerializeAsync(T project, string filepath)
+    {
+        return await Task.Run(
+            () =>
+            {
+                lock (_lockproj)
                 {
-                    lock (_lockproj)
+                    var result = false;
+                    try
                     {
-                        var result = false;
-                        try
-                        {
-                            using (StreamWriter sw = new StreamWriter(filepath, false, Encoding.UTF8))
-                            {
-                                XmlSerializer ser = new XmlSerializer(typeof(T));
-                                ser.Serialize(sw, project);
-                            }
-                            result = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("", ex);
-                        }
-                        return result;
+                        var ser = new XmlSerializer(typeof(T));
+                        using var sw = new StreamWriter(filepath, false, Encoding.UTF8);
+                        using var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
+                        ser.Serialize(xw, project);
+
+                        result = true;
                     }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("", ex);
+                    }
+                    return result;
                 }
-            );
-        }
+            }
+        );
     }
 }

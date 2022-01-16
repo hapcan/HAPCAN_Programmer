@@ -15,13 +15,14 @@ namespace Hapcan.Messages
         }
         public Msg1F1_FirmwareError(HapcanNode node) : base(node)
         {
-            FirmwareFlags = node.FirmwareFlags;
-            FirmwareChecksum2 = node.FirmwareChecksum2;
-            FirmwareChecksum1 = node.FirmwareChecksum1;
-            FirmwareChecksum0 = node.FirmwareChecksum0;
+            FirmwareFlags = node.FirmwareError;
+            FirmwareChecksum2 = node.ApplicationType;               //checksum is written into apptype, appver, firmver bytes when firmware error
+            FirmwareChecksum1 = node.ApplicationVersion;
+            FirmwareChecksum0 = node.FirmwareVersion;
             BootloaderMajorVersion = node.BootloaderMajorVersion;
             BootloaderMinorVersion = node.BootloaderMinorVersion;
         }
+
         public byte FirmwareFlags { get; }
         public byte FirmwareChecksum2 { get; }
         public byte FirmwareChecksum1 { get; }
@@ -40,23 +41,22 @@ namespace Hapcan.Messages
             int chsum = FirmwareChecksum2 * 256 * 256 + FirmwareChecksum1 * 256 + FirmwareChecksum0;
             var desc = "unknown";
 
-            if ((FirmwareFlags & 0x04) == 0x04)                //bit <2> wrong checksum
+            if ((FirmwareFlags & 0x02) == 0x02)                //bit <1> no firmware - legacy
+            {
+                desc = "no firmware";
+            }
+            else if ((FirmwareFlags & 0x04) == 0x04)           //bit <2> wrong checksum
             {
                 if (chsum == 0x6F7020)
                     desc = "no firmware";
                 else
                     desc = string.Format("incorrect firmware checksum, expected checksum: 0x{0:X6}", chsum);
             }
-            if ((FirmwareFlags & 0x08) == 0x08)                //bit <3> wrong hardware
+            else if ((FirmwareFlags & 0x08) == 0x08)           //bit <3> wrong hardware
+            {
                 desc = "hardware mismatch - firmware for other hardware";
+            }
             return desc;
-        }
-
-        public string GetFullFirmwareVersion()
-        {
-            var error = GetFirmwareError();
-
-            return string.Format("Firmware error: {0}", error);
         }
     }
 }

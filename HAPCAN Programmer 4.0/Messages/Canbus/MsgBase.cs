@@ -5,24 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hapcan.Messages
+namespace Hapcan.Messages;
+
+class MsgBase
 {
-    class MsgBase
+    public MsgBase(HapcanFrame frame)
     {
-        public MsgBase(HapcanFrame frame)
-        {
-            NodeNumber = frame.Data[2];
-            GroupNumber = frame.Data[3];
-        }
-        public MsgBase(HapcanNode node)
-        {
-            NodeNumber = node.NodeNumber;
-            GroupNumber = node.GroupNumber;
-        }
-
-        public byte NodeNumber { get; }
-
-        public byte GroupNumber { get; }
+        NodeNumber = frame.Data[2];
+        GroupNumber = frame.Data[3];
+    }
+    public MsgBase(HapcanNode node)
+    {
+        NodeNumber = node.NodeNumber;
+        GroupNumber = node.GroupNumber;
     }
 
+    public byte NodeNumber { get; }
+
+    public byte GroupNumber { get; }
 }
+
+

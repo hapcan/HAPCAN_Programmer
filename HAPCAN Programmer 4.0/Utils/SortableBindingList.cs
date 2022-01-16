@@ -3,100 +3,99 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Hapcan
+namespace Hapcan;
+
+public class SortableBindingList<T> : BindingList<T>
 {
-    public class SortableBindingList<T> : BindingList<T>
+    private readonly Dictionary<Type, PropertyComparer<T>> comparers;
+    private bool isSorted;
+    private ListSortDirection listSortDirection;
+    private PropertyDescriptor propertyDescriptor;
+
+    public SortableBindingList()
+        : base(new List<T>())
     {
-        private readonly Dictionary<Type, PropertyComparer<T>> comparers;
-        private bool isSorted;
-        private ListSortDirection listSortDirection;
-        private PropertyDescriptor propertyDescriptor;
+        this.comparers = new Dictionary<Type, PropertyComparer<T>>();
+    }
 
-        public SortableBindingList()
-            : base(new List<T>())
+    public SortableBindingList(IEnumerable<T> enumeration)
+        : base(new List<T>(enumeration))
+    {
+        this.comparers = new Dictionary<Type, PropertyComparer<T>>();
+    }
+
+    protected override bool SupportsSortingCore
+    {
+        get { return true; }
+    }
+
+    protected override bool IsSortedCore
+    {
+        get { return this.isSorted; }
+    }
+
+    protected override PropertyDescriptor SortPropertyCore
+    {
+        get { return this.propertyDescriptor; }
+    }
+
+    protected override ListSortDirection SortDirectionCore
+    {
+        get { return this.listSortDirection; }
+    }
+
+    protected override bool SupportsSearchingCore
+    {
+        get { return true; }
+    }
+
+    protected override void ApplySortCore(PropertyDescriptor property, ListSortDirection direction)
+    {
+        List<T> itemsList = (List<T>)this.Items;
+
+        Type propertyType = property.PropertyType;
+        if (!this.comparers.TryGetValue(propertyType, out PropertyComparer<T> comparer))
         {
-            this.comparers = new Dictionary<Type, PropertyComparer<T>>();
+            comparer = new PropertyComparer<T>(property, direction);
+            this.comparers.Add(propertyType, comparer);
         }
 
-        public SortableBindingList(IEnumerable<T> enumeration)
-            : base(new List<T>(enumeration))
-        {
-            this.comparers = new Dictionary<Type, PropertyComparer<T>>();
-        }
+        comparer.SetPropertyAndDirection(property, direction);
+        itemsList.Sort(comparer);
 
-        protected override bool SupportsSortingCore
-        {
-            get { return true; }
-        }
+        this.propertyDescriptor = property;
+        this.listSortDirection = direction;
+        this.isSorted = true;
 
-        protected override bool IsSortedCore
-        {
-            get { return this.isSorted; }
-        }
+        this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+    }
 
-        protected override PropertyDescriptor SortPropertyCore
-        {
-            get { return this.propertyDescriptor; }
-        }
+    protected override void RemoveSortCore()
+    {
+        this.isSorted = false;
+        this.propertyDescriptor = base.SortPropertyCore;
+        this.listSortDirection = base.SortDirectionCore;
 
-        protected override ListSortDirection SortDirectionCore
-        {
-            get { return this.listSortDirection; }
-        }
+        this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+    }
 
-        protected override bool SupportsSearchingCore
+    protected override int FindCore(PropertyDescriptor property, object key)
+    {
+        int count = this.Count;
+        for (int i = 0; i < count; ++i)
         {
-            get { return true; }
-        }
-
-        protected override void ApplySortCore(PropertyDescriptor property, ListSortDirection direction)
-        {
-            List<T> itemsList = (List<T>)this.Items;
-
-            Type propertyType = property.PropertyType;
-            if (!this.comparers.TryGetValue(propertyType, out PropertyComparer<T> comparer))
+            T element = this[i];
+            if (property.GetValue(element).Equals(key))
             {
-                comparer = new PropertyComparer<T>(property, direction);
-                this.comparers.Add(propertyType, comparer);
+                return i;
             }
-
-            comparer.SetPropertyAndDirection(property, direction);
-            itemsList.Sort(comparer);
-
-            this.propertyDescriptor = property;
-            this.listSortDirection = direction;
-            this.isSorted = true;
-
-            this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
 
-        protected override void RemoveSortCore()
-        {
-            this.isSorted = false;
-            this.propertyDescriptor = base.SortPropertyCore;
-            this.listSortDirection = base.SortDirectionCore;
+        return -1;
+    }
 
-            this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
-        }
-
-        protected override int FindCore(PropertyDescriptor property, object key)
-        {
-            int count = this.Count;
-            for (int i = 0; i < count; ++i)
-            {
-                T element = this[i];
-                if (property.GetValue(element).Equals(key))
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        public static implicit operator SortableBindingList<T>(SortableBindingList<HapcanNode> v)
-        {
-            throw new NotImplementedException();
-        }
+    public static implicit operator SortableBindingList<T>(SortableBindingList<HapcanNode> v)
+    {
+        throw new NotImplementedException();
     }
 }

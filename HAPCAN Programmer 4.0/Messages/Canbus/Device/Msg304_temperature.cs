@@ -1,7 +1,7 @@
 ﻿using Hapcan.General;
 
-namespace Hapcan.Messages
-{
+namespace Hapcan.Messages;
+
     class Msg304_Temperature
     {
         private HapcanFrame _frame;
@@ -156,34 +156,33 @@ namespace Hapcan.Messages
                 return "Unknow state";
         }
     }
-    class Msg304_F0
+class Msg304_F0
+{
+    private HapcanFrame _frame;
+
+    public Msg304_F0(HapcanFrame frame)
     {
-        private HapcanFrame _frame;
+        _frame = frame;
+    }
 
-        public Msg304_F0(HapcanFrame frame)
-        {
-            _frame = frame;
-        }
+    public string GetDesription()
+    {
+        var error = GetError();
 
-        public string GetDesription()
-        {
-            var error = GetError();
-
-            return string.Format("TEMPERATURE ERROR - {0}", error);
-        }
-        private string GetError()
-        {
-            var error = _frame.Data[7];
-            if (error == 0x01)
-                return "Sensor not connected";
-            else if (error == 0x02)
-                return "Connected more than one sensor or connected wrong type of sensor";
-            else if (error == 0x03)
-                return "Connected wrong type of sensor";
-            else if (error == 0x04)
-                return "Communication problem on 1-wire network (CRC problem)";
-            else
-                return "Unknow state";
-        }
+        return string.Format("TEMPERATURE ERROR - {0}", error);
+    }
+    private string GetError()
+    {
+        var error = _frame.Data[7];
+        if (error == 0x01)
+            return "Sensor not connected";
+        else if (error == 0x02)
+            return "Connected more than one sensor or connected wrong type of sensor";
+        else if (error == 0x03)
+            return "Connected wrong type of sensor";
+        else if (error == 0x04)
+            return "Communication problem on 1-wire network (CRC problem)";
+        else
+            return "Unknow state";
     }
 }
