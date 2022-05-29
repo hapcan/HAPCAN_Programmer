@@ -16,35 +16,18 @@ public partial class FormInformation : FormBase
     {
         InitializeComponent();
     }
-    protected override void OnShown(EventArgs e)
+    //centre form
+    private void CenterForm(Form owner, Form frm)
     {
-        base.OnShown(e);
-        if (Owner != null)
-        {
-            Point p = new Point(Owner.Left + Owner.Width / 2 - Width / 2, Owner.Top + Owner.Height / 2 - Height / 2);
-            this.Location = p;
-        }
+        if (owner != null)
+            frm.Location = new Point(owner.Left + owner.Width / 2 - frm.Width / 2, owner.Top + owner.Height / 2 - frm.Height / 2);
     }
     //move form
     private void FormInformation_MouseDown(object sender, MouseEventArgs e)
     {
         base.FormMove_MouseDown(sender, e);
     }
-    public void Display(string title, string info, bool anim)
-    {
-        labelTitle.Text = title;
-        labelInfo.Text = info;
-        new ToolTip().SetToolTip(labelInfo, labelTitle.Text + "\n" + labelInfo.Text);
-        timer1.Enabled = anim;
-        this.Refresh();
-    }
-
-    private void timer1_Tick(object sender, EventArgs e)
-    {
-        //   circularProgressBar1.StartAngle += 10;
-    }
-
-
+    //resize form for long text
     private void labelInfo_TextChanged(object sender, EventArgs e)
     {
         //resize window to match displayed text
@@ -57,8 +40,41 @@ public partial class FormInformation : FormBase
                         + (int)(stringSize.Height * ((stringSize.Width / labelInfo.Width) + 1))    //needed text height + 1 extra line
                         - 28;                                                                      //default text height
     }
+    //display text
+    public void Display(string title, string info)
+    {
+        labelTitle.Text = title;
+        labelInfo.Text = info;
+        new ToolTip().SetToolTip(labelInfo, labelTitle.Text + Environment.NewLine + labelInfo.Text);
+        this.Refresh();
+    }
+    //show form
+    static public FormInformation Show(Form owner, string title, string info)
+    {
+        var frm = new FormInformation();
+        frm.Show();
+        frm.CenterForm(owner, frm);
+        frm.Display(title, info);
+        return frm;
+    }
+    //show form as dialog
+    static public void ShowDialog(Form owner, string title, string info)
+    {
+        var frm = new FormInformation();
+        frm.CenterForm(owner, frm);
+        frm.Display(title, info);
+        frm.ShowDialog();
+        //frm.Dispose();
+    }
 
+    //close form
     private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
+    }
+
+    //dispose form
+    private void FormInformation_FormClosed(object sender, FormClosedEventArgs e)
     {
         Dispose();
     }

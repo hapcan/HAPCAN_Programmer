@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Hapcan.Programmer.Forms;
 
-public partial class FormScan : FormProgressReport
+public partial class FormScan : FormProgress
 {
     readonly Project _project;
     readonly FormNodes _form;
@@ -42,13 +42,13 @@ public partial class FormScan : FormProgressReport
         //interface found?
         if (_interfaceNode == null)
         {
-            Info = "Scanning for interface failed.";
+            Info2 = "Scanning for interface failed.";
             Logger.Log("Nodes", "Scanning for interface failed.");
             Thread.Sleep(1000);
         }
         else
         {
-            Info = "Interface found.";
+            Info2 = "Interface found.";
             Logger.Log("Nodes", "Interface found.");
 
             //show interface in grid
@@ -59,8 +59,8 @@ public partial class FormScan : FormProgressReport
             //start scanning for other nodes
             Logger.Log("Nodes", String.Format("Scanning for nodes in groups {0}-{1}...", _project.Connection.GroupFrom, _project.Connection.GroupTo));
             _scanNodes.ScanForNodesProgress += ScanForNodesProgress;        //subscribe to progress event
-            await _scanNodes.StartAsync(_cts);                              //start scaning task
-            _scanNodes.ScanForNodesProgress += ScanForNodesProgress;        //unsubscribe progress event
+            await _scanNodes.GetNodesAsync(_cts);                              //start scaning task
+            _scanNodes.ScanForNodesProgress -= ScanForNodesProgress;        //unsubscribe progress event
 
             //finish up
             _project.NodeList = new List<HapcanNode>(_scanNodes.NodeList);  //set nodes to project
@@ -84,7 +84,7 @@ public partial class FormScan : FormProgressReport
         {
             Title = string.Format("Scanning for nodes in groups {0}-{1}. At the moment group {2}",
                                 sfn.GroupFrom, sfn.GroupTo, sfn.ReportGroup);
-            Info = string.Format("Found {0} nodes", sfn.NodeList.Count);
+            Info2 = string.Format("Found {0} nodes", sfn.NodeList.Count);
             Progress = sfn.ReportProgress;
 
             if (Progress == 100)
@@ -101,6 +101,8 @@ public partial class FormScan : FormProgressReport
 
     private void buttonCancel_Click(object sender, EventArgs e)
     {
+        buttonCancel.Text = "Closing...";
         _cts.Cancel();                                              //stop scanning task if hasn't finished
     }
+
 }

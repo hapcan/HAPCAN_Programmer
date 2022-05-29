@@ -1,34 +1,33 @@
 ﻿using Hapcan.General;
 
-namespace Hapcan.Messages
+namespace Hapcan.Messages;
+
+class Msg106_FirmwareTypeToNode
 {
-    class Msg106_FirmwareTypeToNode
+    private readonly HapcanFrame _frame;
+
+    public Msg106_FirmwareTypeToNode(HapcanFrame frame)
     {
-        private readonly HapcanFrame _frame;
+        _frame = frame;
+    }
+    public Msg106_FirmwareTypeToNode(byte nodeTx, byte groupTx, byte nodeRx, byte groupRx)
+    {
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x60, nodeTx, groupTx, 0xFF, 0xFF, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+    }
 
-        public Msg106_FirmwareTypeToNode(HapcanFrame frame)
+    public HapcanFrame GetFrame()
+    {
+        return _frame;
+    }
+    public string GetDescription()
+    {
+        if (!_frame.IsResponse())
         {
-            _frame = frame;
+            return string.Format("SYSTEM - Firmware type request to node ({0},{1})", _frame.Data[6], _frame.Data[7]);
         }
-        public Msg106_FirmwareTypeToNode(byte nodeTx, byte groupTx, byte nodeRx, byte groupRx)
+        else
         {
-            _frame = new HapcanFrame(new byte[] { 0x10, 0x60, nodeTx, groupTx, 0xFF, 0xFF, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
-        }
-
-        public HapcanFrame GetFrame()
-        {
-            return _frame;
-        }
-        public string GetDescription()
-        {
-            if (!_frame.IsResponse())
-            {
-                return string.Format("SYSTEM - Firmware type request to node ({0},{1})", _frame.Data[6], _frame.Data[7]);
-            }
-            else
-            {
-                return new Msg105_FirmwareTypeResponse(_frame).GetDescription();
-            }
+            return new Msg105_FirmwareTypeResponse(_frame).GetDescription();
         }
     }
 }

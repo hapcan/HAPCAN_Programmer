@@ -26,6 +26,9 @@ public partial class FormMain : FormBase
     }
     private async void FormMain_Load(object sender, EventArgs e)
     {
+        //logs
+        Logger.LogFilePath = Path.Combine(_appDataPath, "Logs", Application.ProductName + ".log");
+        Logger.Log("Application info", "Application started");
         //open application default project
         string projectFilePath = Path.Combine(_appDataPath, "default_project" + ".hap");
         var project = new Project();
@@ -34,17 +37,23 @@ public partial class FormMain : FormBase
         _project.SubscribeEvents();
         //set logger
         Logger.LogTimeFormat = _project.Settings.TimeFormat;
-        Logger.LogFilePath = Path.Combine(_appDataPath, "Logs", Application.ProductName + ".log");
-        Logger.Log("Application info", "Application started");
         //subscribe to connection event
         _project.Connection.ConnectionConnecting += OnConnectionConnecting;
         _project.Connection.ConnectionConnected += OnConnectionConnected;
         _project.Connection.ConnectionDisconnected += OnConnectionDisconnected;
         _project.Connection.ConnectionError += OnConnectionError;
     }
-    private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+    private async void FormMain_FormClosing(object sender, FormClosingEventArgs e)
     {
+
+    }
+    private async void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+    {
+        //save default project
+        await _project.SaveAsync(_project.ProjectFilePath);
+        //logs
         Logger.Log("Application info", "Application terminated");
+        Logger.Flush();
     }
 
     //Move, resize, minimize, maximize, close form
@@ -74,7 +83,7 @@ public partial class FormMain : FormBase
     }
     private void btnExit_Click(object sender, EventArgs e)
     {
-        Application.Exit();
+        Close();
     }
 
 
@@ -179,9 +188,8 @@ public partial class FormMain : FormBase
             //info form
             if (_infoForm != null)
                 _infoForm.Dispose();
-            _infoForm = new FormInformation();
-            _infoForm.Show(this);
-            _infoForm.Display("Connecting...", "", true);
+            _infoForm = FormInformation.Show(this, "Connecting...", "");
+            Thread.Sleep(1000);
         }
     }
     private void OnConnectionError(Exception ex)
@@ -195,9 +203,7 @@ public partial class FormMain : FormBase
             //info form
             if (_infoForm != null)
                 _infoForm.Dispose();
-            _infoForm = new FormInformation();
-            _infoForm.Show(this);
-            _infoForm.Display("Not connected", ex.Message, false);
+            _infoForm = FormInformation.Show(this, "Not connected", ex.Message);
         }
     }
     private void OnConnectionConnected(HapcanConnection conn)
@@ -211,11 +217,14 @@ public partial class FormMain : FormBase
             btnConnect.Text = "  Disconnect";
             btnConnect.BackColor = Color.FromArgb(255, 169, 128);
             btnConnect.Image = pictureBoxConn.Image;
-            textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
+            if (conn.InterfaceType == HapcanConnection.InterfaceTypes.Ethernet)
+                textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
+            else if (conn.InterfaceType == HapcanConnection.InterfaceTypes.RS232)
+                textBottom.Text = "Connected to " + conn.Com;
             //info form
             if (_infoForm != null)
             {
-                _infoForm.Display("Connected", "", false);
+                _infoForm.Display("Connected", "");
                 Thread.Sleep(1000);
                 _infoForm.Dispose();
             }
@@ -235,6 +244,4 @@ public partial class FormMain : FormBase
             textBottom.Text = "Not connected";
         }
     }
-
-
 }

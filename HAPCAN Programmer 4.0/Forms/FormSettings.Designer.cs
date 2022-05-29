@@ -29,10 +29,10 @@ namespace Hapcan.Programmer.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.labelInterace = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkBoxAvailCom = new System.Windows.Forms.CheckBox();
             this.comboBoxIntCom = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panelIntPort = new System.Windows.Forms.Panel();
@@ -58,7 +58,6 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.richTextBox5 = new System.Windows.Forms.RichTextBox();
-            this.btnSave = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelIntPort.SuspendLayout();
             this.panelIntIp.SuspendLayout();
@@ -97,6 +96,7 @@ namespace Hapcan.Programmer.Forms
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.panel1.Controls.Add(this.chkBoxAvailCom);
             this.panel1.Controls.Add(this.comboBoxIntCom);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.panelIntPort);
@@ -111,6 +111,20 @@ namespace Hapcan.Programmer.Forms
             this.panel1.Size = new System.Drawing.Size(376, 228);
             this.panel1.TabIndex = 26;
             // 
+            // chkBoxAvailCom
+            // 
+            this.chkBoxAvailCom.AutoSize = true;
+            this.chkBoxAvailCom.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chkBoxAvailCom.FlatAppearance.BorderSize = 0;
+            this.chkBoxAvailCom.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.chkBoxAvailCom.Location = new System.Drawing.Point(251, 177);
+            this.chkBoxAvailCom.Name = "chkBoxAvailCom";
+            this.chkBoxAvailCom.Size = new System.Drawing.Size(100, 19);
+            this.chkBoxAvailCom.TabIndex = 32;
+            this.chkBoxAvailCom.Text = "Available only";
+            this.chkBoxAvailCom.UseVisualStyleBackColor = true;
+            this.chkBoxAvailCom.CheckedChanged += new System.EventHandler(this.chkBoxAvailCom_CheckedChanged);
+            // 
             // comboBoxIntCom
             // 
             this.comboBoxIntCom.BackColor = System.Drawing.SystemColors.Window;
@@ -120,21 +134,10 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxIntCom.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxIntCom.FormattingEnabled = true;
             this.comboBoxIntCom.ItemHeight = 18;
-            this.comboBoxIntCom.Items.AddRange(new object[] {
-            "COM 1",
-            "COM 2",
-            "COM 3",
-            "COM 4",
-            "COM 5",
-            "COM 6",
-            "COM 7",
-            "COM 8",
-            "COM 9",
-            "COM 10"});
             this.comboBoxIntCom.Location = new System.Drawing.Point(149, 173);
             this.comboBoxIntCom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxIntCom.Name = "comboBoxIntCom";
-            this.comboBoxIntCom.Size = new System.Drawing.Size(201, 26);
+            this.comboBoxIntCom.Size = new System.Drawing.Size(92, 26);
             this.comboBoxIntCom.TabIndex = 31;
             // 
             // label5
@@ -448,24 +451,6 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox5.TabIndex = 29;
             this.richTextBox5.Text = "For the RS232 interface enter the com port.";
             // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
-            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
-            this.btnSave.Location = new System.Drawing.Point(702, 23);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(110, 35);
-            this.btnSave.TabIndex = 32;
-            this.btnSave.Text = " Save";
-            this.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -473,7 +458,6 @@ namespace Hapcan.Programmer.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(1167, 577);
-            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.panel10);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel8);
@@ -535,6 +519,6 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.RichTextBox richTextBox5;
         private System.Windows.Forms.ComboBox comboBoxIntCom;
-        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.CheckBox chkBoxAvailCom;
     }
 }

@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInformation));
             this.labelTitle = new System.Windows.Forms.Label();
             this.labelInfo = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -64,12 +62,6 @@
             this.labelInfo.Text = "Information";
             this.labelInfo.TextChanged += new System.EventHandler(this.labelInfo_TextChanged);
             this.labelInfo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormInformation_MouseDown);
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 10;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // btnClose
             // 
@@ -107,6 +99,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormInformation";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormInformation_FormClosed);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormInformation_MouseDown);
             this.ResumeLayout(false);
 
@@ -116,7 +109,6 @@
 
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Label labelInfo;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnClose;
     }
 }

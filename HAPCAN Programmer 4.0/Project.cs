@@ -48,15 +48,17 @@ public class Project
             var projfile = new ProjectFile<Project>();
             project = await projfile.DeserializeAsync(filename).ConfigureAwait(false);
             Logger.Log("Application info", "Opened project " + Path.GetFullPath(filename));
+            return project;
         }
         catch (Exception ex)
         {
             Logger.Log("Application error", "Opening project exception. " + ex.ToString());
-        }
-        //no project file? create it
-        if (project == null)
+
+            //create project file
             project = new Project();
-        return project;
+            await project.SaveAsync(filename);
+            return project;
+        }
     }
 
     //save project to file
@@ -65,6 +67,10 @@ public class Project
         bool res = false;
         try
         {
+            //make sure directory exists
+            if (!Directory.Exists(Path.GetDirectoryName(filename)))
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+
             var projfile = new ProjectFile<Project>();
             res = await projfile.SerializeAsync(this, filename);
             Logger.Log("Application info", "Project saved to " + Path.GetFullPath(filename));

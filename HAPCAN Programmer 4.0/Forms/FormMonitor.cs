@@ -67,6 +67,9 @@ public partial class FormMonitor : Form
 
     private void OnListChanged()
     {
+        //don't update if paused
+        if (checkBoxPause.Checked)
+            return;
         this.UpdateGrid();
     }
 
@@ -94,17 +97,7 @@ public partial class FormMonitor : Form
     {
         this.UpdateGrid();
     }
-    //SEARCH box
-    private void textBoxSearch_Enter(object sender, EventArgs e)
-    {
-        if (textBoxSearch.Text == "Search")
-            textBoxSearch.Text = "";
-    }
-    private void textBoxSearch_Leave(object sender, EventArgs e)
-    {
-        if (textBoxSearch.Text == "")
-            textBoxSearch.Text = "Search";
-    }
+
     private void textBoxSearch_TextChanged(object sender, EventArgs e)
     {
         this.UpdateGrid();
@@ -198,8 +191,8 @@ public partial class FormMonitor : Form
         {
             case 0: textBoxTxMsg.Text = new Msg010_ExitAllFromProgramming().GetFrame().GetDataString(); DisableAll(); break;
             case 1: textBoxTxMsg.Text = new Msg020_ExitNodeFromProgramming(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
-            case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
-            case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
+            case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx,0,1).GetFrame().GetDataString(); EnableAll(); break;
+            case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx,new byte[8]).GetFrame().GetDataString(); EnableAll(); break;
             case 4: textBoxTxMsg.Text = new Msg100_EnterProgramming(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
             case 5: textBoxTxMsg.Text = new Msg101_RebootGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
             case 6: textBoxTxMsg.Text = new Msg102_RebootNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;

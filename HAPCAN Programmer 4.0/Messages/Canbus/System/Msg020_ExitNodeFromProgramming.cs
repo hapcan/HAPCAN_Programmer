@@ -1,34 +1,33 @@
 ﻿using Hapcan.General;
 
-namespace Hapcan.Messages
+namespace Hapcan.Messages;
+
+class Msg020_ExitNodeFromProgramming
 {
-    class Msg020_ExitNodeFromProgramming
+    private readonly HapcanFrame _frame;
+
+    public Msg020_ExitNodeFromProgramming(HapcanFrame frame)
     {
-        private readonly HapcanFrame _frame;
+        _frame = frame;
+    }
+    public Msg020_ExitNodeFromProgramming(byte nodeRx, byte groupRx)
+    {
+        _frame = new HapcanFrame(new byte[] { 0x02, 0x00, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+    }
 
-        public Msg020_ExitNodeFromProgramming(HapcanFrame frame)
+    public HapcanFrame GetFrame()
+    {
+        return _frame;
+    }
+    public string GetDescription()
+    {
+        if (!_frame.IsResponse())
         {
-            _frame = frame;
+            return string.Format("SYSTEM - Exit node ({0},{1}) from programming mode request", _frame.Data[2], _frame.Data[3]);
         }
-        public Msg020_ExitNodeFromProgramming(byte nodeRx, byte groupRx)
+        else
         {
-            _frame = new HapcanFrame(new byte[] { 0x02, 0x00, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
-        }
-
-        public HapcanFrame GetFrame()
-        {
-            return _frame;
-        }
-        public string GetDescription()
-        {
-            if (!_frame.IsResponse())
-            {
-                return string.Format("SYSTEM - Exit node ({0},{1}) from programming mode request", _frame.Data[2], _frame.Data[3]);
-            }
-            else
-            {
-                return string.Format("SYSTEM - Wrong frame");
-            }
+            return string.Format("SYSTEM - Wrong frame");
         }
     }
 }

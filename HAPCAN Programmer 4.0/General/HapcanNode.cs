@@ -1,6 +1,8 @@
 ﻿using Hapcan.Messages;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Hapcan.General;
@@ -8,8 +10,6 @@ namespace Hapcan.General;
 public class HapcanNode : INotifyPropertyChanged
 {
     private bool _interface;
-    private byte _nodeNumber;
-    private byte _groupNumber;
     private int _hardwareType;
     private byte _hardwareVersion;
     private byte _applicationType;
@@ -21,6 +21,7 @@ public class HapcanNode : INotifyPropertyChanged
     private float _moduleVoltage;
     private string _description;
     private int _serialNumber;
+    private bool _inProgramming;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -35,13 +36,15 @@ public class HapcanNode : INotifyPropertyChanged
 
     public HapcanNode()
     {
-        Description = "";
+    //    Description = "";
         FullNodeGroupNumber = "";
         FullHardwareVersion = "";
         FullFirmwareVersion = "";
         FullBootloaderVersion = "";
+        Memory = new byte[0x10000];
+        Eeprom = new byte[0x400];
+        Flash = new byte[0x8000];
     }
-
     public HapcanNode(int serial) : this()
     {
         SerialNumber = serial;
@@ -51,19 +54,31 @@ public class HapcanNode : INotifyPropertyChanged
     public bool Interface
     {
         get { return _interface; }
-        set
-        {
-            _interface = value;
-            GetFullNodeGroupNumber();
-        }
+        set { _interface = value; }
     }
-    [XmlAttribute("Desc")]
+    [XmlIgnore]
     public string Description
     {
-        get { return _description; }
-        set
+        get //from eeprom
         {
+            _description = "";
+            //convert bytes to chars
+            char[] chars = Encoding.UTF8.GetChars(Eeprom, 0x30, 16);
+            for (int i = 0; i < chars.Length; i++)
+                _description += chars[i];
+            return _description; 
+        }
+        set //to eeprom
+        {
+            //get description
             _description = value;
+            //convert to bytes
+            byte[] bytes = Encoding.UTF8.GetBytes(_description);
+            //position description in eeprom
+            Array.Fill<byte>(Eeprom, 0, 0x30, 16);
+            for (int i = 0; i < bytes.Length && i < 16; i++)
+                Eeprom[0x30 + i] = (byte)bytes[i];
+            //notify
             NotifyPropertyChanged();
         }
     }
@@ -77,25 +92,27 @@ public class HapcanNode : INotifyPropertyChanged
             NotifyPropertyChanged();
         }
     }
-    [XmlAttribute("NodeNo")]
+    [XmlIgnore]
+  //  [XmlAttribute("NodeNo")]
     public byte NodeNumber
     {
-        get { return _nodeNumber; }
+        get { return Eeprom[0x26]; }
         set
         {
-            _nodeNumber = value;
-            GetFullNodeGroupNumber();
+            Eeprom[0x26] = value;
+            FullNodeGroupNumber = "";
             NotifyPropertyChanged();
         }
     }
-    [XmlAttribute("GroupNo")]
+    [XmlIgnore]
+   // [XmlAttribute("GroupNo")]
     public byte GroupNumber
     {
-        get { return _groupNumber; }
+        get { return Eeprom[0x27]; }
         set
         {
-            _groupNumber = value;
-            GetFullNodeGroupNumber();
+            Eeprom[0x27] = value;
+            FullNodeGroupNumber = "";
             NotifyPropertyChanged();
         }
 
@@ -129,7 +146,7 @@ public class HapcanNode : INotifyPropertyChanged
         set
         {
             _applicationType = value;
-            GetFullFirmwareVersion();
+            FullFirmwareVersion = "";
             NotifyPropertyChanged();
         }
     }
@@ -140,7 +157,7 @@ public class HapcanNode : INotifyPropertyChanged
         set
         {
             _applicationVersion = value;
-            GetFullFirmwareVersion();
+            FullFirmwareVersion = "";
             NotifyPropertyChanged();
         }
     }
@@ -151,7 +168,7 @@ public class HapcanNode : INotifyPropertyChanged
         set
         {
             _firmwareVersion = value;
-            GetFullFirmwareVersion();
+            FullFirmwareVersion = "";
             NotifyPropertyChanged();
         }
     }
@@ -163,7 +180,8 @@ public class HapcanNode : INotifyPropertyChanged
         set
         {
             _firmwareError = value;
-            GetFullFirmwareVersion();
+            FullFirmwareVersion = "";
+            NotifyPropertyChanged();
         }
     }
 
@@ -189,6 +207,15 @@ public class HapcanNode : INotifyPropertyChanged
             NotifyPropertyChanged();
         }
     }
+    [XmlAttribute("Eeprom")]
+    [Browsable(false)]
+    public byte[] Eeprom { get; set; }
+    [XmlAttribute("Flash")]
+    [Browsable(false)]
+    public byte[] Flash { get; set; }
+    [XmlIgnore]
+    [Browsable(false)]
+    public byte[] Memory { get; set; }
 
     [XmlIgnore]
     public float ModuleVoltage
@@ -202,33 +229,74 @@ public class HapcanNode : INotifyPropertyChanged
     }
     [XmlIgnore]
     public float ProcessorVoltage { get; set; }
+
     [XmlIgnore]
-    public string FullNodeGroupNumber { get; private set; }
+    public string FullNodeGroupNumber
+    {
+        get
+        { 
+            return GetFullNodeGroupNumber();
+        }
+        set
+        {
+            NotifyPropertyChanged();
+        }
+    }
     [XmlIgnore]
     public string FullHardwareVersion { get; private set; }
     [XmlIgnore]
-    public string FullFirmwareVersion { get; private set; }
+    public string FullFirmwareVersion
+    {
+        get
+        {
+            return GetFullFirmwareVersion();
+        }
+        set
+        {
+            NotifyPropertyChanged();
+        }
+    }
     [XmlIgnore]
     public string FullBootloaderVersion { get; private set; }
+    [XmlIgnore]
+    public bool InProgramming
+    {
+        get { return _inProgramming; }
+        set
+        {
+            _inProgramming = value;
+            NotifyPropertyChanged();
+        }
+    }
 
 
-    private void GetFullNodeGroupNumber()
+    private string GetFullNodeGroupNumber()
     {
         if (Interface)
-            FullNodeGroupNumber = "Interface";
+            return "Interface";
         else
-            FullNodeGroupNumber = "(" + NodeNumber + "," + GroupNumber + ")";
+            return "(" + NodeNumber + "," + GroupNumber + ")";
     }
     private void GetFullHardwareVersion()
     {
         FullHardwareVersion = new Msg103_HardwareTypeResponse(this).GetFullHardwareVersion();
     }
-    private void GetFullFirmwareVersion()
+    private string GetFullFirmwareVersion()
     {
-        if (FirmwareError == 0x00)
-            FullFirmwareVersion = new Msg105_FirmwareTypeResponse(this).GetFullFirmwareVersion();
+        if (this.Interface)
+        {
+            if (FirmwareError == 0x00)
+                return new IntMsg106_FirmwareTypeResponse(this).GetFullFirmwareVersion();
+            else
+                return new IntMsg1F1_FirmwareError(this).GetFirmwareError();
+        }
         else
-            FullFirmwareVersion = new Msg1F1_FirmwareError(this).GetDescription();
+        {
+            if (FirmwareError == 0x00)
+                return new Msg105_FirmwareTypeResponse(this).GetFullFirmwareVersion();
+            else
+                return new Msg1F1_FirmwareError(this).GetFirmwareError();
+        }
     }
     private void GetFullBotloaderVersion()
     {

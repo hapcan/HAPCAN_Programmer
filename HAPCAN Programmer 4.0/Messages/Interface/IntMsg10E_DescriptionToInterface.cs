@@ -1,34 +1,33 @@
 ﻿using Hapcan.General;
 
-namespace Hapcan.Messages
+namespace Hapcan.Messages;
+
+class IntMsg10E_DescriptionToInterface
 {
-    class IntMsg10E_DescriptionToInterface
+    private readonly HapcanFrame _frame;
+
+    public IntMsg10E_DescriptionToInterface(HapcanFrame frame)
     {
-        private readonly HapcanFrame _frame;
+        _frame = frame;
+    }
+    public IntMsg10E_DescriptionToInterface()
+    {
+        _frame = new HapcanFrame(new byte[] { 0x10, 0xE0 }, HapcanFrame.FrameSource.PC);
+    }
 
-        public IntMsg10E_DescriptionToInterface(HapcanFrame frame)
+    public HapcanFrame GetFrame()
+    {
+        return _frame;
+    }
+    public string GetDescription()
+    {
+        if (!_frame.IsResponse())
         {
-            _frame = frame;
+            return string.Format("INTERFACE - SYSTEM - Description request to interface");
         }
-        public IntMsg10E_DescriptionToInterface()
+        else
         {
-            _frame = new HapcanFrame(new byte[] { 0x10, 0xE0 }, HapcanFrame.FrameSource.PC);
-        }
-
-        public HapcanFrame GetFrame()
-        {
-            return _frame;
-        }
-        public string GetDescription()
-        {
-            if (!_frame.IsResponse())
-            {
-                return string.Format("INTERFACE - SYSTEM - Description request to interface");
-            }
-            else
-            {
-                return new IntMsg10E_DescriptionResponse(_frame).GetDescription();
-            }
+            return new IntMsg10E_DescriptionResponse(_frame).GetDescription();
         }
     }
 }

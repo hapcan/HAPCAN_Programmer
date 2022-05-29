@@ -10,15 +10,16 @@ using System.Windows.Forms;
 
 namespace Hapcan.Programmer.Forms;
 
-public partial class FormProgressReport : FormBase
+public partial class FormProgress : FormBase
 {
     private int _progress;
 
-    public FormProgressReport()
+    public FormProgress()
     {
         InitializeComponent();
         Text = Application.ProductName;
-        labelInfo.Text = "";
+        labelInfo1.Text = "";
+        labelInfo2.Text = "";
         labelTitle.Text = "";
         Progress = 0;
     }
@@ -34,15 +35,27 @@ public partial class FormProgressReport : FormBase
             this.Refresh();
         }
     }
-    public string Info
+    public string Info1
     {
         get
         {
-            return labelInfo.Text;
+            return labelInfo1.Text;
         }
         set
         {
-            labelInfo.Text = value;
+            labelInfo1.Text = value;
+            this.Refresh();
+        }
+    }
+    public string Info2
+    {
+        get
+        {
+            return labelInfo2.Text;
+        }
+        set
+        {
+            labelInfo2.Text = value;
             this.Refresh();
         }
     }
@@ -56,9 +69,26 @@ public partial class FormProgressReport : FormBase
         {
             _progress = value;
             labelProgress1.Text = _progress + "%";
-            labelProgress2.Text = _progress + "%";
             panelProgressValue.Width = _progress * panelProgressBase.Width / 100;
         }
+    }
+    public enum StatusColor
+    {
+        Neutral = 0x2D2D2D,
+        Success = 0x008000,
+        Error   = 0xFF0000
+    }
+    public StatusColor Status
+    {
+        get
+        {
+            return (StatusColor)panelTop.BackColor.ToArgb();
+        }
+        set
+        {
+            panelTop.BackColor = Color.FromArgb((byte)((int)value >> 16), (byte)((int)value >> 8), (byte)value);
+            BackColor = panelTop.BackColor;
+        } 
     }
 
 

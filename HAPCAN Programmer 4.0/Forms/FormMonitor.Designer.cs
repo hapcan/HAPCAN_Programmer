@@ -126,20 +126,20 @@ namespace Hapcan.Programmer.Forms
             // 
             // textBoxSearch
             // 
+            this.textBoxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.RecentlyUsedList;
             this.textBoxSearch.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxSearch.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxSearch.ForeColor = System.Drawing.SystemColors.WindowText;
             this.textBoxSearch.Location = new System.Drawing.Point(6, 6);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.PlaceholderText = "Search";
             this.textBoxSearch.Size = new System.Drawing.Size(377, 19);
             this.textBoxSearch.TabIndex = 5;
-            this.textBoxSearch.Text = "Search";
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
-            this.textBoxSearch.Enter += new System.EventHandler(this.textBoxSearch_Enter);
-            this.textBoxSearch.Leave += new System.EventHandler(this.textBoxSearch_Leave);
             // 
             // panel3
             // 

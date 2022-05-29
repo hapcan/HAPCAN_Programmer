@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Hapcan.Messages;
 
-class MsgBase
+class CanbusMsgBase
 {
-    public MsgBase(HapcanFrame frame)
+    public CanbusMsgBase(HapcanFrame frame)
     {
         NodeNumber = frame.Data[2];
         GroupNumber = frame.Data[3];
     }
-    public MsgBase(HapcanNode node)
+    public CanbusMsgBase(HapcanNode node)
     {
         NodeNumber = node.NodeNumber;
         GroupNumber = node.GroupNumber;

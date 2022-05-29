@@ -58,6 +58,14 @@ public static class Logger
         _queue.Enqueue(text);
         SetSavingTimer();
     }
+    /// <summary>
+    /// Flush all logs buffer and save to file
+    /// </summary>
+    public static void Flush()
+    {
+        SavingTimerTick(null, null);
+    }
+
     //prepare timer for saving
     private static void SetSavingTimer()
     {
@@ -81,9 +89,9 @@ public static class Logger
             UpdateLogFile(text);
         }
         //raise event
-        if (LogSaved != null)       //event handler exists?               
-            LogSaved();             //raise event
+        LogSaved?.Invoke();             //raise event
     }
+
     //update logs in LogText property
     private static void UpdateLogText(string text)
     {
@@ -100,6 +108,7 @@ public static class Logger
             }
         }
     }
+
     //update logs in log file
     private static void UpdateLogFile(string text)
     {
@@ -125,10 +134,9 @@ public static class Logger
             }
 
             //save log file
-            using (var writer = new System.IO.StreamWriter(_logFilePath, true, System.Text.Encoding.UTF8))
-            {
-                writer.WriteLine(text);
-            }
+            using var writer = new System.IO.StreamWriter(_logFilePath, true, System.Text.Encoding.UTF8);
+            writer.WriteLine(text);
+            
 
             //make read-only file
             File.SetAttributes(_logFilePath, FileAttributes.ReadOnly);

@@ -66,7 +66,7 @@ namespace Hapcan.Programmer.Forms
             // 
             // panelTop
             // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.panelTop.Controls.Add(this.btnMin);
             this.panelTop.Controls.Add(this.btnMax);
             this.panelTop.Controls.Add(this.btnExit);
@@ -348,6 +348,7 @@ namespace Hapcan.Programmer.Forms
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.splitContainer1.Panel1.ForeColor = System.Drawing.SystemColors.ControlText;
             // 
             // splitContainer1.Panel2
             // 
@@ -441,6 +442,7 @@ namespace Hapcan.Programmer.Forms
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HAPCAN Programmer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.panelTop.ResumeLayout(false);

@@ -1,34 +1,33 @@
 ﻿using Hapcan.General;
 
-namespace Hapcan.Messages
+namespace Hapcan.Messages;
+
+class IntMsg10C_VoltageToInterface
 {
-    class IntMsg10C_VoltageToInterface
+    private readonly HapcanFrame _frame;
+
+    public IntMsg10C_VoltageToInterface(HapcanFrame frame)
     {
-        private readonly HapcanFrame _frame;
+        _frame = frame;
+    }
+    public IntMsg10C_VoltageToInterface()
+    {
+        _frame = new HapcanFrame(new byte[] { 0x10, 0xC0 }, HapcanFrame.FrameSource.PC);
+    }
 
-        public IntMsg10C_VoltageToInterface(HapcanFrame frame)
+    public HapcanFrame GetFrame()
+    {
+        return _frame;
+    }
+    public string GetDescription()
+    {
+        if (!_frame.IsResponse())
         {
-            _frame = frame;
+            return string.Format("INTERFACE - SYSTEM - Voltage request to interface");
         }
-        public IntMsg10C_VoltageToInterface()
+        else
         {
-            _frame = new HapcanFrame(new byte[] { 0x10, 0xC0 }, HapcanFrame.FrameSource.PC);
-        }
-
-        public HapcanFrame GetFrame()
-        {
-            return _frame;
-        }
-        public string GetDescription()
-        {
-            if (!_frame.IsResponse())
-            {
-                return string.Format("INTERFACE - SYSTEM - Voltage request to interface");
-            }
-            else
-            {
-                return new IntMsg10C_VoltageResponse(_frame).GetDescription();
-            }
+            return new IntMsg10C_VoltageResponse(_frame).GetDescription();
         }
     }
 }

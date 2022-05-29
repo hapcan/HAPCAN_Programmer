@@ -16,6 +16,8 @@ public partial class FormSettings : Form
     }
     private void FormSettings_Load(object sender, EventArgs e)
     {
+        if (_project.Connection.IsConnected())
+            _project.Connection.Disconnect();
         //interface type
         if (_project.Connection.InterfaceType == HapcanConnection.InterfaceTypes.Ethernet)
             comboBoxIntType.SelectedIndex = 0;
@@ -26,7 +28,8 @@ public partial class FormSettings : Form
         //port
         textBoxIntPort.Text = _project.Connection.Port.ToString();
         //com
-        comboBoxIntCom.SelectedIndex = _project.Connection.Com - 1;
+        comboBoxIntCom.Items.AddRange(SetPortNames());
+        comboBoxIntCom.SelectedIndex = comboBoxIntCom.Items.IndexOf(_project.Connection.Com);
         //network range
         for (int i = 1; i < 256; i++)
         {
@@ -38,25 +41,35 @@ public partial class FormSettings : Form
     }
     private void comboBoxIntType_SelectedIndexChanged(object sender, EventArgs e)
     {
+        //ethernet
         if (comboBoxIntType.SelectedIndex == 0)
         {
             panelIntIp.Visible = true;
             panelIntPort.Visible = true;
             comboBoxIntCom.Visible = false;
+            chkBoxAvailCom.Visible = false;
         }
+        //rs232
         else
         {
             panelIntIp.Visible = false;
             panelIntPort.Visible = false;
             comboBoxIntCom.Visible = true;
+            chkBoxAvailCom.Visible = true;
         }
+        //save
+        _project.Connection.InterfaceType = (HapcanConnection.InterfaceTypes)comboBoxIntType.SelectedIndex;
     }
     private async void textBoxIntIp_TextChanged(object sender, EventArgs e)
     {
         if (await HapcanConnection.IsIpValid(textBoxIntIp.Text) == false)
             panelIntIp.BackColor = Color.Red;
         else
+        {
             panelIntIp.BackColor = Color.FromArgb(225, 225, 225);
+            //save
+            _project.Connection.IP = textBoxIntIp.Text;
+        }
     }
 
     private void textBoxIntPort_TextChanged(object sender, EventArgs e)
@@ -64,30 +77,54 @@ public partial class FormSettings : Form
         if (HapcanConnection.IsPortValid(textBoxIntPort.Text) == false)
             panelIntPort.BackColor = Color.Red;
         else
+        {
             panelIntPort.BackColor = Color.FromArgb(225, 225, 225);
-    }
-
-    private async void btnSave_Click(object sender, EventArgs e)
-    {
-        _project.Connection.InterfaceType = (HapcanConnection.InterfaceTypes)comboBoxIntType.SelectedIndex;
-        _project.Connection.IP = textBoxIntIp.Text;
-        if (Int32.TryParse(textBoxIntPort.Text, out int port))
-            _project.Connection.Port = port;
-        _project.Connection.Com = comboBoxIntCom.SelectedIndex + 1;
-        _project.Connection.GroupFrom = (byte)(comboBoxGroupFrom.SelectedIndex + 1);
-        _project.Connection.GroupTo = (byte)(comboBoxGroupTo.SelectedIndex + 1);
-        await _project.SaveAsync(_project.ProjectFilePath);
+            //save
+            if (Int32.TryParse(textBoxIntPort.Text, out int port))
+                _project.Connection.Port = port;
+        }
     }
 
     private void comboBoxGroupFrom_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (comboBoxGroupTo.SelectedIndex < comboBoxGroupFrom.SelectedIndex)
+        //make sure To value is above From value
+        if (comboBoxGroupTo.SelectedIndex < comboBoxGroupFrom.SelectedIndex && comboBoxGroupTo.SelectedIndex != -1)
             comboBoxGroupTo.SelectedIndex = comboBoxGroupFrom.SelectedIndex;
+        //save
+        _project.Connection.GroupFrom = (byte)(comboBoxGroupFrom.SelectedIndex + 1);
     }
 
     private void comboBoxGroupTo_SelectedIndexChanged(object sender, EventArgs e)
     {
+        //make sure From value is below To value
         if (comboBoxGroupFrom.SelectedIndex > comboBoxGroupTo.SelectedIndex)
             comboBoxGroupFrom.SelectedIndex = comboBoxGroupTo.SelectedIndex;
+        //save
+        _project.Connection.GroupTo = (byte)(comboBoxGroupTo.SelectedIndex + 1);
+    }
+
+    private void chkBoxAvailCom_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkBoxAvailCom.Checked)
+        {
+            comboBoxIntCom.Items.Clear();
+            comboBoxIntCom.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
+        }
+        else
+        {
+            comboBoxIntCom.Items.Clear();
+            comboBoxIntCom.Items.AddRange(SetPortNames());
+        }
+        _project.Connection.Com = (string)comboBoxIntCom.SelectedItem;
+    }
+    private string[] SetPortNames()
+    {
+        int number = 10;
+        var names = new string[number];
+        for (int i = 0; i < number; i++)
+        {
+            names[i] = "COM" + (i + 1).ToString();
+        }
+        return names;
     }
 }

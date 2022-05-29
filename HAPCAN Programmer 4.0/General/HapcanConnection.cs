@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Ports;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -18,6 +19,7 @@ public class HapcanConnection
     //   byte[] _buffer;
     Socket _socket;
     bool _activeReceiving;
+    SerialPort _serial;
 
     //EVENTS
     public event ConnectionFrameEvent InterfaceMessageReceived; //message from inteface received event
@@ -54,6 +56,8 @@ public class HapcanConnection
         //network range
         GroupFrom = 1;
         GroupTo = 255;
+        //com
+        Com = "COM1";
     }
 
     //PROPERTIES
@@ -67,7 +71,7 @@ public class HapcanConnection
     [XmlAttribute("Timeout")]
     public int Timeout { get; set; }
     [XmlAttribute("Com")]
-    public int Com { get; set; }
+    public string Com { get; set; }
     [XmlAttribute("NodeTx")]
     public byte NodeTx { get; set; }
     [XmlAttribute("GroupTx")]
@@ -122,7 +126,7 @@ public class HapcanConnection
     public async Task<bool> ConnectAsync()
     {
         //already connected?
-        if (_socket != null && _socket.Connected == true)
+        if (IsConnected())
             return true;
 
         //connection starting 
@@ -151,9 +155,18 @@ public class HapcanConnection
             }
             else if (this.InterfaceType == InterfaceTypes.RS232)
             {
-                ConnectionError?.Invoke(new Exception("RS232 interface not implemented yet."));    //raise event
-                Disconnect();                       //update status
-                return false;
+                //ConnectionError?.Invoke(new Exception("RS232 interface not implemented yet."));    //raise event
+                //Disconnect();                       //update status
+                //return false;
+                _serial = new SerialPort(Com,115200,Parity.None,8,StopBits.One);
+                _serial.Open();
+                //start receiving in new thread
+                var receiveThread = new Thread(StartReceiving);
+                receiveThread.IsBackground = true;
+                receiveThread.Start();
+                //update status
+                ConnectionConnected?.Invoke(this);    //raise event
+                return true;
             }
             else { return false; }
         }
@@ -182,28 +195,32 @@ public class HapcanConnection
             try
             {
                 //interface 13-byte frame
-                if (_socket.Available >= 13)
+                if (AvailableBytes() >= 13)
                 {
                     rxBuffer = new byte[13];
-                    _socket.Receive(rxBuffer, 0, 13, SocketFlags.None);
+                    ReadBytes(rxBuffer, 0, 13);                             //read 13 bytes
+                    Thread.Sleep(1);                                        //wait a bit to make sure buffer receives
+                                                                            //potential additional 2 bytes if it is can frame                                                                     
                     if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
                         rxBuffer[12] == (byte)HapcanFrame.ByteType.StopByte &&
                         rxBuffer[11] == GetChecksum(rxBuffer))
                     {
-                        var buffer = RemoveStartStopChecksum(rxBuffer);      //remove start, stop and checksum bytes
+                        var buffer = RemoveStartStopChecksum(rxBuffer);     //remove start, stop and checksum bytes
                         var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Interface);
                         InterfaceMessageReceived?.Invoke(frame);            //raise event
                     }
                     //canbus 15-byte frame
-                    else if (_socket.Available >= 2)
+                    else if (AvailableBytes() >= 2)
                     {
+
                         Array.Resize(ref rxBuffer, 15);
-                        _socket.Receive(rxBuffer, 13, 2, SocketFlags.None);  //read additional 2 bytes
+                        ReadBytes(rxBuffer, 13,2);                          //read additional 2 bytes
+                        
                         if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
                             rxBuffer[14] == (byte)HapcanFrame.ByteType.StopByte &&
                             rxBuffer[13] == GetChecksum(rxBuffer))
                         {
-                            var buffer = RemoveStartStopChecksum(rxBuffer);  //remove start, stop and checksum bytes
+                            var buffer = RemoveStartStopChecksum(rxBuffer); //remove start, stop and checksum bytes
                             var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Canbus);
                             CanbusMessageReceived?.Invoke(frame);           //raise event
                         }
@@ -211,8 +228,11 @@ public class HapcanConnection
                     else
                     {
                         //read as long as it gets stop byte at the end of frame
-                        while (_socket.Available > 0 && rxBuffer[0] != (byte)HapcanFrame.ByteType.StopByte)
-                            _socket.Receive(rxBuffer, 1, SocketFlags.None);
+                        while (AvailableBytes() > 0 && rxBuffer[0] != (byte)HapcanFrame.ByteType.StopByte)
+                        {
+                            ReadBytes(rxBuffer, 0, 1);
+                            Thread.Sleep(1);
+                        }
                     }
                 }
                 else
@@ -226,6 +246,30 @@ public class HapcanConnection
             }
         }
     }
+    private byte[] ReadBytes(byte[] buffer, int offset, int size)
+    {
+        if (this.InterfaceType == InterfaceTypes.Ethernet)
+        {
+            _socket.Receive(buffer, offset, size, SocketFlags.None);
+        }
+        else if (this.InterfaceType == InterfaceTypes.RS232)
+        {
+            _serial.Read(buffer, offset, size);
+        }
+        return buffer;
+    }
+    private int AvailableBytes()
+    {
+        if (this.InterfaceType == InterfaceTypes.Ethernet)
+        {
+            return _socket.Available;
+        }
+        else if (this.InterfaceType == InterfaceTypes.RS232)
+        {
+            return _serial.BytesToRead;
+        }
+        else return 0;
+    }
 
     /// <summary>
     /// Checks if connection is made
@@ -233,8 +277,16 @@ public class HapcanConnection
     /// <returns>True if connected, otherwise false.</returns>
     public bool IsConnected()
     {
-        if (_socket != null && _socket.Connected == true)
-            return true;
+        if (this.InterfaceType == InterfaceTypes.Ethernet)
+        {
+            if (_socket != null && _socket.Connected == true)
+                return true;
+        }
+        else if (this.InterfaceType == InterfaceTypes.RS232)
+        {
+            if (_serial != null && _serial.IsOpen == true)
+                return true;
+        }
         return false;
     }
 
@@ -244,15 +296,29 @@ public class HapcanConnection
     /// <returns>Task(true) if disconnected or Task(false) if disconnecting fails.</returns>
     public bool Disconnect()
     {
-        if (_socket == null)
-            return true;
+        if (this.InterfaceType == InterfaceTypes.Ethernet)
+        {
+            if (_socket == null)
+                return true;
 
-        //stop receiving Task
-        _activeReceiving = false;
-        //shutdown socket
-        if (_socket.Connected)
-            _socket.Shutdown(SocketShutdown.Both);
-        _socket.Close();
+            //stop receiving Task
+            _activeReceiving = false;
+            //shutdown socket
+            if (_socket.Connected)
+                _socket.Shutdown(SocketShutdown.Both);
+            _socket.Close();
+        }
+        else if (this.InterfaceType == InterfaceTypes.RS232)
+        {
+            if (_serial == null)
+                return true;
+
+            //stop receiving Task
+            _activeReceiving = false;
+            //close serial
+            if (_serial.IsOpen)
+                _serial.Close();
+        }
         //update status
         ConnectionDisconnected?.Invoke(this);    //raise event
         return true;
@@ -274,7 +340,13 @@ public class HapcanConnection
             if (this.IsConnected())
             {
                 var fullData = AddStartStopChecksum(frame.Data);
-                await _socket.SendAsync(new ArraySegment<byte>(fullData), SocketFlags.None);
+
+                if (this.InterfaceType == InterfaceTypes.Ethernet)
+                    await _socket.SendAsync(new ArraySegment<byte>(fullData), SocketFlags.None);
+                else if (this.InterfaceType == InterfaceTypes.RS232)
+                    await _serial.BaseStream.WriteAsync(new ArraySegment<byte>(fullData));
+            //    else
+            //        throw new Exception("Unknown interface type.");
                 MessageSent?.Invoke(frame);     //raise event
             }
         }

@@ -59,7 +59,7 @@ namespace Hapcan.Programmer.Forms
             // 
             // panelTop
             // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.panelTop.Controls.Add(this.btnNodeControl);
             this.panelTop.Controls.Add(this.btnNodeRefresh);
             this.panelTop.Controls.Add(this.btnNodeReboot);
@@ -174,7 +174,7 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeGeneralSettings.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnNodeGeneralSettings.Size = new System.Drawing.Size(86, 35);
             this.btnNodeGeneralSettings.TabIndex = 8;
-            this.btnNodeGeneralSettings.Text = " Settings";
+            this.btnNodeGeneralSettings.Text = " General";
             this.btnNodeGeneralSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnNodeGeneralSettings.UseVisualStyleBackColor = false;
             this.btnNodeGeneralSettings.Click += new System.EventHandler(this.btnNodeGeneralSettings_Click);
@@ -204,6 +204,8 @@ namespace Hapcan.Programmer.Forms
             // 
             // textBoxSearch
             // 
+            this.textBoxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.RecentlyUsedList;
             this.textBoxSearch.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -212,12 +214,10 @@ namespace Hapcan.Programmer.Forms
             this.textBoxSearch.Location = new System.Drawing.Point(6, 6);
             this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.PlaceholderText = "Search";
             this.textBoxSearch.Size = new System.Drawing.Size(377, 19);
             this.textBoxSearch.TabIndex = 5;
-            this.textBoxSearch.Text = "Search";
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
-            this.textBoxSearch.Enter += new System.EventHandler(this.textBoxSearch_Enter);
-            this.textBoxSearch.Leave += new System.EventHandler(this.textBoxSearch_Leave);
             // 
             // panel3
             // 

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HAPCAN Programmer 4.0", "HAPCAN Programmer 4.0.csproj", "{372B9F78-FDA9-4069-9E77-22E6B40076B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HAPCAN Programmer 4.0", "HAPCAN Programmer 4.0.csproj", "{88715859-2A2A-4400-9DB4-A4091CBA816A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{372B9F78-FDA9-4069-9E77-22E6B40076B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{372B9F78-FDA9-4069-9E77-22E6B40076B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{372B9F78-FDA9-4069-9E77-22E6B40076B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{372B9F78-FDA9-4069-9E77-22E6B40076B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88715859-2A2A-4400-9DB4-A4091CBA816A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88715859-2A2A-4400-9DB4-A4091CBA816A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88715859-2A2A-4400-9DB4-A4091CBA816A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88715859-2A2A-4400-9DB4-A4091CBA816A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EA75968D-F96D-4EB8-AFBD-17872367C35A}
+		SolutionGuid = {A32B5BC8-D9A6-47EE-8C44-68AA45903DC5}
 	EndGlobalSection
 EndGlobal

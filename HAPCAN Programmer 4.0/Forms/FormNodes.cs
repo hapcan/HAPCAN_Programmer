@@ -52,7 +52,7 @@ public partial class FormNodes : Form
             search = "";
 
         dataGridView1.DataSource = new SortableBindingList<HapcanNode>(list.
-           OrderBy(o => o.GroupNumber).ThenBy(o => o.NodeNumber).
+           OrderBy(o => !o.Interface).ThenBy(o => o.GroupNumber).ThenBy(o => o.NodeNumber).
            Where(o => o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullNodeGroupNumber.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullHardwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
@@ -81,6 +81,7 @@ public partial class FormNodes : Form
         dataGridView1.Columns["BootloaderMajorVersion"].Visible = false;
         dataGridView1.Columns["BootloaderMinorVersion"].Visible = false;
         dataGridView1.Columns["ProcessorVoltage"].Visible = false;
+        dataGridView1.Columns["InProgramming"].Visible = false;
 
         dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 0;
         dataGridView1.Columns["Description"].DisplayIndex = 1;
@@ -101,13 +102,12 @@ public partial class FormNodes : Form
         var node = (HapcanNode)dataGridView1.Rows[e.RowIndex].DataBoundItem;
         if (node != null)
         {
-            //serial number format
             if (dataGridView1.Columns[e.ColumnIndex].Name == "SerialNumber")
             {
                 e.Value = string.Format("{0:X8}h", e.Value);
             }
             //module voltage
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "ModuleVoltage")
+            else if (dataGridView1.Columns[e.ColumnIndex].Name == "ModuleVoltage")
             {
                 if (e.Value.ToString() == "0") e.Value = "";
             }
@@ -115,18 +115,6 @@ public partial class FormNodes : Form
     }
 
 
-
-    //Search box
-    private void textBoxSearch_Enter(object sender, EventArgs e)
-    {
-        if (textBoxSearch.Text == "Search")
-            textBoxSearch.Text = "";
-    }
-    private void textBoxSearch_Leave(object sender, EventArgs e)
-    {
-        if (textBoxSearch.Text == "")
-            textBoxSearch.Text = "Search";
-    }
     private void textBoxSearch_TextChanged(object sender, EventArgs e)
     {
         UpdateGrid(_project.NodeList, textBoxSearch.Text);
@@ -208,7 +196,7 @@ public partial class FormNodes : Form
             else
             {
                 Logger.Log("Nodes", String.Format("Refresh node {0} properties.", node.FullNodeGroupNumber));
-                var snp = new ScanNodeProperties(_project.Connection);
+                var snp = new ScanForNodes(_project.Connection);
                 await snp.GetNodePropertiesAsync(node);
             }
         }
@@ -221,7 +209,10 @@ public partial class FormNodes : Form
 
     private void btnNodeGeneralSettings_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("Not ready yet.");
+        //get selected nodes
+        var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
+        using var frm = new FormTemplate(new FormNodeSettings(_project, node));
+        frm.ShowDialog();
     }
 
     private void btnNodeControl_Click(object sender, EventArgs e)

@@ -2,8 +2,8 @@
 
 namespace Hapcan.General;
 
-    //declare a delegate type for the event
-    public delegate void ListEvent();
+//declare a delegate type for the event
+public delegate void ListEvent();
 
 public class HapcanList<T> : List<T>
 {

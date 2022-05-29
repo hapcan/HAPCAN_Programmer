@@ -11,24 +11,19 @@ public class HapcanMessages
     }
     public string GetDescription()
     {
-        string desc = "";
+        string desc;
         //canbus message
         if (_frame.Data.Length == 12)
         {
-            //programming
-            if (_frame.GetFrameType() < 0x100)
-                desc = GetDescriptionCanbusProgramming(_frame);
             //system
-            else if (_frame.GetFrameType() < 0x200)
+            if (_frame.GetFrameType() < 0x200)
                 desc = GetDescriptionCanbusSystem(_frame);
             //device
             else
                 desc = GetDescriptionCanbusDevice(_frame);
         }
         //interface message
-        else if (_frame.Data.Length == 2 && !_frame.IsResponse() ||         //request
-                 _frame.Data.Length == 10 && _frame.IsResponse() ||         //response
-                 _frame.Data.Length == 10 && !_frame.IsResponse() && _frame.GetFrameType() == 0x020)    //exit programming mode request
+        else if (_frame.Data.Length == 2 || _frame.Data.Length == 10)
         {
             desc = GetDescriptionInterface(_frame);
         }
@@ -37,8 +32,8 @@ public class HapcanMessages
         return desc;
     }
 
-    //canbus programing mode
-    private string GetDescriptionCanbusProgramming(HapcanFrame frame)
+    //canbus system
+    private string GetDescriptionCanbusSystem(HapcanFrame frame)
     {
         var frameType = _frame.GetFrameType();
         string desc = frameType switch
@@ -48,16 +43,6 @@ public class HapcanMessages
             0x030 => new Msg030_ProgrammingAddress(frame).GetDescription(),
             0x040 => new Msg040_ProgrammingData(frame).GetDescription(),
             0x0F0 => new Msg0F0_ProgrammingError(frame).GetDescription(),
-            _ => string.Format("Unknown canbus programming frame type 0x{0:X}", frameType),
-        };
-        return desc;
-    }
-    //canbus system
-    private string GetDescriptionCanbusSystem(HapcanFrame frame)
-    {
-        var frameType = _frame.GetFrameType();
-        string desc = frameType switch
-        {
             0x100 => new Msg100_EnterProgramming(frame).GetDescription(),
             0x101 => new Msg101_RebootGroup(frame).GetDescription(),
             0x102 => new Msg102_RebootNode(frame).GetDescription(),
@@ -107,6 +92,10 @@ public class HapcanMessages
         string desc = frameType switch
         {
             0x020 => new IntMsg020_ExitInterfaceFromProgramming(frame).GetDescription(),
+            0x030 => new IntMsg030_ProgrammingAddress(frame).GetDescription(),
+            0x040 => new IntMsg040_ProgrammingData(frame).GetDescription(),
+            0x0F0 => new IntMsg0F0_ProgrammingError(frame).GetDescription(),
+            0x100 => new IntMsg100_EnterInterfaceProgramming(frame).GetDescription(),
             0x102 => new IntMsg102_RebootToInterface(frame).GetDescription(),
             0x104 => new IntMsg104_HardwareTypeToInterface(frame).GetDescription(),
             0x106 => new IntMsg106_FirmwareTypeToInterface(frame).GetDescription(),
