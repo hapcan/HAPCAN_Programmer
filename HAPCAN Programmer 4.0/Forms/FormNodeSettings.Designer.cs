@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNodeSettings));
             this.panelTop = new System.Windows.Forms.Panel();
+            this.btnMemory = new System.Windows.Forms.Button();
             this.btnFirmware = new System.Windows.Forms.Button();
             this.btnId = new System.Windows.Forms.Button();
             this.panelContainer = new System.Windows.Forms.Panel();
@@ -39,14 +40,37 @@
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.panelTop.Controls.Add(this.btnMemory);
             this.panelTop.Controls.Add(this.btnFirmware);
             this.panelTop.Controls.Add(this.btnId);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Margin = new System.Windows.Forms.Padding(0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(840, 60);
+            this.panelTop.Size = new System.Drawing.Size(1200, 60);
             this.panelTop.TabIndex = 0;
+            // 
+            // btnMemory
+            // 
+            this.btnMemory.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMemory.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnMemory.FlatAppearance.BorderSize = 0;
+            this.btnMemory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMemory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnMemory.ForeColor = System.Drawing.SystemColors.Control;
+            this.btnMemory.Image = ((System.Drawing.Image)(resources.GetObject("btnMemory.Image")));
+            this.btnMemory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMemory.Location = new System.Drawing.Point(420, 0);
+            this.btnMemory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnMemory.Name = "btnMemory";
+            this.btnMemory.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
+            this.btnMemory.Size = new System.Drawing.Size(210, 60);
+            this.btnMemory.TabIndex = 15;
+            this.btnMemory.Text = " Memory";
+            this.btnMemory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMemory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnMemory.UseVisualStyleBackColor = true;
+            this.btnMemory.Click += new System.EventHandler(this.btnMemory_Click);
             // 
             // btnFirmware
             // 
@@ -97,15 +121,15 @@
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContainer.Location = new System.Drawing.Point(0, 60);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(840, 450);
-            this.panelContainer.TabIndex = 1;
+            this.panelContainer.Size = new System.Drawing.Size(1200, 640);
+            this.panelContainer.TabIndex = 5;
             // 
             // FormNodeSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(840, 510);
+            this.ClientSize = new System.Drawing.Size(1200, 700);
             this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -119,8 +143,9 @@
         #endregion
 
         private System.Windows.Forms.Panel panelTop;
-        private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.Button btnFirmware;
         private System.Windows.Forms.Button btnId;
+        private System.Windows.Forms.Button btnMemory;
+        private System.Windows.Forms.Panel panelContainer;
     }
 }

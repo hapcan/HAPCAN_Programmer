@@ -29,6 +29,7 @@ namespace Hapcan.Programmer.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNodes));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -37,7 +38,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeControl = new System.Windows.Forms.Button();
             this.btnNodeRefresh = new System.Windows.Forms.Button();
             this.btnNodeReboot = new System.Windows.Forms.Button();
-            this.btnNodeMemory = new System.Windows.Forms.Button();
             this.btnNodeGeneralSettings = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -48,6 +48,7 @@ namespace Hapcan.Programmer.Forms
             this.panelContainer = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.textBottom = new System.Windows.Forms.TextBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panelTop.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -63,7 +64,6 @@ namespace Hapcan.Programmer.Forms
             this.panelTop.Controls.Add(this.btnNodeControl);
             this.panelTop.Controls.Add(this.btnNodeRefresh);
             this.panelTop.Controls.Add(this.btnNodeReboot);
-            this.panelTop.Controls.Add(this.btnNodeMemory);
             this.panelTop.Controls.Add(this.btnNodeGeneralSettings);
             this.panelTop.Controls.Add(this.panel2);
             this.panelTop.Controls.Add(this.btnScan);
@@ -84,7 +84,7 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeControl.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeControl.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeControl.Image")));
             this.btnNodeControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNodeControl.Location = new System.Drawing.Point(644, 0);
+            this.btnNodeControl.Location = new System.Drawing.Point(731, 0);
             this.btnNodeControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeControl.Name = "btnNodeControl";
             this.btnNodeControl.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -137,27 +137,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeReboot.UseVisualStyleBackColor = false;
             this.btnNodeReboot.Click += new System.EventHandler(this.btnNodeReboot_Click);
             // 
-            // btnNodeMemory
-            // 
-            this.btnNodeMemory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNodeMemory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnNodeMemory.Enabled = false;
-            this.btnNodeMemory.FlatAppearance.BorderSize = 0;
-            this.btnNodeMemory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNodeMemory.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnNodeMemory.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeMemory.Image")));
-            this.btnNodeMemory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNodeMemory.Location = new System.Drawing.Point(818, 0);
-            this.btnNodeMemory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnNodeMemory.Name = "btnNodeMemory";
-            this.btnNodeMemory.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnNodeMemory.Size = new System.Drawing.Size(86, 35);
-            this.btnNodeMemory.TabIndex = 8;
-            this.btnNodeMemory.Text = " Memory";
-            this.btnNodeMemory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnNodeMemory.UseVisualStyleBackColor = false;
-            this.btnNodeMemory.Click += new System.EventHandler(this.btnNodeMemory_Click);
-            // 
             // btnNodeGeneralSettings
             // 
             this.btnNodeGeneralSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -168,7 +147,7 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeGeneralSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeGeneralSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeGeneralSettings.Image")));
             this.btnNodeGeneralSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNodeGeneralSettings.Location = new System.Drawing.Point(731, 0);
+            this.btnNodeGeneralSettings.Location = new System.Drawing.Point(818, 0);
             this.btnNodeGeneralSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeGeneralSettings.Name = "btnNodeGeneralSettings";
             this.btnNodeGeneralSettings.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -337,6 +316,14 @@ namespace Hapcan.Programmer.Forms
             this.textBottom.Size = new System.Drawing.Size(1167, 13);
             this.textBottom.TabIndex = 5;
             // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "programming_16.png");
+            this.imageList1.Images.SetKeyName(1, "active_16.png");
+            // 
             // FormNodes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -375,9 +362,9 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnNodeGeneralSettings;
-        private System.Windows.Forms.Button btnNodeMemory;
         private System.Windows.Forms.Button btnNodeControl;
         private System.Windows.Forms.Button btnNodeReboot;
         private System.Windows.Forms.Button btnNodeRefresh;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

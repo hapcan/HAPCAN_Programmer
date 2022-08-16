@@ -90,7 +90,7 @@ partial class FormNodeSettingsFirmware
             // 
             // btnCheck
             // 
-            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCheck.FlatAppearance.BorderSize = 0;
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -135,7 +135,7 @@ partial class FormNodeSettingsFirmware
             // 
             // btnUpload
             // 
-            this.btnUpload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnUpload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnUpload.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUpload.Enabled = false;
             this.btnUpload.FlatAppearance.BorderSize = 0;
@@ -204,7 +204,7 @@ partial class FormNodeSettingsFirmware
             // 
             // btnBrowse
             // 
-            this.btnBrowse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnBrowse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnBrowse.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBrowse.FlatAppearance.BorderSize = 0;
             this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

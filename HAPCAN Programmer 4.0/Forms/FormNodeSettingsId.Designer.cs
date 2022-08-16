@@ -53,6 +53,7 @@ partial class FormNodeSettingsId
             this.panel3 = new System.Windows.Forms.Panel();
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.btnCgangeDesc = new System.Windows.Forms.Button();
+            this.labLeftBytes = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.panel5.SuspendLayout();
@@ -187,7 +188,7 @@ partial class FormNodeSettingsId
             // 
             // btnChangeId
             // 
-            this.btnChangeId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnChangeId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnChangeId.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnChangeId.FlatAppearance.BorderSize = 0;
             this.btnChangeId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -205,7 +206,7 @@ partial class FormNodeSettingsId
             // 
             // btnDefaultId
             // 
-            this.btnDefaultId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnDefaultId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnDefaultId.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDefaultId.FlatAppearance.BorderSize = 0;
             this.btnDefaultId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -340,6 +341,7 @@ partial class FormNodeSettingsId
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.btnCgangeDesc);
+            this.panel2.Controls.Add(this.labLeftBytes);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Location = new System.Drawing.Point(30, 300);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -371,11 +373,12 @@ partial class FormNodeSettingsId
             this.textBoxDesc.Name = "textBoxDesc";
             this.textBoxDesc.Size = new System.Drawing.Size(185, 18);
             this.textBoxDesc.TabIndex = 20;
+            this.textBoxDesc.TextChanged += new System.EventHandler(this.textBoxDesc_TextChanged);
             this.textBoxDesc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDesc_KeyPress);
             // 
             // btnCgangeDesc
             // 
-            this.btnCgangeDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.btnCgangeDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnCgangeDesc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCgangeDesc.FlatAppearance.BorderSize = 0;
             this.btnCgangeDesc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -390,6 +393,18 @@ partial class FormNodeSettingsId
             this.btnCgangeDesc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCgangeDesc.UseVisualStyleBackColor = false;
             this.btnCgangeDesc.Click += new System.EventHandler(this.btnCgangeDesc_Click);
+            // 
+            // labLeftBytes
+            // 
+            this.labLeftBytes.AutoSize = true;
+            this.labLeftBytes.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labLeftBytes.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labLeftBytes.Location = new System.Drawing.Point(149, 73);
+            this.labLeftBytes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labLeftBytes.Name = "labLeftBytes";
+            this.labLeftBytes.Size = new System.Drawing.Size(67, 15);
+            this.labLeftBytes.TabIndex = 17;
+            this.labLeftBytes.Text = "Left 0 bytes";
             // 
             // label7
             // 
@@ -476,4 +491,5 @@ partial class FormNodeSettingsId
     private System.Windows.Forms.Panel panel6;
     private System.Windows.Forms.TextBox textBoxNodeDef;
     private System.Windows.Forms.ComboBox comBoxNode;
+    private System.Windows.Forms.Label labLeftBytes;
 }

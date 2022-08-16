@@ -50,9 +50,9 @@ public partial class FormNodeSettingsFirmware : Form
             var prg = new Programming(_project.Connection, _node);
             try
             {
-                //read flash memory cells
-                await prg.ReadMemoryAsync(0x1010, 0x1017, new System.Threading.CancellationTokenSource());
-                var revision = " (revision: " + (prg.ReadBuffer[0x1016] * 256 + prg.ReadBuffer[0x1017]) + ")";
+                //read flash memory cells with revision number
+                var rev = await prg.GetFirmwareRevision();
+                var revision = " (revision: " + rev + ")";
                 return _node.FullFirmwareVersion + revision;
             }
             catch (Exception ex)
@@ -105,15 +105,22 @@ public partial class FormNodeSettingsFirmware : Form
     //upload firmware into node
     private void btnUpload_Click(object sender, EventArgs e)
     {
-        //programe
+        //program
         var prgf = new FormProgramming(_project.Connection, _node, _fileBuffer, Programming.ProgrammingAction.WriteFirmware);
         prgf.ShowDialog();
-        string msg;
-        if(prgf.ProgrammingSuccessful == true)
-            msg = String.Format("Node ({0},{1}) firmware '{2}' uploading successed.", _node.NodeNumber, _node.GroupNumber, _fileFirmVersion);
-        else
-            msg = String.Format("Node ({0},{1}) firmware '{2}' uploading failed.", _node.NodeNumber, _node.GroupNumber, _fileFirmVersion);
 
+        string msg = String.Format("Node ({0},{1}) firmware '{2}' uploading ", _node.NodeNumber, _node.GroupNumber, _fileFirmVersion);
+        if (prgf.ProgrammingSuccessful == true)
+        {
+            msg += " successed.";
+            textCurFirm.Text = _fileFirmVersion;                            //update form
+        }
+        else
+        {
+            msg += " failed.";
+            textCurFirm.Text = _node.FullFirmwareVersion;                   //update form
+        }
+        prgf.Dispose();
         Logger.Log("Programming", msg);
     }
 

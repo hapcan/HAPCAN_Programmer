@@ -101,6 +101,7 @@ public class HapcanMessages
             0x106 => new IntMsg106_FirmwareTypeToInterface(frame).GetDescription(),
             0x10C => new IntMsg10C_VoltageToInterface(frame).GetDescription(),
             0x10E => new IntMsg10E_DescriptionToInterface(frame).GetDescription(),
+            0x113 => new IntMsg113_UptimeToInterface(frame).GetDescription(),
             0x1F1 => new IntMsg1F1_FirmwareError(frame).GetDescription(),
             _ => string.Format("Unknown interface frame type 0x{0:X}", frameType),
         };

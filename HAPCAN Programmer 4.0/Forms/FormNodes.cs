@@ -3,6 +3,7 @@ using Hapcan.General;
 using Hapcan.Messages;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -35,6 +36,12 @@ public partial class FormNodes : Form
         //show project nodes
         try
         {
+            //add status image collumn
+            var CollumnStatus = new DataGridViewImageColumn() {
+                DataPropertyName = "InProgramming",
+                HeaderText = "Status",
+                Name = "Status" };
+            dataGridView1.Columns.Add(CollumnStatus);
             UpdateGrid(_project.NodeList, string.Empty);
         }
         catch (Exception)
@@ -47,9 +54,6 @@ public partial class FormNodes : Form
     {
         if (list == null)
             return;
-
-        if (search == "Search")
-            search = "";
 
         dataGridView1.DataSource = new SortableBindingList<HapcanNode>(list.
            OrderBy(o => !o.Interface).ThenBy(o => o.GroupNumber).ThenBy(o => o.NodeNumber).
@@ -81,15 +85,14 @@ public partial class FormNodes : Form
         dataGridView1.Columns["BootloaderMajorVersion"].Visible = false;
         dataGridView1.Columns["BootloaderMinorVersion"].Visible = false;
         dataGridView1.Columns["ProcessorVoltage"].Visible = false;
-        dataGridView1.Columns["InProgramming"].Visible = false;
 
-        dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 0;
-        dataGridView1.Columns["Description"].DisplayIndex = 1;
-        dataGridView1.Columns["SerialNumber"].DisplayIndex = 2;
-        dataGridView1.Columns["FullHardwareVersion"].DisplayIndex = 3;
-        dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 4;
-        dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 5;
-        dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 6;
+        dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 1;
+        dataGridView1.Columns["Description"].DisplayIndex = 2;
+        dataGridView1.Columns["SerialNumber"].DisplayIndex = 3;
+        dataGridView1.Columns["FullHardwareVersion"].DisplayIndex = 4;
+        dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 5;
+        dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 6;
+        dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 7;
 
         //select last row
         if (dataGridView1.RowCount > 0)
@@ -102,7 +105,22 @@ public partial class FormNodes : Form
         var node = (HapcanNode)dataGridView1.Rows[e.RowIndex].DataBoundItem;
         if (node != null)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "SerialNumber")
+            //status
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
+            {
+                if ((bool)e.Value == true)
+                {
+                    e.Value = imageList1.Images[0];
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "In programming";
+                }
+                else
+                {
+                    e.Value = imageList1.Images[1];
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Active";
+                }
+            }
+            //serial number
+            else if (dataGridView1.Columns[e.ColumnIndex].Name == "SerialNumber")
             {
                 e.Value = string.Format("{0:X8}h", e.Value);
             }
@@ -127,7 +145,6 @@ public partial class FormNodes : Form
         {
             btnNodeControl.Enabled = false;
             btnNodeGeneralSettings.Enabled = false;
-            btnNodeMemory.Enabled = false;
             btnNodeReboot.Enabled = false;
             btnNodeRefresh.Enabled = false;
         }
@@ -135,7 +152,6 @@ public partial class FormNodes : Form
         {
             btnNodeControl.Enabled = true;
             btnNodeGeneralSettings.Enabled = true;
-            btnNodeMemory.Enabled = true;
             btnNodeReboot.Enabled = true;
             btnNodeRefresh.Enabled = true;
         }
@@ -202,11 +218,6 @@ public partial class FormNodes : Form
         }
     }
 
-    private void btnNodeMemory_Click(object sender, EventArgs e)
-    {
-        MessageBox.Show("Not ready yet.");
-    }
-
     private void btnNodeGeneralSettings_Click(object sender, EventArgs e)
     {
         //get selected nodes
@@ -219,4 +230,5 @@ public partial class FormNodes : Form
     {
         MessageBox.Show("Not ready yet.");
     }
+
 }

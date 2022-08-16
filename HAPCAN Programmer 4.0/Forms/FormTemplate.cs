@@ -31,4 +31,19 @@ public partial class FormTemplate : FormBase
     {
         base.FormMove_MouseDown(sender, e);
     }
+
+    private void picResizer_MouseDown(object sender, MouseEventArgs e)
+    {
+        base.FormResize_MouseDown(sender, e);
+    }
+
+    private void picResizer_MouseMove(object sender, MouseEventArgs e)
+    {
+        base.FormResize_MouseMove(sender, e);
+    }
+
+    private void picResizer_MouseUp(object sender, MouseEventArgs e)
+    {
+        base.FormResize_MouseUp(sender, e);
+    }
 }

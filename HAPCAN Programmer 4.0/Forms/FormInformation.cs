@@ -64,7 +64,7 @@ public partial class FormInformation : FormBase
         frm.CenterForm(owner, frm);
         frm.Display(title, info);
         frm.ShowDialog();
-        //frm.Dispose();
+        frm.Dispose();
     }
 
     //close form

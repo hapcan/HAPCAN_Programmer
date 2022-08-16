@@ -23,21 +23,21 @@ public class ProjectFile<T>
             {
                 lock (_lockproj)
                 {
-                    T project = default(T);
                     try
                     {
+                        T project = default(T);
                         using var sr = new StreamReader(filepath, Encoding.UTF8);
                         var ser = new XmlSerializer(typeof(T));
                         project = (T)ser.Deserialize(sr);
+                        return project;
                     }
                     catch (Exception ex)
                     {
                         throw new Exception("", ex);
                     }
-                    return project;
                 }
             }
-        );
+        ).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -53,23 +53,20 @@ public class ProjectFile<T>
             {
                 lock (_lockproj)
                 {
-                    var result = false;
                     try
                     {
                         var ser = new XmlSerializer(typeof(T));
                         using var sw = new StreamWriter(filepath, false, Encoding.UTF8);
                         using var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
                         ser.Serialize(xw, project);
-
-                        result = true;
+                        return true;
                     }
                     catch (Exception ex)
                     {
                         throw new Exception("", ex);
                     }
-                    return result;
                 }
             }
-        );
+        ).ConfigureAwait(false);
     }
 }

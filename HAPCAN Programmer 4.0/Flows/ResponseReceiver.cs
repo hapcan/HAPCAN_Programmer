@@ -12,15 +12,17 @@ public class ResponseReceiver : IDisposable
     readonly HapcanConnection _conn;
     readonly ConcurrentQueue<HapcanFrame> _queue;
     int _responsetime;
-    bool _calculateResponseTime = true;             //measure real response time and use it - it speeds up receiving
+    bool _calculateResponseTime;             //measure real response time and use it as a timeout - it speeds up receiving next frames
 
     /// <summary>
     /// Receives response HAPCAN frames from the bus
     /// </summary>
     /// <param name="connection">Connection to interface object</param>
-    public ResponseReceiver(HapcanConnection connection)
+    /// <param name="calculateResponseTime">If true then the real real response time will be calculated and used as timeout for the next receiving. If false the Connection timeout is used.</param>
+    public ResponseReceiver(HapcanConnection connection, bool calculateResponseTime)
     {
         _conn = connection;
+        _calculateResponseTime = calculateResponseTime;
         _responsetime = connection.Timeout;
         _queue = new ConcurrentQueue<HapcanFrame>();
         //subscribe the event
@@ -39,15 +41,7 @@ public class ResponseReceiver : IDisposable
         _queue.Enqueue(frame);
     }
 
-    /// <summary>
-    /// Receives defined frames type and number from the bus withing response time. Returns list of frames
-    /// </summary>
-    /// <param name="frameType">Array of frame types to receive</param>
-    /// <returns>List of received frames List<HapcanFrame></returns>
-    public async Task<List<HapcanFrame>> ReceiveAsync(int[] frameType)
-    {
-        return await ReceiveAsync(frameType, 1000);
-    }
+
     /// <summary>
     /// Receives defined frames type and number from the bus withing response time. Returns list of frames
     /// </summary>

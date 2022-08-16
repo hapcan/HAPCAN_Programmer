@@ -123,7 +123,7 @@ public class HapcanFrame
     public byte GetFrameChecksum()
     {
         byte checksum = 0;
-        for (int i = 0; i < Data.Length - 3; i++)
+        for (int i = 0; i < Data.Length; i++)
             checksum += Data[i];
         return checksum;
     }

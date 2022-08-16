@@ -3,23 +3,24 @@ using System;
 
 namespace Hapcan.Messages;
 
-class Msg112_UptimeResponse
+class IntMsg113_UptimeResponse
 {
     private HapcanFrame _frame;
 
     public string Uptime
     {
-        get{ return GetUptime(); }
+        get { return GetUptime(); }
     }
 
-    public Msg112_UptimeResponse(HapcanFrame frame)
+    public IntMsg113_UptimeResponse(HapcanFrame frame)
     {
         _frame = frame;
     }
 
+
     public string GetDescription()
     {
-        return string.Format("SYSTEM - Uptime: {0}", Uptime);
+        return string.Format("INTERFACE - SYSTEM - Uptime: {0}", Uptime);
     }
 
     private string GetUptime()

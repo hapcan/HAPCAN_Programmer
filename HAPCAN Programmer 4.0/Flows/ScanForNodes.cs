@@ -50,9 +50,9 @@ public class ScanForNodes
         await Task.Delay(100);
 
         //start receiving
-        using var rcv = new ResponseReceiver(_connection);
+        using var rcv = new ResponseReceiver(_connection, true);
 
-        //check all groups and calculate resonse time
+        //check all groups and calculate response time
         for (int i = GroupFrom; i <= GroupTo; i++)      //i must be int type
         {
             if (await HardwareTypeRequestToGroup(rcv, (byte)i))
@@ -62,7 +62,8 @@ public class ScanForNodes
                     var sr = new SystemRequest(_connection);
                     await sr.FirmwareVersionRequest(rcv, node);
                     await sr.VoltageRequest(rcv, node);
-                    await sr.DescriptionRequest(rcv, node); 
+                    await sr.DescriptionRequest(rcv, node);
+                    await sr.UptimeRequest(rcv, node);
                 }
             }
             if (cts.Token.IsCancellationRequested)
@@ -80,7 +81,7 @@ public class ScanForNodes
         //send request
         await _connection.SendAsync(new Msg103_HardwareTypeToGroup(_nodeTx, _groupTx, group).GetFrame());
         //get response
-        var frameList = await rcv.ReceiveAsync(new int[] { 0x103 });
+        var frameList = await rcv.ReceiveAsync(new int[] { 0x103 }, 1000);
         //process response
         foreach (var frame in frameList)
         {
@@ -106,33 +107,16 @@ public class ScanForNodes
         await Task.Delay(100);
 
         //start receiving
-        using var rcv = new ResponseReceiver(_connection);
+        using var rcv = new ResponseReceiver(_connection, false);
 
-        //check all groups and calculate resonse time
+        //check all groups and calculate response time
         var sr = new SystemRequest(_connection);
-        await HardwareTypeRequest(rcv, node);
+        await sr.HardwareTypeRequest(rcv, node);
         await sr.FirmwareVersionRequest(rcv, node);
         await sr.VoltageRequest(rcv, node);
         await sr.DescriptionRequest(rcv, node);
+        await sr.UptimeRequest(rcv, node);
 
         return node;
-    }
-
-    private async Task<bool> HardwareTypeRequest(ResponseReceiver rcv, HapcanNode node)
-    {
-        //send request
-        await _connection.SendAsync(new Msg104_HardwareTypeToNode(_nodeTx, _groupTx, node.NodeNumber, node.GroupNumber).GetFrame());
-        //get response
-        var frameList = await rcv.ReceiveAsync(new int[] { 0x104 }, 1);
-        //process response
-        if (frameList.Count == 1)
-        {
-            var msg = new Msg103_HardwareTypeResponse(frameList[0]);
-            node.HardwareType = msg.HardwareType;
-            node.HardwareVersion = msg.HardwareVersion;
-            return true;
-        }
-        else
-            return false;
     }
 }

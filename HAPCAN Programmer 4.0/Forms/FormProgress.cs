@@ -20,6 +20,8 @@ public partial class FormProgress : FormBase
         Text = Application.ProductName;
         labelInfo1.Text = "";
         labelInfo2.Text = "";
+        labelInfo3.Text = "";
+        labelInfo4.Text = "";
         labelTitle.Text = "";
         Progress = 0;
     }
@@ -56,6 +58,30 @@ public partial class FormProgress : FormBase
         set
         {
             labelInfo2.Text = value;
+            this.Refresh();
+        }
+    }
+    public string Info3
+    {
+        get
+        {
+            return labelInfo3.Text;
+        }
+        set
+        {
+            labelInfo3.Text = value;
+            this.Refresh();
+        }
+    }
+    public string Info4
+    {
+        get
+        {
+            return labelInfo4.Text;
+        }
+        set
+        {
+            labelInfo4.Text = value;
             this.Refresh();
         }
     }

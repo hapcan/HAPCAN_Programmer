@@ -20,7 +20,7 @@ public partial class FormMain : FormBase
     Form _activeForm;
     FormInformation _infoForm;
 
-    public FormMain()
+    public FormMain() : base()
     {
         InitializeComponent();
     }
@@ -42,18 +42,6 @@ public partial class FormMain : FormBase
         _project.Connection.ConnectionConnected += OnConnectionConnected;
         _project.Connection.ConnectionDisconnected += OnConnectionDisconnected;
         _project.Connection.ConnectionError += OnConnectionError;
-    }
-    private async void FormMain_FormClosing(object sender, FormClosingEventArgs e)
-    {
-
-    }
-    private async void FormMain_FormClosed(object sender, FormClosedEventArgs e)
-    {
-        //save default project
-        await _project.SaveAsync(_project.ProjectFilePath);
-        //logs
-        Logger.Log("Application info", "Application terminated");
-        Logger.Flush();
     }
 
     //Move, resize, minimize, maximize, close form
@@ -81,13 +69,15 @@ public partial class FormMain : FormBase
     {
         this.WindowState = FormWindowState.Minimized;
     }
-    private void btnExit_Click(object sender, EventArgs e)
+    private async void btnExit_Click(object sender, EventArgs e)
     {
+        //save default project
+        await _project.SaveAsync(_project.ProjectFilePath);
+        //logs
+        Logger.Log("Application info", "Application terminated");
+        await Logger.FlushAsync();
         Close();
     }
-
-
-
 
 
     private void LoadContainer(Form frm, Button btn)

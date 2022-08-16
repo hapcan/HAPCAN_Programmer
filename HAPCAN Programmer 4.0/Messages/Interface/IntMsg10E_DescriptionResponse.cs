@@ -14,7 +14,7 @@ class IntMsg10E_DescriptionResponse
 
     public string GetDescription()
     {
-        return string.Format("SYSTEM - Description frame: {0}", NodeDescription);
+        return string.Format("INTERFACE - SYSTEM - Description frame: {0}", NodeDescription);
     }
 
     private string GetText(HapcanFrame frame)

@@ -82,9 +82,9 @@ public partial class FormScan : FormProgress
         }
         else
         {
-            Title = string.Format("Scanning for nodes in groups {0}-{1}. At the moment group {2}",
-                                sfn.GroupFrom, sfn.GroupTo, sfn.ReportGroup);
-            Info2 = string.Format("Found {0} nodes", sfn.NodeList.Count);
+            Title = string.Format("Scanning for nodes in groups {0}-{1}.", sfn.GroupFrom, sfn.GroupTo);
+            Info2 = string.Format("At the moment group {0}", sfn.ReportGroup);
+            Info4 = string.Format("Found {0} nodes", sfn.NodeList.Count);
             Progress = sfn.ReportProgress;
 
             if (Progress == 100)

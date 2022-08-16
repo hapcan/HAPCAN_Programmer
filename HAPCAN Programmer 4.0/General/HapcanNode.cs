@@ -19,7 +19,7 @@ public class HapcanNode : INotifyPropertyChanged
     private byte _bootloaderMinorVersion;
     private byte _firmwareError;
     private float _moduleVoltage;
-    private string _description;
+    private string _uptime;
     private int _serialNumber;
     private bool _inProgramming;
 
@@ -41,7 +41,6 @@ public class HapcanNode : INotifyPropertyChanged
         FullHardwareVersion = "";
         FullFirmwareVersion = "";
         FullBootloaderVersion = "";
-        Memory = new byte[0x10000];
         Eeprom = new byte[0x400];
         Flash = new byte[0x8000];
     }
@@ -61,19 +60,17 @@ public class HapcanNode : INotifyPropertyChanged
     {
         get //from eeprom
         {
-            _description = "";
+            string description = "";
             //convert bytes to chars
             char[] chars = Encoding.UTF8.GetChars(Eeprom, 0x30, 16);
             for (int i = 0; i < chars.Length; i++)
-                _description += chars[i];
-            return _description; 
+                description += chars[i];
+            return description.Trim('\0'); 
         }
         set //to eeprom
         {
-            //get description
-            _description = value;
-            //convert to bytes
-            byte[] bytes = Encoding.UTF8.GetBytes(_description);
+            //convert given value to bytes
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
             //position description in eeprom
             Array.Fill<byte>(Eeprom, 0, 0x30, 16);
             for (int i = 0; i < bytes.Length && i < 16; i++)
@@ -215,7 +212,7 @@ public class HapcanNode : INotifyPropertyChanged
     public byte[] Flash { get; set; }
     [XmlIgnore]
     [Browsable(false)]
-    public byte[] Memory { get; set; }
+    public bool MemoryWasRead { get; set; }
 
     [XmlIgnore]
     public float ModuleVoltage
@@ -229,6 +226,16 @@ public class HapcanNode : INotifyPropertyChanged
     }
     [XmlIgnore]
     public float ProcessorVoltage { get; set; }
+    [XmlIgnore]
+    public string Uptime 
+    {
+        get { return _uptime; }
+        set
+        {
+            _uptime = value;
+            NotifyPropertyChanged();
+        }
+    }
 
     [XmlIgnore]
     public string FullNodeGroupNumber

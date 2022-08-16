@@ -9,7 +9,6 @@ public partial class FormBase : Form
 {
     public FormBase()
     {
-        InitializeComponent();
         //resising form
         this.SetStyle(ControlStyles.ResizeRedraw, true);
     }

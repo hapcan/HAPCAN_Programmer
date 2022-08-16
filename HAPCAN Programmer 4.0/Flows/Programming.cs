@@ -20,11 +20,15 @@ public class Programming
     //FIELDS
     readonly HapcanConnection _conn;
     readonly HapcanNode _node;
+    byte[] _data;                                       //read full memory buffer
     int _addr;                                          //data buffer address
-    int _totalBytes;
+    int _cycles;                                        //numebr of processed read/write/erase cycles
+    int _totalCycles;                                   //numebr of cycles 
 
-    //PROPERTIES
-    public byte[] ReadBuffer { get; private set; }      //read node memory buffer
+
+
+    //PROPERTIES 
+
     public int Address                                  //current address in use
     {
         get
@@ -39,17 +43,16 @@ public class Programming
     { 
         get
         {
-            if( _totalBytes == 0)
+            if (_totalCycles == 0)
                 return 0;
-            return Bytes * 100 / _totalBytes; 
+            return 100 * _cycles / _totalCycles;
         }
     }
-    public int Bytes { get; private set; }              //number of bytes processed
+    public int BytesRead { get; private set; }          //number of bytes processed
+    public int BytesErased { get; private set; }        //number of bytes processed
+    public int BytesWritten { get; private set; }       //number of bytes processed
     public enum ProgrammingAction
     {
-        Read = 0x01,
-        Write = 0x02,
-        Erase = 0x03,
         SmartReadData,
         SmartWriteData,
         WriteFirmware
@@ -65,9 +68,9 @@ public class Programming
     {
         _conn = connection;
         _node = node;
-        ReadBuffer = new byte[0x10000];
-        for (int i = 0; i < ReadBuffer.Length; i++)
-            ReadBuffer[i] = 0xFF;
+        _data = new byte[0x10000];
+        for (int i = 0; i < _data.Length; i++)
+            _data[i] = 0xFF;
     }
 
     //METHODS
@@ -86,6 +89,7 @@ public class Programming
             await _conn.SendAsync(new Msg020_ExitNodeFromProgramming(_node.NodeNumber, _node.GroupNumber).GetFrame());
         _node.InProgramming = false;
     }
+    
     /// <summary>
     /// Enters node into programming mode.
     /// </summary>
@@ -96,7 +100,7 @@ public class Programming
         if (_node.InProgramming)
             return;
         //start receiving now
-        using var receiver = new ResponseReceiver(_conn);
+        using var receiver = new ResponseReceiver(_conn, false);
 
         //interface
         if (_node.Interface)
@@ -116,6 +120,7 @@ public class Programming
                     return;
                 }
             }
+            await ExitProgrammingAsync();
             throw new TimeoutException("Interface didn't respond to enter programming mode request.");
         }
         //bus node
@@ -136,69 +141,136 @@ public class Programming
                     return;
                 }
             }
+            await ExitProgrammingAsync();
             throw new TimeoutException("Node didn't respond to enter programming mode request.");
         }
     }
+    
     /// <summary>
     /// Reads all data only from occupied memory cells of eeprom and flash
     /// </summary>
     /// <param name="cts">Cancellation Token Source to cancel reading.</param>
     /// <returns></returns>
+    /// <exception cref="ArgumentException">Occurs when addrFrom or addrTo is incorrect.</exception>
+    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
     public async Task SmartReadDataMemoryAsync(CancellationTokenSource cts)
     {
         //read last addreses saved in eeeprom
-        await ReadAsync(0x0, 0x7, cts);
-        int eepromAddr = ReadBuffer[0x3]*256+ReadBuffer[0x4];
-        eepromAddr += (7 - eepromAddr % 8);                     //adjust addres to 0xXX7 or 0xXXF
-        if (eepromAddr > 0x3FF)
-            eepromAddr = 0x3FF;
-        int flashAddr = ReadBuffer[0x6]*256+ReadBuffer[0x7];
-        flashAddr += (7 - flashAddr % 8);                       //adjust addres to 0xXXX7 or 0xXXXF
-        //get number of bytes to read
-        _totalBytes = eepromAddr + 1 + flashAddr + 1 - 0x8000;
+        await ReadAsync(0x0, 0x7, cts);                                             //read eeprom some space
+        int eepromTo = _data[0x3] * 256 + _data[0x4];                               //take last address of eeprom
+        eepromTo += (7 - eepromTo % 8);                                             //adjust addres to 0xXX7 or 0xXXF
+        if (eepromTo > 0x3FF)
+            eepromTo = 0x3FF;
+        int flashTo = _data[0x5] * 256 * 256 + _data[0x6] * 256 + _data[0x7];       //take last address of eepromflash
+        flashTo += (7 - flashTo % 8);                                               //adjust addres to 0xXXX7 or 0xXXXF
+        if (flashTo > 0xFFFF)
+            flashTo = 0xFFFF;
+
+        //get number of all cycles
+        _totalCycles = (eepromTo - 8) / 8 + 1 + (flashTo - 0x8000) / 8 + 1;         //eeprom + flash reading
+
         //read eeprom
-        if (eepromAddr > 0x7)
-        {
-            await ReadAsync(0x8, eepromAddr, cts);
-        }
+        if (eepromTo > 0x7)
+            await ReadAsync(0x8, eepromTo, cts);
         //read flash
-        if (flashAddr > 0x7FFF)
+        await ReadAsync(0x8000, flashTo, cts);
+        
+        //update memory if fully read
+        if (!cts.IsCancellationRequested)
         {
-            await ReadAsync(0x8000, flashAddr, cts);
+            //update node memeory
+            for (int i = 0; i < _node.Eeprom.Length; i++)
+                _node.Eeprom[i] = _data[i];
+            for (int i = 0; i < _node.Flash.Length; i++)
+                _node.Flash[i] = _data[i + 0x8000];
+            //set flag that memeory of this node was read
+            _node.MemoryWasRead = true;
         }
-        await ExitProgrammingAsync();                           //make sure node exits programming mode
+        //make sure node exits programming mode
+        await ExitProgrammingAsync();                           
     }
+
     /// <summary>
-    /// Reads defined range of memory. 0x000 - 0x3FF is an Eeprom and 0x1000-0xFFFF is a Flash memory.
+    /// Writes only data that is different from currently written in the nodeeeprom and flash memory.
     /// </summary>
-    /// <param name="addrFrom">Address from which the memory will be read. Must be withing 8 byte boundary (0xXXX0 or 0xXXX8).</param>
-    /// <param name="addrTo">Address to which the memory will be read. Must be withing 8 byte boundary (0xXXX7 or 0xXXXF).</param>
-    /// <param name="cts">Cancellation Token Source to cancel reading.</param>
-    /// <exception cref="ArgumentException">Occurs when addrFrom or addrTo is incorrect.</exception>
-    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
-    public async Task ReadMemoryAsync(int addrFrom, int addrTo, CancellationTokenSource cts)
+    /// <param name="eepromBuffer">byte[0x400] buffer with data to written into eeprom memory.</param>
+    /// <param name="flashBuffer">byte[0x8000] buffer with data to written into flash memory.</param>
+    /// <param name="cts">Cancellation Token Source to cancel writing.</param>
+    /// <exception cref="ArgumentException">Occurs when input buffer is null.</exception>
+    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>/// 
+    /// <returns></returns>
+    public async Task SmartWriteDataMemoryAsync(byte[] eepromBuffer, byte[] flashBuffer, CancellationTokenSource cts)
     {
-        _totalBytes = CalculateTotalBytes(addrFrom, addrTo);    //calculate bytes to read for the progress status
-        await ReadAsync(addrFrom, addrTo, cts);                 //start reading
-        await ExitProgrammingAsync();                           //make sure node exits programming mode
-    }
-    /// <summary>
-    /// Writes defined range of memory. 0x000 - 0x3FF is an Eeprom and 0x1000-0xFFFF is a Flash memory. Make sure the Flash memory is erased first.
-    /// </summary>
-    /// <param name="buffer">byte[0x10000] buffer with data to be written</param>
-    /// <param name="addrFrom">Address from which the memory will be read. Must be withing 8 byte boundary (0xXXX0 or 0xXXX8).</param>
-    /// <param name="addrTo">Address to which the memory will be read. Must be withing 8 byte boundary (0xXXX7 or 0xXXXF).</param>
-    /// <param name="cts">Cancellation Token Source to cancel reading.</param>
-    /// <exception cref="ArgumentException">Occurs when addrFrom or addrTo is incorrect.</exception>
-    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
-    public async Task WriteMemoryAsync(byte[] buffer, int addrFrom, int addrTo, CancellationTokenSource cts)
-    {
-        if (buffer == null)
+        if (eepromBuffer == null || flashBuffer == null)
             throw new ArgumentException("Buffer with data to be written can't be null.");
-        _totalBytes = CalculateTotalBytes(addrFrom, addrTo);    //calculate bytes to write for the progress status
-        await WriteAsync(buffer, addrFrom, addrTo, cts);        //start writing
-        await ExitProgrammingAsync();                           //make sure node exits programming mode
+        if (eepromBuffer.Length != 0x400 || flashBuffer.Length != 0x8000)
+            throw new ArgumentException("Eeprom or Flash buffer with data to write has incorrect size.");
+
+        //get number of all cycles
+        _totalCycles = CalculateSmartWriteCycles(eepromBuffer, flashBuffer);
+
+
+        //eeprom loop
+        for (int adr = 0; adr < 0x400; adr += 8)                        //jump eeprom in 8byte blocks
+        {
+            for (int i = adr; i < adr + 8; i++)                         //check every byte in that block
+            {
+                if (_node.Eeprom[i] != eepromBuffer[i])                 //any difference in block of 8 bytes?
+                {
+                    await WriteAsync(eepromBuffer, adr, adr + 7, cts);  //save block of 8 bytes
+                    Buffer.BlockCopy(eepromBuffer, adr, _node.Eeprom, adr, 8);      //update node memory block
+                    break;                                              //leave block of 8 bytes checking
+                }
+            }
+            //exit if requested
+            if (cts.Token.IsCancellationRequested)                      //exit jumping loop
+                return;
+        }
+
+        //move flash buffer by 0x8000
+        var movedFlashBuffer = new byte[0x10000];
+        Buffer.BlockCopy(flashBuffer, 0, movedFlashBuffer, 0x8000, 0x8000);
+
+        //flash loop
+        for (int adr = 0; adr < 0x8000; adr += 64)                      //jump between 64byte blocks
+        {
+            //erase
+            for (int i = adr; i < adr + 64; i++)                        //check every byte in that block
+            {
+                if (_node.Flash[i] != flashBuffer[i])                   //any difference in block of 64 bytes?
+                {
+                    await EraseAsync(adr + 0x8000, adr + 0x8000 + 63, false, cts);  //erase that block
+                    Buffer.BlockCopy(flashBuffer, adr, _node.Flash, adr, 64);      //update node memory block
+
+                    //write in 8byte blocks
+                    for (int subadr = adr; subadr < adr + 64; subadr += 8)          //jump eeprom in 8byte blocks
+                    {
+                        for (int j = subadr; j < subadr + 8; j++)                 //check every byte in that block
+                        {
+                            if (flashBuffer[j] != 0xFF)                 //any writing needed in block of 8 bytes?
+                            {
+                                await WriteAsync(movedFlashBuffer, subadr + 0x8000, subadr + 0x8007, cts);  //save block of 8 bytes
+                                Buffer.BlockCopy(flashBuffer, subadr, _node.Flash, subadr, 8);      //update node memory block
+                                break;                                  //leave block of 8 bytes checking
+                            }
+                        }
+                        //exit if requested
+                        if (cts.Token.IsCancellationRequested)          //exit jumping loop
+                            return;
+                    }
+                    break;                                              //leave block of 64 bytes checking
+                }
+            }
+            //exit if requested
+            if (cts.Token.IsCancellationRequested)                      //exit jumping loop
+                return;
+        }
+
+        //make sure node exits programming mode
+        await ExitProgrammingAsync();
     }
+
+
     /// <summary>
     /// Writes firmware data from given input buffer into node flash memory firmware section (0x1000 - 0x7FFF).
     /// </summary>
@@ -206,40 +278,50 @@ public class Programming
     /// <param name="cts">Cancellation Token Source to cancel writing.</param>
     /// <exception cref="ArgumentException">Occurs when input buffer is null.</exception>
     /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
-    public async Task WriteFirmwareAsync(byte[] buffer, CancellationTokenSource cts)
+    public async Task WriteFirmwareAsync(byte[] firmBuffer, CancellationTokenSource cts)
     {
-        if (buffer == null)
+        if (firmBuffer == null)
             throw new ArgumentException("Buffer with data to be written can't be null.");
+        if (firmBuffer.Length != 0x10000)
+            throw new ArgumentException("Buffer size is incorrect.");
 
         //check last data address
         int lastAddress = 0;
         for (int i = 0x1000; i < 0x8000; i++)
         {
-            if (buffer[i] != 0xFF)
+            if (firmBuffer[i] != 0xFF)
                 lastAddress = i;
         }
-        lastAddress += (63 - lastAddress % 64);                 //adjust addres to 64-byte block
+        lastAddress += (7 - lastAddress % 8);                   //adjust addres to 8-byte block
 
-        _totalBytes = 2 * (lastAddress - 0x1000);               //byte are calculated for erasing and writing
+        //get number of all cycles
+        _totalCycles = 448 + (lastAddress - 0x1000) / 8 + 1;    //448 for erasing + writing
 
         //process firmware writting
-        for (int i = 0x1000; i < lastAddress; i += 64)
+        for (int i = 0x1000; i < 0x8000; i += 64)
         {
             //erase block
-            await EraseAsync(i, i + 63, cts);
+            await EraseAsync(i, i + 63, false, cts);
 
             //write block
-            for (int j = i; j < i + 64; j += 8)
+            if (i < lastAddress)
             {
-                await WriteAsync(buffer, j, j + 7, cts);
-                //exit if requested
-                if (cts.Token.IsCancellationRequested)
-                    break;
+                for (int j = i; j < i + 64; j += 8)
+                {
+                    await WriteAsync(firmBuffer, j, j + 7, cts);
+                    //exit if requested
+                    if (cts.Token.IsCancellationRequested)
+                        break;
+                }
             }
+            else
+                ProgrammingProgress?.Invoke(this);              //raise event
+
             //exit if requested
             if (cts.Token.IsCancellationRequested)
                 break;
         }
+
         await ExitProgrammingAsync();                           //make sure node exits programming mode
 
         //refresh node firmware version
@@ -247,6 +329,64 @@ public class Programming
         var sr = new SystemRequest(_conn);                      //ask for firmware version
         await sr.FirmwareVersionRequest(_node);
     }
+    
+    /// <summary>
+    /// Reads firmware revision from node firmware.
+    /// </summary>
+    /// <returns>Returns int value of firmware revision.</returns>
+    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
+    public async Task<int> GetFirmwareRevision()
+    {
+        //read flash memory cells with revision number
+        await ReadAsync(0x1010, 0x1017, new System.Threading.CancellationTokenSource());
+        //make sure node exits programming mode
+        await ExitProgrammingAsync();
+        return _data[0x1016] * 256 + _data[0x1017];
+    }
+    
+    /// <summary>
+    /// Changes node desription
+    /// </summary>
+    /// <param name="description">New node description.</param>
+    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
+    public async Task ChangeNodeDescription(string description)
+    {
+        //get description
+        byte[] bytes = Encoding.UTF8.GetBytes(description);
+        //position description in temp buffer
+        var buffer = new byte[0x40];
+        for (int i = 0; i < bytes.Length && i < 16; i++)
+            buffer[0x30 + i] = (byte)bytes[i];
+        //write to node
+        await WriteAsync(buffer, 0x30, 0x3F, new System.Threading.CancellationTokenSource());
+        //make sure node exits programming mode
+        await ExitProgrammingAsync();
+        //change node description
+        _node.Description = description;
+    }
+    
+    /// <summary>
+    /// Changes node id.
+    /// </summary>
+    /// <param name="node">Node new number.</param>
+    /// <param name="group">Node new group number.</param>
+    /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
+    /// <returns></returns>
+    public async Task ChangeNodeId(byte node, byte group)
+    {
+        //position id in eeprom buffer
+        var buffer = new byte[0x28];
+        buffer[0x26] = node;
+        buffer[0x27] = group;
+        //write to node
+        await WriteAsync(buffer, 0x20, 0x27, new System.Threading.CancellationTokenSource());
+        //make sure node exits programming mode
+        await ExitProgrammingAsync();
+        //change node id
+        _node.NodeNumber = node;
+        _node.GroupNumber = group;
+    }    
+
 
     private async Task ReadAsync(int addrFrom, int addrTo, CancellationTokenSource cts)
     {
@@ -256,7 +396,7 @@ public class Programming
         await EnterProgrammingAsync();
 
         //start receiving now
-        using var receiver = new ResponseReceiver(_conn);
+        using var receiver = new ResponseReceiver(_conn, false);
 
         //read memory
         for (_addr = addrFrom; _addr <= addrTo; _addr += 8)
@@ -275,7 +415,7 @@ public class Programming
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x030 frame at 0x{0:X6} address.", Address));
 
             //data frame repeat a few times if necessary
@@ -287,22 +427,23 @@ public class Programming
                 {
                     //get data
                     for (int j = 0; j < 8; j++)
-                        ReadBuffer[_addr + j] = data[j];
+                        _data[_addr + j] = data[j];
                     result = true;
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x040 frame at 0x{0:X6} address.", Address));
 
             //exit if requested
             if (cts.Token.IsCancellationRequested)
                 break;
             //report progress
-            if ((addrTo - _addr) < 8)               //at the end update to last processed address
+            if ((addrTo - _addr) < 8)                   //at the end update to last processed address
                 _addr += 7;
-            Bytes += 8;                             //number processed bytes
-            ProgrammingProgress?.Invoke(this);      //raise event
+            BytesRead += 8;                             //number processed bytes
+            _cycles++;                                  //numver of processed read cycles
+            ProgrammingProgress?.Invoke(this);          //raise event
         }
     }
     private async Task WriteAsync(byte[] buffer, int addrFrom, int addrTo, CancellationTokenSource cts)
@@ -315,7 +456,7 @@ public class Programming
         var data = new byte[8];
 
         //start receiving now
-        using var receiver = new ResponseReceiver(_conn);
+        using var receiver = new ResponseReceiver(_conn, false);
 
         //write memory
         for (_addr = addrFrom; _addr <= addrTo; _addr += 8)
@@ -328,13 +469,13 @@ public class Programming
             bool result = false;
             for (int i = 0; i < 3; i++)
             {
-                if (await ProcessAddressFrameAsync(receiver, Address, (byte)ProgrammingAction.Write))
+                if (await ProcessAddressFrameAsync(receiver, Address, 0x02))
                 {
                     result = true;
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x030 frame at 0x{0:X6} address.", Address));
 
             //data frame repeat a few times if necessary
@@ -350,20 +491,21 @@ public class Programming
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x040 frame at 0x{0:X6} address.", Address));
 
             //exit if requested
             if (cts.Token.IsCancellationRequested)
                 break;
             //report progress
-            if ((addrTo - _addr) < 8)               //at the end update to last processed address
+            if ((addrTo - _addr) < 8)                   //at the end update to last processed address
                 _addr += 7;
-            Bytes += 8;                             //number processed bytes
-            ProgrammingProgress?.Invoke(this);      //raise event
+            BytesWritten += 8;                          //number processed bytes
+            _cycles++;                                  //numver of processed read cycles
+            ProgrammingProgress?.Invoke(this);          //raise event
         }
     }
-    private async Task EraseAsync(int addrFrom, int addrTo, CancellationTokenSource cts)
+    private async Task EraseAsync(int addrFrom, int addrTo, bool invoke, CancellationTokenSource cts)
     {
         CheckEraseAddress(addrFrom, addrTo);
 
@@ -371,10 +513,10 @@ public class Programming
         await EnterProgrammingAsync();
 
         //start receiving now
-        using var receiver = new ResponseReceiver(_conn);
+        using var receiver = new ResponseReceiver(_conn, false);
 
         //erase memory
-        for (_addr = addrFrom; _addr <= addrTo; _addr += 64)
+        for (_addr = addrFrom; _addr < addrTo; _addr += 64)
         {
             //skip unused addreses
             if (_addr >= 0x400 && _addr <= 0x0FFF)
@@ -384,13 +526,13 @@ public class Programming
             bool result = false;
             for (int i = 0; i < 3; i++)
             {
-                if (await ProcessAddressFrameAsync(receiver, Address, (byte)ProgrammingAction.Erase))
+                if (await ProcessAddressFrameAsync(receiver, Address, 0x03))
                 {
                     result = true;
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x030 frame at 0x{0:X6} address.", Address));
 
             //data frame repeat a few times if necessary
@@ -403,7 +545,7 @@ public class Programming
                     //check data
                     for (int j = 0; j < 8; j++)
                     {
-                        if (ReadBuffer[_addr + j] != 0xFF)  //all bytes must be 0xFF
+                        if (_data[_addr + j] != 0xFF)  //all bytes must be 0xFF
                         {
                             result = false;
                             break;
@@ -414,27 +556,58 @@ public class Programming
                     break;
                 }
             }
-            if (result == false)                    //exit if address frame failed
+            if (result == false)                        //exit if address frame failed
                 throw new TimeoutException(String.Format("Node didn't respond to 0x040 frame at 0x{0:X6} address.", Address));
 
             //exit if requested
             if (cts.Token.IsCancellationRequested)
                 break;
             //report progress
-            if ((addrTo - _addr) < 64)               //at the end update to last processed address
-                _addr += 63;
-            Bytes += 64;                             //number processed bytes
-            ProgrammingProgress?.Invoke(this);      //raise event
+            if ((addrTo - _addr) < 64)                  //at the end update to last processed address
+                _addr --;
+            BytesErased += 64;                          //number processed bytes
+            _cycles++;                                  //numver of processed read cycles
+            if (invoke)
+                ProgrammingProgress?.Invoke(this);      //raise event
         }
 
     }
     
-    private int CalculateTotalBytes(int addrFrom, int addrTo)
+
+    private int CalculateSmartWriteCycles(byte[] eepromBuffer, byte[] flashBuffer)
     {
-        int tot = addrTo - addrFrom;
-        if (addrFrom < 0x400 && addrTo > 0x1000)
-            tot = tot - 3072;
-        return tot;
+        int cycles = 0;
+        //eeprom
+        for (int adr = 0; adr < 0x400; adr += 8)                    //jump between 8 byte blocks
+        {
+            for (int i = adr; i < adr + 8; i++)                     //check 8 byte block
+            {
+                if (_node.Eeprom[i] != eepromBuffer[i])             //any difference in block of 8 bytes?
+                {
+                    cycles++;                                       //add 1 writing
+                    break;                                          //leave block of 8 bytes
+                }
+            }
+        }
+        //flash
+        for (int adr = 0; adr < 0x8000; adr += 64)                  //jump between 64 byte blocks
+        {
+            for (int i = adr; i < adr + 64; i++)                    //check 64 byte block
+            {
+                if (_node.Flash[i] != flashBuffer[i])               //any difference in block of 64 bytes?
+                {
+                    cycles++;                                       //add 1 erasing
+                    for (int j = adr; j < adr + 64; j += 8)         //check 8 byte block if whole = 0xFF
+                    {
+                        if (flashBuffer[j + 0] != 0xFF || flashBuffer[j + 1] != 0xFF || flashBuffer[j + 2] != 0xFF || flashBuffer[j + 3] != 0xFF //add 1 if any byte in block is different from 0xFF
+                        || flashBuffer[j + 4] != 0xFF || flashBuffer[j + 5] != 0xFF || flashBuffer[j + 6] != 0xFF || flashBuffer[j + 7] != 0xFF)
+                            cycles++;                               //add 1 writing
+                    }
+                    break;                                          //leave block of 64 bytes
+                }
+            }
+        }
+        return cycles;
     }
     private void CheckReadWriteAddress(int addrFrom, int addrTo)
     {

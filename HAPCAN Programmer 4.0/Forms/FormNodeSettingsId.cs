@@ -16,6 +16,7 @@ public partial class FormNodeSettingsId : Form
 {
     Project _project;
     HapcanNode _node;
+    string _nodeName;
 
     public FormNodeSettingsId(Project project, HapcanNode node)
     {
@@ -35,8 +36,13 @@ public partial class FormNodeSettingsId : Form
         comBoxGroup.SelectedIndex = _node.GroupNumber - 1;
         //description
         textBoxDesc.Text = _node.Description;
+        //module name
+        GetNodeName();
     }
-
+    private void GetNodeName()
+    {
+        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Description, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
+    }
     private void textBoxDesc_KeyPress(object sender, KeyPressEventArgs e)
     {
         //reduce text to 16 bytes (not chars) eg "ó" takes 2 bytes
@@ -47,22 +53,21 @@ public partial class FormNodeSettingsId : Form
     }
     private async void btnCgangeDesc_Click(object sender, EventArgs e)
     {
-        //get description
-        byte[] bytes = Encoding.UTF8.GetBytes(textBoxDesc.Text);
-        //position description in eeprom buffer
-        Array.Fill<byte>(_node.Eeprom, 0, 0x30, 16);
-        for (int i = 0; i < bytes.Length && i < 16; i++)
-            _node.Eeprom[0x30 + i] = (byte)bytes[i];
         //programe
         var prg = new Programming(_project.Connection, _node);
         try
         {
-            await prg.WriteMemoryAsync(_node.Eeprom, 0x30, 0x3F, new System.Threading.CancellationTokenSource());
-            _node.Description = textBoxDesc.Text;
+            await prg.ChangeNodeDescription(textBoxDesc.Text);
+            var msg = string.Format("{0} description has been changed to '{1}'.", _nodeName, textBoxDesc.Text);
+            Logger.Log("Node", msg);
             FormInformation.ShowDialog(this, "Success", "Description has been changed.");
+            //get updated node name
+            GetNodeName();
         }
         catch (Exception ex)
         {
+            var msg = string.Format("{0} description has not been changed to '{1}'.", _nodeName, textBoxDesc.Text);
+            Logger.Log("Node", msg);
             FormInformation.ShowDialog(this, "Error", ex.Message);
         }
     }
@@ -71,6 +76,7 @@ public partial class FormNodeSettingsId : Form
     {
         byte nodeNr = (byte)(comBoxNode.SelectedIndex + 1);
         byte groupNr = (byte)(comBoxGroup.SelectedIndex + 1);
+        string nodeId = string.Format("({0},{1})", nodeNr, groupNr);
 
         //check if id already exists
         if(_project.NodeList.Exists(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr))
@@ -79,24 +85,21 @@ public partial class FormNodeSettingsId : Form
             return;
         }
 
-        //position id in eeprom buffer
-        var buffer = new byte[0x28];
-        buffer[0x26] = nodeNr;
-        buffer[0x27] = groupNr;
         //programe
         var prg = new Programming(_project.Connection, _node);
         try
         {
-            await prg.WriteMemoryAsync(buffer, 0x20, 0x27, new System.Threading.CancellationTokenSource());
-            _node.NodeNumber = nodeNr;
-            _node.GroupNumber = groupNr;
-            string msg = String.Format("Node [{0:X6}h] id has been changed to ({1},{2}).", _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
+            await prg.ChangeNodeId(nodeNr, groupNr);
+            string msg = String.Format("{0} id has been changed to ({1},{2}).", _nodeName, _node.NodeNumber, _node.GroupNumber);
             Logger.Log("Nodes", msg);
-            FormInformation.ShowDialog(this, "Success", msg);
-
+            FormInformation.ShowDialog(this, "Success", "Node id has been changed.");
+            //get updated node name
+            GetNodeName();
         }
         catch (Exception ex)
         {
+            var msg = string.Format("{0} id has not been changed to '{1}'.", _nodeName, nodeId);
+            Logger.Log("Node", msg);
             FormInformation.ShowDialog(this, "Error", ex.Message);
         }
     }
@@ -106,15 +109,28 @@ public partial class FormNodeSettingsId : Form
         var sr = new SystemRequest(_project.Connection);
         if (await sr.SetDefaultIdAsync(_node))
         {
-            string msg = String.Format("Default id ({0},{1}) has been set to node [{2:X6}h].", _node.NodeNumber, _node.GroupNumber, _node.SerialNumber);
+            var msg = string.Format("{0} id has changed id to default ({1},{2}).", _nodeName, _node.NodeNumber, _node.GroupNumber);
             Logger.Log("Nodes", msg);
-            FormInformation.ShowDialog(this, "Success", msg);
+            FormInformation.ShowDialog(this, "Success", "Default identifier has been set.");
+            //get updated node name
+            GetNodeName();
         }
         else
         {
-            string msg = String.Format("Node ({0},{1}) hasn't responded to 'Set node default id' request.", _node.NodeNumber, _node.GroupNumber);
+            string msg = String.Format("{0} has not responded to 'Set node default id' request.", _nodeName);
             Logger.Log("Nodes", msg);
-            FormInformation.ShowDialog(this, "Error", msg);
+            FormInformation.ShowDialog(this, "Error", "Module has not responded.");
         }
+    }
+
+    private void textBoxDesc_TextChanged(object sender, EventArgs e)
+    {
+        labLeftBytes.Text = CalculateLeftBytes(textBoxDesc.Text);
+    }
+
+    private string CalculateLeftBytes(string text)
+    {
+        var leftBytes = 16 - Encoding.UTF8.GetBytes(text).Length;
+        return string.Format("Left {0} bytes", leftBytes);
     }
 }

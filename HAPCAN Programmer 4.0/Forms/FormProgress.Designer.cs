@@ -33,12 +33,14 @@ partial class FormProgress
             this.panelTop = new System.Windows.Forms.Panel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelInfo2 = new System.Windows.Forms.Label();
+            this.labelInfo1 = new System.Windows.Forms.Label();
             this.labelProgress1 = new System.Windows.Forms.Label();
             this.panelProgressBase = new System.Windows.Forms.Panel();
             this.panelProgressValue = new System.Windows.Forms.Panel();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.labelInfo2 = new System.Windows.Forms.Label();
-            this.labelInfo1 = new System.Windows.Forms.Label();
+            this.labelInfo4 = new System.Windows.Forms.Label();
+            this.labelInfo3 = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelProgressBase.SuspendLayout();
@@ -72,17 +74,43 @@ partial class FormProgress
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.panel1.Controls.Add(this.labelInfo2);
+            this.panel1.Controls.Add(this.labelInfo1);
             this.panel1.Controls.Add(this.labelProgress1);
             this.panel1.Controls.Add(this.panelProgressBase);
             this.panel1.Controls.Add(this.buttonCancel);
-            this.panel1.Controls.Add(this.labelInfo2);
-            this.panel1.Controls.Add(this.labelInfo1);
+            this.panel1.Controls.Add(this.labelInfo4);
+            this.panel1.Controls.Add(this.labelInfo3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(1, 31);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(438, 88);
+            this.panel1.Size = new System.Drawing.Size(438, 128);
             this.panel1.TabIndex = 1;
+            // 
+            // labelInfo2
+            // 
+            this.labelInfo2.AutoSize = true;
+            this.labelInfo2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelInfo2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labelInfo2.Location = new System.Drawing.Point(10, 65);
+            this.labelInfo2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInfo2.Name = "labelInfo2";
+            this.labelInfo2.Size = new System.Drawing.Size(59, 15);
+            this.labelInfo2.TabIndex = 1;
+            this.labelInfo2.Text = "labelInfo2";
+            // 
+            // labelInfo1
+            // 
+            this.labelInfo1.AutoSize = true;
+            this.labelInfo1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelInfo1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labelInfo1.Location = new System.Drawing.Point(10, 45);
+            this.labelInfo1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInfo1.Name = "labelInfo1";
+            this.labelInfo1.Size = new System.Drawing.Size(59, 15);
+            this.labelInfo1.TabIndex = 1;
+            this.labelInfo1.Text = "labelInfo1";
             // 
             // labelProgress1
             // 
@@ -123,44 +151,44 @@ partial class FormProgress
             this.buttonCancel.FlatAppearance.BorderSize = 0;
             this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCancel.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonCancel.Location = new System.Drawing.Point(340, 48);
+            this.buttonCancel.Location = new System.Drawing.Point(315, 85);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(85, 30);
+            this.buttonCancel.Size = new System.Drawing.Size(110, 34);
             this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = false;
             // 
-            // labelInfo2
+            // labelInfo4
             // 
-            this.labelInfo2.AutoSize = true;
-            this.labelInfo2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelInfo2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.labelInfo2.Location = new System.Drawing.Point(10, 65);
-            this.labelInfo2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelInfo2.Name = "labelInfo2";
-            this.labelInfo2.Size = new System.Drawing.Size(59, 15);
-            this.labelInfo2.TabIndex = 1;
-            this.labelInfo2.Text = "labelInfo2";
+            this.labelInfo4.AutoSize = true;
+            this.labelInfo4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelInfo4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labelInfo4.Location = new System.Drawing.Point(10, 105);
+            this.labelInfo4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInfo4.Name = "labelInfo4";
+            this.labelInfo4.Size = new System.Drawing.Size(59, 15);
+            this.labelInfo4.TabIndex = 1;
+            this.labelInfo4.Text = "labelInfo4";
             // 
-            // labelInfo1
+            // labelInfo3
             // 
-            this.labelInfo1.AutoSize = true;
-            this.labelInfo1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelInfo1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.labelInfo1.Location = new System.Drawing.Point(10, 45);
-            this.labelInfo1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelInfo1.Name = "labelInfo1";
-            this.labelInfo1.Size = new System.Drawing.Size(59, 15);
-            this.labelInfo1.TabIndex = 1;
-            this.labelInfo1.Text = "labelInfo1";
+            this.labelInfo3.AutoSize = true;
+            this.labelInfo3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelInfo3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.labelInfo3.Location = new System.Drawing.Point(10, 85);
+            this.labelInfo3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInfo3.Name = "labelInfo3";
+            this.labelInfo3.Size = new System.Drawing.Size(59, 15);
+            this.labelInfo3.TabIndex = 1;
+            this.labelInfo3.Text = "labelInfo3";
             // 
             // FormProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(0)))));
-            this.ClientSize = new System.Drawing.Size(440, 120);
+            this.ClientSize = new System.Drawing.Size(440, 160);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -191,4 +219,6 @@ partial class FormProgress
     private System.Windows.Forms.Label labelInfo1;
     private System.Windows.Forms.Label labelInfo2;
     public System.Windows.Forms.Label labelProgress1;
+    private System.Windows.Forms.Label labelInfo4;
+    private System.Windows.Forms.Label labelInfo3;
 }

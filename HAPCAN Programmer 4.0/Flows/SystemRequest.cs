@@ -26,9 +26,48 @@ public class SystemRequest
     }
 
     //METHODS
+    public async Task<bool> HardwareTypeRequest(ResponseReceiver rcv, HapcanNode node)
+    {
+        if (node.Interface)
+        {
+            //send request
+            await _connection.SendAsync(new IntMsg104_HardwareTypeToInterface().GetFrame());
+            //get response
+            var frameList = await rcv.ReceiveAsync(new int[] { 0x104 }, 1);
+            //process response
+            if (frameList.Count == 1)
+            {
+                var frame = frameList[0];
+                var msg = new IntMsg104_HardwareTypeResponse(frame);
+                node.SerialNumber = msg.SerialNumber;
+                node.HardwareType = msg.HardwareType;
+                node.HardwareVersion = msg.HardwareVersion;
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            //send request
+            await _connection.SendAsync(new Msg104_HardwareTypeToNode(_nodeTx, _groupTx, node.NodeNumber, node.GroupNumber).GetFrame());
+            //get response
+            var frameList = await rcv.ReceiveAsync(new int[] { 0x104 }, 1);
+            //process response
+            if (frameList.Count == 1)
+            {
+                var msg = new Msg103_HardwareTypeResponse(frameList[0]);
+                node.HardwareType = msg.HardwareType;
+                node.HardwareVersion = msg.HardwareVersion;
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
     public async Task<bool> FirmwareVersionRequest(HapcanNode node)
     {
-        using var rcv = new ResponseReceiver(_connection);  //start receiving
+        using var rcv = new ResponseReceiver(_connection, false);  //start receiving
         return await FirmwareVersionRequest(rcv, node);
     }
 
@@ -188,9 +227,45 @@ public class SystemRequest
         }
     }
 
+    public async Task<bool> UptimeRequest(ResponseReceiver rcv, HapcanNode node)
+    {
+        if (node.Interface)
+        {
+            //send request
+            await _connection.SendAsync(new IntMsg113_UptimeToInterface().GetFrame());
+            //get response
+            var frameList = await rcv.ReceiveAsync(new int[] { 0x113 }, 1);
+            //process response
+            if (frameList.Count == 1)
+            {
+                var frame = frameList[0];
+                var msg = new IntMsg113_UptimeResponse(frame);
+                node.Uptime = msg.Uptime;
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            //send request
+            await _connection.SendAsync(new Msg113_UptimeToNode(_nodeTx, _groupTx, node.NodeNumber, node.GroupNumber).GetFrame());
+            //get response
+            var frameList = await rcv.ReceiveAsync(new int[] { 0x113 }, 1);
+            //process response
+            if (frameList.Count == 1)
+            {
+                var msg = new Msg112_UptimeResponse(frameList[0]);
+                node.Uptime = msg.Uptime;
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
     public async Task<bool> SetDefaultIdAsync(HapcanNode node)
     {
-        using var rcv = new ResponseReceiver(_connection);  //start receiving
+        using var rcv = new ResponseReceiver(_connection, false);  //start receiving
 
         if (node.Interface)
         {

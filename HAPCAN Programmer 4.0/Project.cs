@@ -64,7 +64,6 @@ public class Project
     //save project to file
     public async Task<bool> SaveAsync(string filename)
     {
-        bool res = false;
         try
         {
             //make sure directory exists
@@ -72,14 +71,15 @@ public class Project
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
 
             var projfile = new ProjectFile<Project>();
-            res = await projfile.SerializeAsync(this, filename);
+            var res = await projfile.SerializeAsync(this, filename);
             Logger.Log("Application info", "Project saved to " + Path.GetFullPath(filename));
+            return res;
         }
         catch (Exception ex)
         {
             Logger.Log("Application error", "Saving project exception. " + ex.ToString());
+            return false;
         }
-        return res;
     }
 
 

@@ -17,36 +17,53 @@ public partial class FormProgramming : FormProgress
 {
     readonly HapcanConnection _connection;
     readonly HapcanNode _node;
-    readonly byte[] _buffer;
-    readonly int _addrFrom;
-    readonly int _addrTo;
+    readonly byte[] _firmwareBuffer;
+    readonly byte[] _eepromBuffer;
+    readonly byte[] _flashBuffer;
+    string _nodeName;
     readonly Programming.ProgrammingAction _action;
     CancellationTokenSource _cts;
     Programming _prg;
 
     //PROPERTIES
-    public byte[] ReadBuffer { get; private set; }      //read node memory buffer
     public bool ProgrammingSuccessful { get; private set; } //result of programming
-    
+
     //CONSTRUCTOR
-    private FormProgramming(HapcanConnection connection, HapcanNode node, byte[] buffer, Programming.ProgrammingAction action, int addrFrom, int addrTo)
+    private FormProgramming(HapcanConnection connection, HapcanNode node, 
+        byte[] firmwareBuffer, byte[] eepromBuffer, byte[] flashBuffer,
+        Programming.ProgrammingAction action)
     {
         _connection = connection;
         _node = node;
-        _buffer = buffer;
-        _addrFrom = addrFrom;
-        _addrTo = addrTo;
+        _firmwareBuffer = firmwareBuffer;
+        _eepromBuffer = eepromBuffer;
+        _flashBuffer = flashBuffer;
         _action = action;
         _cts = new CancellationTokenSource();
         _prg = new Programming(_connection, _node);
+        //module name
+        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Description, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
         InitializeComponent();
     }
-    public FormProgramming(HapcanConnection connection, HapcanNode node, Programming.ProgrammingAction action, int addrFrom, int addrTo)
-        : this(connection, node, null, action, addrFrom, addrTo)
+    /// <summary>
+    /// For reading memory.
+    /// </summary>
+    public FormProgramming(HapcanConnection connection, HapcanNode node, Programming.ProgrammingAction action)
+    : this(connection, node, null, null, null, action)
     {
     }
-    public FormProgramming(HapcanConnection connection, HapcanNode node, byte[] buffer, Programming.ProgrammingAction action)
-        : this(connection, node, buffer, action, 0, 0)
+    /// <summary>
+    /// For eeprom and flash writing.
+    /// </summary>
+    public FormProgramming(HapcanConnection connection, HapcanNode node, byte[] eeprom, byte[] flash, Programming.ProgrammingAction action)
+        : this(connection, node, null, eeprom, flash, action)
+    {
+    }
+    /// <summary>
+    /// For firmware writing.
+    /// </summary>
+    public FormProgramming(HapcanConnection connection, HapcanNode node, byte[] firmware, Programming.ProgrammingAction action)
+        : this(connection, node, firmware, null, null, action)
     {
     }
 
@@ -70,40 +87,29 @@ public partial class FormProgramming : FormProgress
         try
         {
             //start programming
-            if (_action == Programming.ProgrammingAction.Read)
-            {
-                Title = "Reading memory";
-                Logger.Log("Programming", Title);
-                await _prg.ReadMemoryAsync(_addrFrom, _addrTo, _cts);
-            }
-            else if (_action == Programming.ProgrammingAction.Write)
-            {
-                Title = "Writing memory";
-                Logger.Log("Programming", Title);
-                await _prg.WriteMemoryAsync(_buffer, _addrFrom, _addrTo, _cts);
-            }
-            else if (_action == Programming.ProgrammingAction.Erase)
-            {
-                Title = "Erasing memory";
-                Logger.Log("Programming", Title);
-            }
-            else if (_action == Programming.ProgrammingAction.SmartReadData)
+            if (_action == Programming.ProgrammingAction.SmartReadData)
             {
                 Title = "Reading data memory";
-                Logger.Log("Programming", Title);
+                Logger.Log("Programming", string.Format("{0} reading data memory started.", _nodeName));
                 await _prg.SmartReadDataMemoryAsync(_cts);
+            }
+            else if (_action == Programming.ProgrammingAction.SmartWriteData)
+            {
+                Title = "Writing data memory";
+                Logger.Log("Programming", string.Format("{0} writing data memory started.", _nodeName));
+                await _prg.SmartWriteDataMemoryAsync(_eepromBuffer, _flashBuffer, _cts);
             }
             else if (_action == Programming.ProgrammingAction.WriteFirmware)
             {
                 Title = "Writing firmware into memory";
-                Logger.Log("Programming", Title);
-                await _prg.WriteFirmwareAsync(_buffer, _cts);
+                Logger.Log("Programming", string.Format("{0} writing frimware into memory started.", _nodeName));
+                await _prg.WriteFirmwareAsync(_firmwareBuffer, _cts);
             }
 
             //process cancelled
             if (_cts.IsCancellationRequested)
             {
-                Logger.Log("Programming", Title + " has been aborted.");
+                Logger.Log("Programming", _nodeName + ". " + Title + " has been aborted.");
                 ProgrammingSuccessful = false;
                 Close();
             }
@@ -122,8 +128,7 @@ public partial class FormProgramming : FormProgress
         }
         finally
         {
-            _prg.ProgrammingProgress -= ProgrammingProgress;    //unsubscribe to progress event
-            ReadBuffer = _prg.ReadBuffer;                       //get buffer with read data 
+            _prg.ProgrammingProgress -= ProgrammingProgress;    //unsubscribe to progress event 
             buttonCancel.Text = "Close";
         }
     }
@@ -132,19 +137,19 @@ public partial class FormProgramming : FormProgress
     {
         //panel info
         Status = StatusColor.Success;
-        Title += " successful";
+        Title += " successful.";
         //log
-        Logger.Log("Programming", Title);
+        Logger.Log("Programming", _nodeName + ". " + Title);
     }
     private void DisplayError(string textError)
     {
         //panel info
         Status = StatusColor.Error;
-        Title += " error";
+        Title += " error.";
         Info1 = "Error:";
         Info2 = textError;
         //log
-        Logger.Log("Programming", Title + ": " + textError);
+        Logger.Log("Programming", _nodeName + ". " + Title + ": " + textError);
     }
     private void ProgrammingProgress(Programming prg)
     {
@@ -155,7 +160,9 @@ public partial class FormProgramming : FormProgress
         else
         {
             Info1 = string.Format("Current address: 0x{0:X6} ({1})", prg.Address, prg.Address >= 0xF00000 ? "eeprom" : "flash");
-            Info2 = string.Format("Total bytes: {0} ({1:N2} kB)", prg.Bytes, (float)prg.Bytes/1024);
+            Info2 = string.Format("Bytes read: {0} ({1:N2} kB)", prg.BytesRead, (float)prg.BytesRead / 1024);
+            Info3 = string.Format("Bytes erased: {0} ({1:N2} kB)", prg.BytesErased, (float)prg.BytesErased / 1024);
+            Info4 = string.Format("Bytes written: {0} ({1:N2} kB)", prg.BytesWritten, (float)prg.BytesWritten / 1024);
             Progress = prg.Progress;
 
             if (Progress == 100)
@@ -182,6 +189,6 @@ public partial class FormProgramming : FormProgress
 
     private void FormProgramming_FormClosed(object sender, FormClosedEventArgs e)
     {
-        _cts.Dispose();       
+        _cts.Dispose();
     }
 }

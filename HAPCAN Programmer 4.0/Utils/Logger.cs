@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hapcan;
@@ -36,11 +37,11 @@ public static class Logger
     /// </summary>
     public static StringBuilder LogText { get { return _logText; } }
     /// <summary>
-    /// Logger time format. Default is 'yyyy-MM-dd HH:mm:ss.fff'
+    /// Logger time format. Default is 'yyyy-MM-dd HH:mm:ss.fff'.
     /// </summary>
     public static string LogTimeFormat { get { return _logTimeFormat; } set { _logTimeFormat = value; } }
     /// <summary>
-    /// Logger saving interval in seconds. Default is 1s
+    /// Logger saving interval in seconds. Default is 1s.
     /// </summary>
     public static int LogSavingInterval { get { return _logTimerInterval; } set { _logTimerInterval = value; } }
 
@@ -61,9 +62,13 @@ public static class Logger
     /// <summary>
     /// Flush all logs buffer and save to file
     /// </summary>
-    public static void Flush()
+    public async static Task FlushAsync()
     {
-        SavingTimerTick(null, null);
+        while (_queue.TryDequeue(out var text))
+        {
+            await UpdateLogTextAsync(text);
+            await UpdateLogFileAsync(text);
+        }
     }
 
     //prepare timer for saving
@@ -73,7 +78,7 @@ public static class Logger
         {
             _logTimer = new System.Timers.Timer();
             _logTimer.Interval = _logTimerInterval * 1000;
-            _logTimer.Elapsed += SavingTimerTick;
+            _logTimer.Elapsed += SavingTimerTickAsync;
             _logTimer.AutoReset = false;
             _logTimer.Enabled = true;
         }
@@ -81,36 +86,37 @@ public static class Logger
             _logTimer.Enabled = true;
     }
     //save logs
-    private static void SavingTimerTick(Object source, System.Timers.ElapsedEventArgs e)
+    private async static void SavingTimerTickAsync(Object source, System.Timers.ElapsedEventArgs e)
     {
-        while (_queue.TryDequeue(out var text))
-        {
-            UpdateLogText(text);
-            UpdateLogFile(text);
-        }
+        await FlushAsync();
         //raise event
         LogSaved?.Invoke();             //raise event
     }
 
     //update logs in LogText property
-    private static void UpdateLogText(string text)
+    private async static Task UpdateLogTextAsync(string text)
     {
-        if (!string.IsNullOrEmpty(text))
-        {
-            //add new line
-            _logText.AppendLine(text);
-            //remove old line
-            string[] lines = _logText.ToString().Split('\n');
-            if (lines.Length > _logTextSize)
+        await Task.Run(
+            () =>
             {
-                for (var i = _logTextSize; i < lines.Length; i++)
-                    _logText.Remove(0, _logText.ToString().Split('\n').FirstOrDefault().Length + 1);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    //add new line
+                    _logText.AppendLine(text);
+                    //remove old line
+                    string[] lines = _logText.ToString().Split('\n');
+                    if (lines.Length > _logTextSize)
+                    {
+                        for (var i = _logTextSize; i < lines.Length; i++)
+                            _logText.Remove(0, _logText.ToString().Split('\n').FirstOrDefault().Length + 1);
+                    }
+                }
             }
-        }
+        ).ConfigureAwait(false);
     }
 
     //update logs in log file
-    private static void UpdateLogFile(string text)
+    private async static Task UpdateLogFileAsync(string text)
     {
         try
         {
@@ -135,8 +141,7 @@ public static class Logger
 
             //save log file
             using var writer = new System.IO.StreamWriter(_logFilePath, true, System.Text.Encoding.UTF8);
-            writer.WriteLine(text);
-            
+            await writer.WriteLineAsync(text);
 
             //make read-only file
             File.SetAttributes(_logFilePath, FileAttributes.ReadOnly);
@@ -144,7 +149,7 @@ public static class Logger
         }
         catch (Exception ex)
         {
-            UpdateLogText(System.DateTime.Now.ToString(_logTimeFormat) + " [Log error] " + ex);
+            await UpdateLogTextAsync(System.DateTime.Now.ToString(_logTimeFormat) + " [Log error] " + ex);
         }
     }
 }
