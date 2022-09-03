@@ -93,7 +93,7 @@ internal class HapcanFirmwareFile
     {
         //create fake frame
         var frame = new HapcanFrame(new byte[]{0xFF,0xFF,0xFF,0xFF,fileBuffer[0x1010], fileBuffer[0x1011], fileBuffer[0x1012], fileBuffer[0x1013],
-                                           fileBuffer[0x1014], fileBuffer[0x1015], fileBuffer[0x1016], fileBuffer[0x1017] }, HapcanFrame.FrameSource.PC);
+                                           fileBuffer[0x1014], fileBuffer[0x1015], fileBuffer[0x1016], fileBuffer[0x1017] }, HapcanFrame.FrameSource.PcToCanbus);
         //to get version from Msg105 message
         var version = new Msg105_FirmwareTypeResponse(frame).GetFullFirmwareVersion();
         var revision = " (revision: " + (fileBuffer[0x1016] * 256 + fileBuffer[0x1017]) + ")";

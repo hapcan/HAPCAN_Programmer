@@ -24,7 +24,8 @@ public class HapcanConnection
     //EVENTS
     public event ConnectionFrameEvent InterfaceMessageReceived; //message from inteface received event
     public event ConnectionFrameEvent CanbusMessageReceived;    //message from canbus received event
-    public event ConnectionFrameEvent MessageSent;              //message sent event
+    public event ConnectionFrameEvent InterfaceMessageSent;     //message sent interface event
+    public event ConnectionFrameEvent CanbusMessageSent;        //message sent canbus event
     public event ConnectionEvent ConnectionConnecting;          //connection starting
     public event ConnectionEvent ConnectionConnected;           //connection connected
     public event ConnectionEvent ConnectionDisconnected;        //connection disconnected
@@ -341,13 +342,18 @@ public class HapcanConnection
             {
                 var fullData = AddStartStopChecksum(frame.Data);
 
-                if (this.InterfaceType == InterfaceTypes.Ethernet)
-                    await _socket.SendAsync(new ArraySegment<byte>(fullData), SocketFlags.None);
+                if (this.InterfaceType == InterfaceTypes.Ethernet) { 
+                    await _socket.SendAsync(new ArraySegment<byte>(fullData), SocketFlags.None);}
                 else if (this.InterfaceType == InterfaceTypes.RS232)
                     await _serial.BaseStream.WriteAsync(new ArraySegment<byte>(fullData));
-            //    else
-            //        throw new Exception("Unknown interface type.");
-                MessageSent?.Invoke(frame);     //raise event
+                //    else
+                //        throw new Exception("Unknown interface type.");
+
+                //raise events
+                if (frame.Source == HapcanFrame.FrameSource.PcToInterface)
+                    InterfaceMessageSent?.Invoke(frame);
+                else if (frame.Source == HapcanFrame.FrameSource.PcToCanbus)
+                    CanbusMessageSent?.Invoke(frame);
             }
         }
         catch (Exception ex)

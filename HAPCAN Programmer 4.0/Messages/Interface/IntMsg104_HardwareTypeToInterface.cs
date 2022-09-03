@@ -12,7 +12,7 @@ class IntMsg104_HardwareTypeToInterface
     }
     public IntMsg104_HardwareTypeToInterface()
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0x40 }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x40 }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

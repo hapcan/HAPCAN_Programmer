@@ -12,7 +12,7 @@ class IntMsg102_RebootToInterface
     }
     public IntMsg102_RebootToInterface()
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0x20 }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x20 }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

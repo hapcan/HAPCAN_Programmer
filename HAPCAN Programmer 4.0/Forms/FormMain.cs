@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Hapcan.Programmer.Forms;
 
@@ -19,6 +20,8 @@ public partial class FormMain : FormBase
 
     Form _activeForm;
     FormInformation _infoForm;
+    FormTemplate _busLoad;
+    FormTemplate _logs;
 
     public FormMain() : base()
     {
@@ -140,25 +143,41 @@ public partial class FormMain : FormBase
     {
         LoadContainer(new FormSettings(_project), sender as Button);
     }
-    private void checkBoxLogs_CheckedChanged(object sender, EventArgs e)
+    private void checkBoxBusload_CheckedChanged(object sender, EventArgs e)
     {
-        FormLogs formLogs;
-        if (checkBoxLogs.Checked)
+        if (checkBoxBusload.Checked)
         {
-            splitContainer1.Panel2Collapsed = false;
-            formLogs = new FormLogs()
-            {
-                TopLevel = false,
-                Dock = DockStyle.Fill
-            };
-            splitContainer1.Panel2.Controls.Add(formLogs);
-            formLogs.Show();
+            _busLoad = new FormTemplate(new FormBusLoad(_project.Connection));
+            _busLoad.FormClosed += OnBusLoadClose;
+            _busLoad.Show();
         }
         else
         {
-            splitContainer1.Panel2Collapsed = true;
-            splitContainer1.Panel2.Controls.RemoveAt(0);
+            _busLoad.Close();
         }
+    }
+    private void OnBusLoadClose(object sender, EventArgs e)
+    {
+        checkBoxBusload.Checked = false;
+        _busLoad.FormClosed -= OnBusLoadClose;
+    }
+    private void checkBoxLogs_CheckedChanged(object sender, EventArgs e)
+    {
+        if (checkBoxLogs.Checked)
+        {
+            _logs= new FormTemplate(new FormLogs());
+            _logs.FormClosed += OnLogsClose;
+            _logs.Show();
+        }
+        else
+        {
+            _logs.Close();
+        }
+    }
+    private void OnLogsClose(object sender, EventArgs e)
+    {
+        checkBoxLogs.Checked = false;
+        _logs.FormClosed -= OnLogsClose;
     }
 
     private void picLogo_Click(object sender, EventArgs e)
@@ -205,7 +224,7 @@ public partial class FormMain : FormBase
         else
         {
             btnConnect.Text = "  Disconnect";
-            btnConnect.BackColor = Color.FromArgb(255, 169, 128);
+            btnConnect.BackColor = Color.FromArgb(200, 70, 0);
             btnConnect.Image = pictureBoxConn.Image;
             if (conn.InterfaceType == HapcanConnection.InterfaceTypes.Ethernet)
                 textBottom.Text = "Connected to " + conn.IP + ":" + conn.Port;
@@ -234,4 +253,5 @@ public partial class FormMain : FormBase
             textBottom.Text = "Not connected";
         }
     }
+
 }

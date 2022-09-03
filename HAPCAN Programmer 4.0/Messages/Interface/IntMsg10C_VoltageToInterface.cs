@@ -12,7 +12,7 @@ class IntMsg10C_VoltageToInterface
     }
     public IntMsg10C_VoltageToInterface()
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0xC0 }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0xC0 }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

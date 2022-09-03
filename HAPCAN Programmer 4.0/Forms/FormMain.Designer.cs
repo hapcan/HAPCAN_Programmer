@@ -40,6 +40,7 @@ namespace Hapcan.Programmer.Forms
             this.pictureBoxDisc = new System.Windows.Forms.PictureBox();
             this.pictureBoxConn = new System.Windows.Forms.PictureBox();
             this.panelPointer = new System.Windows.Forms.Panel();
+            this.checkBoxBusload = new System.Windows.Forms.CheckBox();
             this.checkBoxLogs = new System.Windows.Forms.CheckBox();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnAbout = new System.Windows.Forms.Button();
@@ -147,6 +148,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnMenu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMenu.FlatAppearance.BorderSize = 0;
             this.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMenu.Image = ((System.Drawing.Image)(resources.GetObject("btnMenu.Image")));
@@ -155,7 +157,7 @@ namespace Hapcan.Programmer.Forms
             this.btnMenu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnMenu.Name = "btnMenu";
             this.btnMenu.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.btnMenu.Size = new System.Drawing.Size(210, 58);
+            this.btnMenu.Size = new System.Drawing.Size(210, 60);
             this.btnMenu.TabIndex = 3;
             this.btnMenu.UseVisualStyleBackColor = true;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
@@ -167,6 +169,7 @@ namespace Hapcan.Programmer.Forms
             this.panelMenu.Controls.Add(this.pictureBoxConn);
             this.panelMenu.Controls.Add(this.panelPointer);
             this.panelMenu.Controls.Add(this.btnMenu);
+            this.panelMenu.Controls.Add(this.checkBoxBusload);
             this.panelMenu.Controls.Add(this.checkBoxLogs);
             this.panelMenu.Controls.Add(this.btnSettings);
             this.panelMenu.Controls.Add(this.btnAbout);
@@ -206,25 +209,48 @@ namespace Hapcan.Programmer.Forms
             this.panelPointer.Location = new System.Drawing.Point(0, 115);
             this.panelPointer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelPointer.Name = "panelPointer";
-            this.panelPointer.Size = new System.Drawing.Size(12, 58);
+            this.panelPointer.Size = new System.Drawing.Size(12, 60);
             this.panelPointer.TabIndex = 11;
             this.panelPointer.Visible = false;
+            // 
+            // checkBoxBusload
+            // 
+            this.checkBoxBusload.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxBusload.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkBoxBusload.FlatAppearance.BorderSize = 0;
+            this.checkBoxBusload.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(70)))), ((int)(((byte)(0)))));
+            this.checkBoxBusload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxBusload.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.checkBoxBusload.ForeColor = System.Drawing.SystemColors.Control;
+            this.checkBoxBusload.Image = ((System.Drawing.Image)(resources.GetObject("checkBoxBusload.Image")));
+            this.checkBoxBusload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.checkBoxBusload.Location = new System.Drawing.Point(0, 300);
+            this.checkBoxBusload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBoxBusload.Name = "checkBoxBusload";
+            this.checkBoxBusload.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
+            this.checkBoxBusload.Size = new System.Drawing.Size(210, 60);
+            this.checkBoxBusload.TabIndex = 10;
+            this.checkBoxBusload.Text = "  Bus load";
+            this.checkBoxBusload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.checkBoxBusload.UseVisualStyleBackColor = true;
+            this.checkBoxBusload.CheckedChanged += new System.EventHandler(this.checkBoxBusload_CheckedChanged);
             // 
             // checkBoxLogs
             // 
             this.checkBoxLogs.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBoxLogs.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBoxLogs.FlatAppearance.BorderSize = 0;
+            this.checkBoxLogs.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(70)))), ((int)(((byte)(0)))));
             this.checkBoxLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxLogs.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.checkBoxLogs.ForeColor = System.Drawing.SystemColors.Control;
             this.checkBoxLogs.Image = ((System.Drawing.Image)(resources.GetObject("checkBoxLogs.Image")));
             this.checkBoxLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.checkBoxLogs.Location = new System.Drawing.Point(0, 288);
+            this.checkBoxLogs.Location = new System.Drawing.Point(0, 360);
             this.checkBoxLogs.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxLogs.Name = "checkBoxLogs";
             this.checkBoxLogs.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.checkBoxLogs.Size = new System.Drawing.Size(210, 58);
+            this.checkBoxLogs.Size = new System.Drawing.Size(210, 60);
             this.checkBoxLogs.TabIndex = 10;
             this.checkBoxLogs.Text = "  Logs";
             this.checkBoxLogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -240,11 +266,11 @@ namespace Hapcan.Programmer.Forms
             this.btnSettings.ForeColor = System.Drawing.SystemColors.Control;
             this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSettings.Location = new System.Drawing.Point(0, 231);
+            this.btnSettings.Location = new System.Drawing.Point(0, 180);
             this.btnSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.btnSettings.Size = new System.Drawing.Size(210, 58);
+            this.btnSettings.Size = new System.Drawing.Size(210, 60);
             this.btnSettings.TabIndex = 8;
             this.btnSettings.Text = "  Settings";
             this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -261,11 +287,11 @@ namespace Hapcan.Programmer.Forms
             this.btnAbout.ForeColor = System.Drawing.SystemColors.Control;
             this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
             this.btnAbout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAbout.Location = new System.Drawing.Point(0, 346);
+            this.btnAbout.Location = new System.Drawing.Point(0, 420);
             this.btnAbout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.btnAbout.Size = new System.Drawing.Size(210, 58);
+            this.btnAbout.Size = new System.Drawing.Size(210, 60);
             this.btnAbout.TabIndex = 7;
             this.btnAbout.Text = "  About";
             this.btnAbout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -282,11 +308,11 @@ namespace Hapcan.Programmer.Forms
             this.btnMonitor.ForeColor = System.Drawing.SystemColors.Control;
             this.btnMonitor.Image = ((System.Drawing.Image)(resources.GetObject("btnMonitor.Image")));
             this.btnMonitor.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitor.Location = new System.Drawing.Point(0, 173);
+            this.btnMonitor.Location = new System.Drawing.Point(0, 240);
             this.btnMonitor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnMonitor.Name = "btnMonitor";
             this.btnMonitor.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.btnMonitor.Size = new System.Drawing.Size(210, 58);
+            this.btnMonitor.Size = new System.Drawing.Size(210, 60);
             this.btnMonitor.TabIndex = 5;
             this.btnMonitor.Text = "  Monitor";
             this.btnMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -303,11 +329,11 @@ namespace Hapcan.Programmer.Forms
             this.btnConnect.ForeColor = System.Drawing.SystemColors.Control;
             this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
             this.btnConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnConnect.Location = new System.Drawing.Point(0, 58);
+            this.btnConnect.Location = new System.Drawing.Point(0, 60);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
-            this.btnConnect.Size = new System.Drawing.Size(210, 58);
+            this.btnConnect.Size = new System.Drawing.Size(210, 60);
             this.btnConnect.TabIndex = 4;
             this.btnConnect.Text = "  Connect";
             this.btnConnect.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -324,7 +350,7 @@ namespace Hapcan.Programmer.Forms
             this.btnNodes.ForeColor = System.Drawing.SystemColors.Control;
             this.btnNodes.Image = ((System.Drawing.Image)(resources.GetObject("btnNodes.Image")));
             this.btnNodes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNodes.Location = new System.Drawing.Point(0, 115);
+            this.btnNodes.Location = new System.Drawing.Point(0, 120);
             this.btnNodes.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodes.Name = "btnNodes";
             this.btnNodes.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
@@ -482,6 +508,7 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.Panel panelPointer;
         private System.Windows.Forms.PictureBox pictureBoxDisc;
         private System.Windows.Forms.PictureBox pictureBoxConn;
+        private System.Windows.Forms.CheckBox checkBoxBusload;
     }
 }
 

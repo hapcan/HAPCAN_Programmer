@@ -13,8 +13,12 @@ public partial class FormTemplate : FormBase
         InitializeComponent();
         if (frm != null)
         {
-            frm.TopLevel = false;
+            //form size
             this.Size = new Size(frm.Size.Width, frm.Size.Height + panelTop.Height);
+            //form position
+        //    this.Location = new Point(parent.Left + 50, parent.Top + 50);
+            //load form
+            frm.TopLevel = false;
             frm.Dock = DockStyle.Fill;
             this.panelContainer.Controls.Add(frm);
             labelTitle.Text = frm.Text;
@@ -22,16 +26,19 @@ public partial class FormTemplate : FormBase
         }
     }
 
+    //form close
     private void btnExit_Click(object sender, EventArgs e)
     {
         Close();
     }
 
+    //form move
     private void panelTop_MouseDown(object sender, MouseEventArgs e)
     {
         base.FormMove_MouseDown(sender, e);
     }
 
+    //form resize
     private void picResizer_MouseDown(object sender, MouseEventArgs e)
     {
         base.FormResize_MouseDown(sender, e);

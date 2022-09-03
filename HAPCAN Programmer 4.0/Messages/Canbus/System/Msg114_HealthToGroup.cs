@@ -12,7 +12,7 @@ class Msg114_HealthToGroup
     }
     public Msg114_HealthToGroup(byte nodeTx, byte groupTx, byte groupRx, byte command)
     {
-        _frame = new HapcanFrame(new byte[] { 0x11, 0x40, nodeTx, groupTx, command, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x11, 0x40, nodeTx, groupTx, command, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
 
     public HapcanFrame GetFrame()

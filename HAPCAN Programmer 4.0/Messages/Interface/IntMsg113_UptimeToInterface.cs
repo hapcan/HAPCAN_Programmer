@@ -12,7 +12,7 @@ class IntMsg113_UptimeToInterface
     }
     public IntMsg113_UptimeToInterface()
     {
-        _frame = new HapcanFrame(new byte[] { 0x11, 0x30, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x11, 0x30, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

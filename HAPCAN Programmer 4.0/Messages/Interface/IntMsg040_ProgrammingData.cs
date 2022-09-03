@@ -12,7 +12,7 @@ class IntMsg040_ProgrammingData
     }
     public IntMsg040_ProgrammingData(byte[] data)
     {
-        _frame = new HapcanFrame(new byte[] { 0x04, 0x00, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x04, 0x00, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

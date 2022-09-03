@@ -15,22 +15,32 @@ public partial class FormLogs : Form
 
     private void OnLogSaved()
     {
-        if (this.InvokeRequired)
+        try
         {
-            this.Invoke(new Action(OnLogSaved));
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(OnLogSaved));
+            }
+            else
+            {
+                richTextBox1.Text = Logger.LogText.ToString();
+                //scroll to end
+                richTextBox1.SelectionStart = richTextBox1.Text.Length;
+                richTextBox1.ScrollToCaret();
+            }
         }
-        else
-        {
-            richTextBox1.Text = Logger.LogText.ToString();
-            //scroll to end
-            richTextBox1.SelectionStart = richTextBox1.Text.Length;
-            richTextBox1.ScrollToCaret();
-        }
+        //catch exception when form is disposed
+        catch (Exception) { }
     }
 
     private void btnClear_Click(object sender, EventArgs e)
     {
         Logger.LogText.Clear();
         richTextBox1.Clear();
+    }
+
+    private void FormLogs_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        Logger.LogSaved -= this.OnLogSaved;                 //unsubscribe to new log saved event
     }
 }

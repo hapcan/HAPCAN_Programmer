@@ -12,7 +12,7 @@ class IntMsg020_ExitInterfaceFromProgramming
     }
     public IntMsg020_ExitInterfaceFromProgramming()
     {
-        _frame = new HapcanFrame(new byte[] { 0x02, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x02, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

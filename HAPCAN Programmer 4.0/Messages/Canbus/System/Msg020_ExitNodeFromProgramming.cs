@@ -12,7 +12,7 @@ class Msg020_ExitNodeFromProgramming
     }
     public Msg020_ExitNodeFromProgramming(byte nodeRx, byte groupRx)
     {
-        _frame = new HapcanFrame(new byte[] { 0x02, 0x00, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x02, 0x00, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
 
     public HapcanFrame GetFrame()

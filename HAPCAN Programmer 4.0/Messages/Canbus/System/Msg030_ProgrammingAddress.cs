@@ -12,7 +12,7 @@ public class Msg030_ProgrammingAddress
     }
     public Msg030_ProgrammingAddress(byte nodeRx, byte groupRx, int address, byte command)
     {
-        _frame = new HapcanFrame(new byte[] { 0x03, 0x00, nodeRx, groupRx, (byte)(address>>16), (byte)(address>>8), (byte)address, 0xFF, 0xFF, command, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x03, 0x00, nodeRx, groupRx, (byte)(address>>16), (byte)(address>>8), (byte)address, 0xFF, 0xFF, command, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
     public enum ProgrammingAction
     {

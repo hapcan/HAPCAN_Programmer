@@ -12,7 +12,7 @@ class Msg105_FirmwareTypeToGroup
     }
     public Msg105_FirmwareTypeToGroup(byte nodeTx, byte groupTx, byte groupRx)
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0x50, nodeTx, groupTx, 0xFF, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x50, nodeTx, groupTx, 0xFF, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
 
     public HapcanFrame GetFrame()

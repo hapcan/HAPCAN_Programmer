@@ -12,7 +12,7 @@ class IntMsg030_ProgrammingAddress
     }
     public IntMsg030_ProgrammingAddress(int address, byte command)
     {
-        _frame = new HapcanFrame(new byte[] { 0x03, 0x00, (byte)(address >> 16), (byte)(address >> 8), (byte)address, 0xFF, 0xFF, command, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x03, 0x00, (byte)(address >> 16), (byte)(address >> 8), (byte)address, 0xFF, 0xFF, command, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

@@ -53,7 +53,7 @@ namespace Hapcan.Programmer.Forms
             this.panelTop.Controls.Add(this.btnExit);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(1, 1);
-            this.panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelTop.Margin = new System.Windows.Forms.Padding(0);
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(729, 40);
             this.panelTop.TabIndex = 6;
@@ -161,7 +161,7 @@ namespace Hapcan.Programmer.Forms
             this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "FormTemplate";
             this.Padding = new System.Windows.Forms.Padding(1);
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Node Settings";
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();

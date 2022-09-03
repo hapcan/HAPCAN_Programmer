@@ -89,7 +89,8 @@ public class Project
         var conn = this.Connection;
         conn.CanbusMessageReceived += OnMessageReceived;
         conn.InterfaceMessageReceived += OnMessageReceived;
-        conn.MessageSent += OnMessageSent;
+        conn.CanbusMessageSent += OnMessageSent;
+        conn.InterfaceMessageSent += OnMessageSent;
         conn.ConnectionError += OnConnectionError;
         conn.ConnectionConnecting += OnConnectionConnecting;
         conn.ConnectionConnected += OnConnectionConnected;

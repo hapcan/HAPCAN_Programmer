@@ -60,7 +60,7 @@ public class HapcanFrame
     public string FrameDataText { get; }
     public string Description { get; set; }
     public enum ByteType : byte { StartByte = 0xAA, StopByte = 0xA5 }
-    public enum FrameSource { Interface, Canbus, PC }
+    public enum FrameSource { Interface, Canbus, PcToInterface, PcToCanbus }
 
 
     //METHODS
@@ -71,7 +71,8 @@ public class HapcanFrame
         {
             FrameSource.Interface => "Interface",
             FrameSource.Canbus => "Canbus",
-            FrameSource.PC => "PC",
+            FrameSource.PcToInterface => "PC to interface",
+            FrameSource.PcToCanbus => "PC to canbus",
             _ => "unknown"
         };
         return result;
@@ -89,7 +90,7 @@ public class HapcanFrame
     //get data string with start, checksum and top bytes
     public string GetDataStringWithStartStopChecksum()
     {
-        var rxtx = Source == FrameSource.PC ? "Tx ->" : "Rx <-";
+        var rxtx = Source == FrameSource.PcToCanbus || Source == FrameSource.PcToInterface ? "Tx ->" : "Rx <-";
         var start = (byte)ByteType.StartByte;
         var data = GetDataString();
         var checksum = GetFrameChecksum();

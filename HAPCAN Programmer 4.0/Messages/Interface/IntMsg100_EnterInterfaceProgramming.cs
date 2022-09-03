@@ -12,7 +12,7 @@ class IntMsg100_EnterInterfaceProgramming
     }
     public IntMsg100_EnterInterfaceProgramming()
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0x00 }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x00 }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()

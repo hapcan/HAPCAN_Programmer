@@ -12,7 +12,7 @@ class Msg10D_DescriptionToGroup
     }
     public Msg10D_DescriptionToGroup(byte nodeTx, byte groupTx, byte groupRx)
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0xD0, nodeTx, groupTx, 0xFF, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0xD0, nodeTx, groupTx, 0xFF, 0xFF, 0x00, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
 
     public HapcanFrame GetFrame()

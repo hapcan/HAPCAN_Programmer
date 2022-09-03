@@ -92,6 +92,12 @@ public partial class FormMonitor : Form
         }
     }
 
+    //Buttons
+    private void btnBusload_Click(object sender, EventArgs e)
+    {
+        var frmBL = new FormTemplate(new FormBusLoad(_project.Connection));
+        frmBL.Show();
+    }
     //PAUSE button
     private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
     {
@@ -127,7 +133,7 @@ public partial class FormMonitor : Form
     }
     private async void btnSend_Click(object sender, EventArgs e)
     {
-        var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PC);
+        var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PcToCanbus);
         await _project.Connection.SendAsync(frm);
         this.UpdateGrid();
     }
@@ -156,7 +162,7 @@ public partial class FormMonitor : Form
                 str = str.Insert(i, " ");
             textBoxTxMsg.Text = str;
             //calculate checksum
-            var frm = new HapcanFrame(msg, HapcanFrame.FrameSource.PC);
+            var frm = new HapcanFrame(msg, HapcanFrame.FrameSource.PcToCanbus);
             if (frm != null)
                 label2.Text = frm.GetFrameChecksum().ToString("X2");
         }
@@ -233,4 +239,6 @@ public partial class FormMonitor : Form
         comboBoxNode.Visible = true;
         comboBoxGroup.Visible = true;
     }
+
+
 }

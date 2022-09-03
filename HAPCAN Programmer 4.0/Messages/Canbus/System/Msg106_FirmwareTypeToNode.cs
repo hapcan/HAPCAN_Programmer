@@ -12,7 +12,7 @@ class Msg106_FirmwareTypeToNode
     }
     public Msg106_FirmwareTypeToNode(byte nodeTx, byte groupTx, byte nodeRx, byte groupRx)
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0x60, nodeTx, groupTx, 0xFF, 0xFF, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0x60, nodeTx, groupTx, 0xFF, 0xFF, nodeRx, groupRx, 0xFF, 0xFF, 0xFF, 0xFF }, HapcanFrame.FrameSource.PcToCanbus);
     }
 
     public HapcanFrame GetFrame()

@@ -12,7 +12,7 @@ class IntMsg10E_DescriptionToInterface
     }
     public IntMsg10E_DescriptionToInterface()
     {
-        _frame = new HapcanFrame(new byte[] { 0x10, 0xE0 }, HapcanFrame.FrameSource.PC);
+        _frame = new HapcanFrame(new byte[] { 0x10, 0xE0 }, HapcanFrame.FrameSource.PcToInterface);
     }
 
     public HapcanFrame GetFrame()
