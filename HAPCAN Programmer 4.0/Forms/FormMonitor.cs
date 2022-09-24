@@ -12,14 +12,21 @@ public partial class FormMonitor : Form
 {
     private readonly HapcanList<HapcanFrame> _monitorList;
     private readonly Project _project;
+    private System.Timers.Timer _postponeGridUpdateTimer;
 
     public FormMonitor(Project project)
     {
         _project = project;
         _monitorList = _project.FrameList;
+        _postponeGridUpdateTimer = new System.Timers.Timer();
+        _postponeGridUpdateTimer.Interval = 500;
+        _postponeGridUpdateTimer.Elapsed += PostponeGridUpdateTimer_Tick;
         InitializeComponent();
     }
 
+    ///////////////
+    // FORM LOADING
+    ///////////////
     private void FormMonitor_Load(object sender, EventArgs e)
     {
         //load form content in 10ms
@@ -49,7 +56,7 @@ public partial class FormMonitor : Form
             comboBoxNode.SelectedIndex = 0;
             comboBoxGroup.SelectedIndex = 1;
             //subscribe the event
-            _monitorList.ListChanged += this.OnListChanged;
+            _monitorList.ListChanged += OnListChanged;
             //load frames
             this.UpdateGrid();
         }
@@ -62,51 +69,52 @@ public partial class FormMonitor : Form
     private void FormMonitor_FormClosing(object sender, FormClosingEventArgs e)
     {
         //unsubscribe the event
-        _monitorList.ListChanged -= this.OnListChanged;
+        _monitorList.ListChanged -= OnListChanged;
+        _postponeGridUpdateTimer.Elapsed -= PostponeGridUpdateTimer_Tick;
     }
 
+    ///////////////
+    // REFRESH GRID
+    ///////////////
     private void OnListChanged()
     {
-        //don't update if paused
-        if (checkBoxPause.Checked)
-            return;
         this.UpdateGrid();
     }
 
     private void UpdateGrid()
     {
+        //don't update if paused
+        if (checkBoxPause.Checked)
+            return;
+        //set timer to refresh grid
+        if (_postponeGridUpdateTimer.Interval > 1)       //decrement interval to enable grid update even when frequent request
+            _postponeGridUpdateTimer.Interval--;
+        _postponeGridUpdateTimer.Enabled = true;
+    }
+
+    private void PostponeGridUpdateTimer_Tick(object sender, EventArgs e)
+    {
+        _postponeGridUpdateTimer.Interval = 500;
+        _postponeGridUpdateTimer.Enabled = false;
+        UpdateGridNow();
+    }
+
+    private void UpdateGridNow()
+    {
         if (this.InvokeRequired)
         {
-            Invoke(() => UpdateGrid());
+            Invoke(new Action(() => UpdateGridNow()));
+            return;
         }
-        else
+        //refresh grid
+        try
         {
-            try
-            {
-                SearchInGrid(textBoxSearch.Text);
-            }
-            catch (Exception)
-            {
-                Logger.Log("Application", this.Name + " refresh has been requested on closed form.");
-            }
+            SearchInGrid(textBoxSearch.Text);
         }
-    }
-
-    //Buttons
-    private void btnBusload_Click(object sender, EventArgs e)
-    {
-        var frmBL = new FormTemplate(new FormBusLoad(_project.Connection));
-        frmBL.Show();
-    }
-    //PAUSE button
-    private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
-    {
-        this.UpdateGrid();
-    }
-
-    private void textBoxSearch_TextChanged(object sender, EventArgs e)
-    {
-        this.UpdateGrid();
+        catch (Exception)
+        {
+            Logger.Log("Application", this.Name + " refresh has been requested on closed form.");
+        }
     }
 
     private void SearchInGrid(string search)
@@ -131,12 +139,22 @@ public partial class FormMonitor : Form
             dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.RowCount - 1].Cells[0];
         labelMsgNo.Text = "Messages: " + dataGridView1.Rows.Count;
     }
-    private async void btnSend_Click(object sender, EventArgs e)
+
+    //////////
+    // BUTTONS
+    //////////
+    
+    //PAUSE button
+    private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
     {
-        var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PcToCanbus);
-        await _project.Connection.SendAsync(frm);
         this.UpdateGrid();
     }
+
+    private void textBoxSearch_TextChanged(object sender, EventArgs e)
+    {
+        this.UpdateGrid();
+    }
+
 
     private void textBoxTxMsg_KeyPress(object sender, KeyPressEventArgs e)
     {
@@ -149,6 +167,9 @@ public partial class FormMonitor : Form
             e.Handled = true;
     }
 
+    ///////////////
+    // SEND MESSAGE
+    ///////////////
     private void textBoxTxMsg_TextChanged(object sender, EventArgs e)
     {
         string msg = textBoxTxMsg.Text;
@@ -173,6 +194,12 @@ public partial class FormMonitor : Form
         }
     }
 
+    private async void btnSend_Click(object sender, EventArgs e)
+    {
+        var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PcToCanbus);
+        await _project.Connection.SendAsync(frm);
+        this.UpdateGrid();
+    }
     private void comboBoxFrame_SelectedIndexChanged(object sender, EventArgs e)
     {
         SetFrame();

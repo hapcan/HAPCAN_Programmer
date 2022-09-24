@@ -58,17 +58,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnBusload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAASJJREFUOE9jqDv0h6vm4D8OBnJB7cE/fFUH/z+tPvivuO7gHx6oMGkAaMBNIP4P
-        xK+rD/6vBrqIHypFHABqXAY1AIbfAw1qqj34VxiqBD8AOr8EzQAY/gw0qAvoInGoUuwAaIAjFs3I+BsQ
-        TwKqk4FqQQXAgBQAKviHpAEX/gl00Uygi5SgWhEAKPkATTE+/Bto0MK6Q3/FoNrBBjxCU4QPHwN6x3Xl
-        qRcQzTUH/0phUYQNnwRq9Gg88B2iEQaAgsFYFCPj00A13i2Hf0F1oAGggh40DTB8FqjRr+PIT0aoUuwA
-        qPAomsYLQI0BtQd+4dcIAnUHf7MDNfyAarwE8k7TISI0wgBQgyVQ4xUgHVZ/8A8TVJh4AExEQg2HyNAI
-        BgwMANAtg6vzmsecAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="checkBoxPause.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -99,7 +88,4 @@
         BgwMANAtg6vzmsecAAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="PostponeGridRefreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
 </root>

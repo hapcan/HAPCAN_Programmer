@@ -43,7 +43,7 @@ public class ResponseReceiver : IDisposable
 
 
     /// <summary>
-    /// Receives defined frames type and number from the bus withing response time. Returns list of frames
+    /// Receives defined frames type and number from the bus withing response time (timeout). Returns list of frames
     /// </summary>
     /// <param name="frameType">Array of frame types to receive</param>
     /// <param name="frames">Number of expected frames. If not entered frames=1000.</param>

@@ -57,7 +57,7 @@ public partial class FormNodeSettingsFirmware : Form
             }
             catch (Exception ex)
             {
-                string msg = String.Format("Reading node ({1},{2}) full current firmware version error: " + ex.Message, _node.NodeNumber, _node.GroupNumber);
+                string msg = String.Format("Reading node ({0},{1}) full current firmware version error: " + ex.Message, _node.NodeNumber, _node.GroupNumber);
                 Logger.Log("Nodes", msg);
                 FormInformation.ShowDialog(this, "Error", msg);
             }

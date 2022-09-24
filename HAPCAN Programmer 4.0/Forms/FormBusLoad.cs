@@ -1,5 +1,6 @@
 ﻿using Hapcan.General;
 using ScottPlot;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,9 +44,8 @@ public partial class FormBusLoad : Form
             Color.FromArgb(120, 120, 120),      //axis
             Color.FromArgb(120, 120, 120));     //title
         plt.XAxis.Label("Time");                //axes labels
-        plt.YAxis.Label("Messages per second");
+        plt.YAxis.Label("Frames per second [fps]");
         plt.XAxis.DateTimeFormat(true);         //x axis is time
-    //    plt.YAxis.ManualTickSpacing(1);
         formsPlot1.Refresh();
     }
     private void OnLoadTimer(object sender, EventArgs e)
@@ -66,6 +66,7 @@ public partial class FormBusLoad : Form
                                    _list.Select(y => y.ValueRx).ToArray(), lineWidth: 2, label: "Received");
         var sigTx = plt.AddScatter(_list.Select(x => x.Time).ToArray(),
                                    _list.Select(y => y.ValueTx).ToArray(), lineWidth: 2, label: "Sent");
+
         plt.Legend();
 
         plt.AxisAutoX(0.05);        //automaticaly adjust axis

@@ -167,13 +167,14 @@ public class Programming
             flashTo = 0xFFFF;
 
         //get number of all cycles
-        _totalCycles = (eepromTo - 8) / 8 + 1 + (flashTo - 0x8000) / 8 + 1;         //eeprom + flash reading
+        _totalCycles = (eepromTo - 8) / 8 + 1 + (flashTo - 0x7FFF) / 8 + 1;         //eeprom + flash reading
 
         //read eeprom
         if (eepromTo > 0x7)
             await ReadAsync(0x8, eepromTo, cts);
         //read flash
-        await ReadAsync(0x8000, flashTo, cts);
+        if (flashTo > 0x8000)
+            await ReadAsync(0x8000, flashTo, cts);
         
         //update memory if fully read
         if (!cts.IsCancellationRequested)

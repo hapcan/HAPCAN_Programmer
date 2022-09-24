@@ -29,13 +29,11 @@ namespace Hapcan.Programmer.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMonitor));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.btnBusload = new System.Windows.Forms.Button();
             this.checkBoxPause = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -57,7 +55,6 @@ namespace Hapcan.Programmer.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.PostponeGridRefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.panelTop.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -71,7 +68,6 @@ namespace Hapcan.Programmer.Forms
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panelTop.Controls.Add(this.btnBusload);
             this.panelTop.Controls.Add(this.checkBoxPause);
             this.panelTop.Controls.Add(this.panel2);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -80,24 +76,6 @@ namespace Hapcan.Programmer.Forms
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1433, 35);
             this.panelTop.TabIndex = 3;
-            // 
-            // btnBusload
-            // 
-            this.btnBusload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnBusload.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBusload.FlatAppearance.BorderSize = 0;
-            this.btnBusload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBusload.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnBusload.Image = ((System.Drawing.Image)(resources.GetObject("btnBusload.Image")));
-            this.btnBusload.Location = new System.Drawing.Point(755, 0);
-            this.btnBusload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnBusload.Name = "btnBusload";
-            this.btnBusload.Size = new System.Drawing.Size(93, 35);
-            this.btnBusload.TabIndex = 9;
-            this.btnBusload.Text = " Bus load";
-            this.btnBusload.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnBusload.UseVisualStyleBackColor = false;
-            this.btnBusload.Click += new System.EventHandler(this.btnBusload_Click);
             // 
             // checkBoxPause
             // 
@@ -510,8 +488,6 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Timer PostponeGridRefreshTimer;
         private System.Windows.Forms.Label labelMsgNo;
-        private System.Windows.Forms.Button btnBusload;
     }
 }

@@ -195,44 +195,41 @@ public class HapcanConnection
         {
             try
             {
-                //interface 13-byte frame
-                if (AvailableBytes() >= 13)
+                //expect at least 13byte
+                if (AvailableBytes() > 0)
                 {
-                    rxBuffer = new byte[13];
-                    ReadBytes(rxBuffer, 0, 13);                             //read 13 bytes
-                    Thread.Sleep(1);                                        //wait a bit to make sure buffer receives
-                                                                            //potential additional 2 bytes if it is can frame                                                                     
-                    if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
-                        rxBuffer[12] == (byte)HapcanFrame.ByteType.StopByte &&
-                        rxBuffer[11] == GetChecksum(rxBuffer))
-                    {
-                        var buffer = RemoveStartStopChecksum(rxBuffer);     //remove start, stop and checksum bytes
-                        var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Interface);
-                        InterfaceMessageReceived?.Invoke(frame);            //raise event
-                    }
-                    //canbus 15-byte frame
-                    else if (AvailableBytes() >= 2)
-                    {
+                    //check if first byte is start byte
+                    rxBuffer = new byte[1];
+                    ReadBytes(rxBuffer, 0, 1);
 
-                        Array.Resize(ref rxBuffer, 15);
-                        ReadBytes(rxBuffer, 13,2);                          //read additional 2 bytes
-                        
-                        if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte &&
-                            rxBuffer[14] == (byte)HapcanFrame.ByteType.StopByte &&
-                            rxBuffer[13] == GetChecksum(rxBuffer))
-                        {
-                            var buffer = RemoveStartStopChecksum(rxBuffer); //remove start, stop and checksum bytes
-                            var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Canbus);
-                            CanbusMessageReceived?.Invoke(frame);           //raise event
-                        }
-                    }
-                    else
+                    if (rxBuffer[0] == (byte)HapcanFrame.ByteType.StartByte)
                     {
-                        //read as long as it gets stop byte at the end of frame
-                        while (AvailableBytes() > 0 && rxBuffer[0] != (byte)HapcanFrame.ByteType.StopByte)
+                        //interface 13-byte frame
+                        while (AvailableBytes() < 12) { }                       //wait for potential additional 12 bytes if it is can frame   
+                        Array.Resize(ref rxBuffer, 13);
+                        ReadBytes(rxBuffer, 1, 12);                             //read additional 12 bytes
+
+                        if (rxBuffer[12] == (byte)HapcanFrame.ByteType.StopByte &&
+                            rxBuffer[11] == GetChecksum(rxBuffer))
                         {
-                            ReadBytes(rxBuffer, 0, 1);
-                            Thread.Sleep(1);
+                            var buffer = RemoveStartStopChecksum(rxBuffer);     //remove start, stop and checksum bytes
+                            var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Interface);
+                            InterfaceMessageReceived?.Invoke(frame);            //raise event
+                        }
+                        //canbus 15-byte frame
+                        else
+                        {
+                            while (AvailableBytes() < 2) { }                    //wait for potential additional 2 bytes if it is can frame                                                                     
+                            Array.Resize(ref rxBuffer, 15);
+                            ReadBytes(rxBuffer, 13, 2);                         //read additional 2 bytes
+
+                            if (rxBuffer[14] == (byte)HapcanFrame.ByteType.StopByte &&
+                                rxBuffer[13] == GetChecksum(rxBuffer))
+                            {
+                                var buffer = RemoveStartStopChecksum(rxBuffer); //remove start, stop and checksum bytes
+                                var frame = new HapcanFrame(buffer, HapcanFrame.FrameSource.Canbus);
+                                CanbusMessageReceived?.Invoke(frame);           //raise event
+                            }
                         }
                     }
                 }

@@ -109,13 +109,15 @@ public partial class FormSettings : Form
         {
             comboBoxIntCom.Items.Clear();
             comboBoxIntCom.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
+            if(comboBoxIntCom.SelectedIndex < 0 && comboBoxIntCom.Items.Count >0)
+                comboBoxIntCom.SelectedIndex = 0;
         }
         else
         {
             comboBoxIntCom.Items.Clear();
             comboBoxIntCom.Items.AddRange(SetPortNames());
         }
-        _project.Connection.Com = (string)comboBoxIntCom.SelectedItem;
+        _project.Connection.Com = comboBoxIntCom.SelectedItem.ToString();
     }
     private string[] SetPortNames()
     {
@@ -126,5 +128,10 @@ public partial class FormSettings : Form
             names[i] = "COM" + (i + 1).ToString();
         }
         return names;
+    }
+
+    private void comboBoxIntCom_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _project.Connection.Com = comboBoxIntCom.SelectedItem.ToString();
     }
 }

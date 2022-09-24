@@ -139,6 +139,7 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxIntCom.Name = "comboBoxIntCom";
             this.comboBoxIntCom.Size = new System.Drawing.Size(92, 26);
             this.comboBoxIntCom.TabIndex = 31;
+            this.comboBoxIntCom.SelectedIndexChanged += new System.EventHandler(this.comboBoxIntCom_SelectedIndexChanged);
             // 
             // label5
             // 
