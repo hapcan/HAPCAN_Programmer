@@ -247,6 +247,8 @@ public partial class FormMonitor : Form
             case 22: textBoxTxMsg.Text = new Msg113_UptimeToNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
             case 23: textBoxTxMsg.Text = new Msg114_HealthToGroup(nodeTx, groupTx, groupRx, 0x01).GetFrame().GetDataString(); DisableNode(); break;
             case 24: textBoxTxMsg.Text = new Msg115_HealthToNode(nodeTx, groupTx, nodeRx, groupRx, 0x01).GetFrame().GetDataString(); EnableAll(); break;
+            case 25: textBoxTxMsg.Text = new Msg116_ChannelNameToGroup(nodeTx, groupTx, groupRx, 0x00).GetFrame().GetDataString(); DisableNode(); break;
+            case 26: textBoxTxMsg.Text = new Msg117_ChannelNameToNode(nodeTx, groupTx, nodeRx, groupRx, 0x00).GetFrame().GetDataString(); EnableAll(); break;
         }
 
     }

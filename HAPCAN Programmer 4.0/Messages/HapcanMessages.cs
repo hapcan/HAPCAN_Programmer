@@ -64,6 +64,8 @@ public class HapcanMessages
             0x113 => new Msg113_UptimeToNode(frame).GetDescription(),
             0x114 => new Msg114_HealthToGroup(frame).GetDescription(),
             0x115 => new Msg115_HealthToNode(frame).GetDescription(),
+            0x116 => new Msg116_ChannelNameToGroup(frame).GetDescription(),
+            0x117 => new Msg117_ChannelNameToNode(frame).GetDescription(),
             0x1F1 => new Msg1F1_FirmwareError(frame).GetDescription(),
             _ => string.Format("Unknown canbus system frame type 0x{0:X}", frameType),
         };

@@ -318,7 +318,9 @@ namespace Hapcan.Programmer.Forms
             "0x112 - uptime request to group",
             "0x113 - uptime request to node",
             "0x114 - health check request to group",
-            "0x115 - health check request to node"});
+            "0x115 - health check request to node",
+            "0x116 - channel name request to group",
+            "0x117 - channel name request to node"});
             this.comboBoxFrame.Location = new System.Drawing.Point(593, 29);
             this.comboBoxFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxFrame.Name = "comboBoxFrame";
