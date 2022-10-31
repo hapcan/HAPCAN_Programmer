@@ -65,7 +65,7 @@ public partial class FormNodeSettings : Form
     //form node firmware
     private void btnFirmware_Click(object sender, EventArgs e)
     {
-        if (LoadContainer(new FormNodeSettingsFirmware(_project, _node)))
+        if (LoadContainer(new FormNodeSettingsFirmware(_node)))
             ButtonColor((Button)sender);
     }
 

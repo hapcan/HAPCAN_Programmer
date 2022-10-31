@@ -15,16 +15,14 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormNodeSettingsFirmware : Form
 {
-    Project _project;
     HapcanNode _node;
     byte[] _fileBuffer;
     string _fileName;
     string _fileFirmVersion;
 
-    public FormNodeSettingsFirmware(Project project, HapcanNode node)
+    public FormNodeSettingsFirmware(HapcanNode node)
     {
         InitializeComponent();
-        _project = project;
         _node = node;
     }
 
@@ -37,7 +35,7 @@ public partial class FormNodeSettingsFirmware : Form
     private async Task<string> GetTextedCurrentFirmwareVersionRevision()
     {
         //check if firmware error
-        await new SystemRequest(_project.Connection).FirmwareVersionRequest(_node);
+        await new SystemRequest(_node.Subnet).FirmwareVersionRequest(_node);
 
         //return error if firmware error
         if (_node.FirmwareError != 0)
@@ -47,7 +45,7 @@ public partial class FormNodeSettingsFirmware : Form
         //get firmware revision if firmware ok
         else
         {
-            var prg = new Programming(_project.Connection, _node);
+            var prg = new Programming(_node);
             try
             {
                 //read flash memory cells with revision number
@@ -106,7 +104,7 @@ public partial class FormNodeSettingsFirmware : Form
     private void btnUpload_Click(object sender, EventArgs e)
     {
         //program
-        var prgf = new FormProgramming(_project.Connection, _node, _fileBuffer, Programming.ProgrammingAction.WriteFirmware);
+        var prgf = new FormProgramming(_node, _fileBuffer, Programming.ProgrammingAction.WriteFirmware);
         prgf.ShowDialog();
 
         string msg = String.Format("Node ({0},{1}) firmware '{2}' uploading ", _node.NodeNumber, _node.GroupNumber, _fileFirmVersion);

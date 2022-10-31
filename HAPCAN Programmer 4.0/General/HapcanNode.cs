@@ -21,7 +21,7 @@ public class HapcanNode : INotifyPropertyChanged
     private float _moduleVoltage;
     private string _uptime;
     private int _serialNumber;
-    private bool _inProgramming;
+    private NodeStatus _status;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -34,9 +34,9 @@ public class HapcanNode : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    //CONSTRUCTORS
     public HapcanNode()
     {
-    //    Description = "";
         FullNodeGroupNumber = "";
         FullHardwareVersion = "";
         FullFirmwareVersion = "";
@@ -49,6 +49,7 @@ public class HapcanNode : INotifyPropertyChanged
         SerialNumber = serial;
     }
 
+    //PROPERTIES
     [XmlAttribute("Intf")]
     public bool Interface
     {
@@ -90,7 +91,6 @@ public class HapcanNode : INotifyPropertyChanged
         }
     }
     [XmlIgnore]
-  //  [XmlAttribute("NodeNo")]
     public byte NodeNumber
     {
         get { return Eeprom[0x26]; }
@@ -102,7 +102,6 @@ public class HapcanNode : INotifyPropertyChanged
         }
     }
     [XmlIgnore]
-   // [XmlAttribute("GroupNo")]
     public byte GroupNumber
     {
         get { return Eeprom[0x27]; }
@@ -159,6 +158,7 @@ public class HapcanNode : INotifyPropertyChanged
         }
     }
     [XmlAttribute("FVer")]
+    
     public byte FirmwareVersion
     {
         get { return _firmwareVersion; }
@@ -181,7 +181,6 @@ public class HapcanNode : INotifyPropertyChanged
             NotifyPropertyChanged();
         }
     }
-
     [XmlAttribute("BVer")]
     public byte BootloaderMajorVersion
     {
@@ -213,7 +212,10 @@ public class HapcanNode : INotifyPropertyChanged
     [XmlIgnore]
     [Browsable(false)]
     public bool MemoryWasRead { get; set; }
-
+    [XmlIgnore]
+    [Browsable(false)]
+    public HapcanSubnet Subnet { get; set; }
+    
     [XmlIgnore]
     public float ModuleVoltage
     {
@@ -266,17 +268,25 @@ public class HapcanNode : INotifyPropertyChanged
     [XmlIgnore]
     public string FullBootloaderVersion { get; private set; }
     [XmlIgnore]
-    public bool InProgramming
+    public NodeStatus Status
     {
-        get { return _inProgramming; }
+        get { return _status; }
         set
         {
-            _inProgramming = value;
+            _status = value;
             NotifyPropertyChanged();
         }
     }
+    public enum NodeStatus
+    {
+        Unknown,
+        InProgramming,
+        Active,
+        Inactive
+    }
 
 
+    //METHODS
     private string GetFullNodeGroupNumber()
     {
         if (Interface)

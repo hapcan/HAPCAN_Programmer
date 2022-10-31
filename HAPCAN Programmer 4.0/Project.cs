@@ -2,6 +2,7 @@
 using Hapcan.General;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -15,15 +16,12 @@ public class Project
     [XmlElement(ElementName = "Settings")]
     public Settings Settings { get; set; }
 
-    [XmlElement(ElementName = "Connection")]
-    public HapcanConnection Connection { get; set; }
-
-    [XmlArray(ElementName = "Nodes")]
-    [XmlArrayItem(ElementName = "Node")]
-    public List<HapcanNode> NodeList { get; set; }
+    [XmlArray(ElementName = "Network")]
+    [XmlArrayItem(ElementName = "Subnet")]
+    public List<HapcanSubnet> NetList { get; set; }
 
     [XmlIgnore]
-    public HapcanList<HapcanFrame> FrameList { get; set; }
+    public BindingList<HapcanFrame> FrameList { get; set; }
 
     [XmlIgnore]
     public string ProjectFilePath { get; set; }
@@ -32,9 +30,8 @@ public class Project
     public Project()
     {
         Settings = new Settings();
-        Connection = new HapcanConnection();
-        FrameList = new HapcanList<HapcanFrame>();
-        NodeList = new List<HapcanNode>();
+        NetList = new List<HapcanSubnet>();
+        FrameList = new BindingList<HapcanFrame>();
     }
 
     //METHODS
@@ -48,17 +45,33 @@ public class Project
             var projfile = new ProjectFile<Project>();
             project = await projfile.DeserializeAsync(filename).ConfigureAwait(false);
             Logger.Log("Application info", "Opened project " + Path.GetFullPath(filename));
-            return project;
+            
+            //make sure project instance is ok
+            return PrepareProject(project);
         }
         catch (Exception ex)
         {
             Logger.Log("Application error", "Opening project exception. " + ex.ToString());
-
-            //create project file
-            project = new Project();
-            await project.SaveAsync(filename);
-            return project;
+            
+            //make sure project instance is ok
+            return PrepareProject(project);
         }
+    }
+
+    private Project PrepareProject(Project project)
+    {
+        //create project
+        if (project == null)
+            project = new Project();
+        //create at least one subnet
+        if (project.NetList.Count == 0)
+            project.NetList.Add(new HapcanSubnet());
+        //add subnet reference to each node
+        foreach (var subnet in project.NetList)
+            foreach (var node in subnet.NodeList)
+                node.Subnet = subnet;
+        
+        return project;
     }
 
     //save project to file
@@ -86,7 +99,7 @@ public class Project
     //subscribe to its message receive event
     public void SubscribeEvents()
     {
-        var conn = this.Connection;
+        var conn = this.NetList[0].Connection;
         conn.CanbusMessageReceived += OnMessageReceived;
         conn.InterfaceMessageReceived += OnMessageReceived;
         conn.CanbusMessageSent += OnMessageSent;

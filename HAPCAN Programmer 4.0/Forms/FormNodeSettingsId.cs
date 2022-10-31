@@ -54,7 +54,7 @@ public partial class FormNodeSettingsId : Form
     private async void btnCgangeDesc_Click(object sender, EventArgs e)
     {
         //programe
-        var prg = new Programming(_project.Connection, _node);
+        var prg = new Programming(_node);
         try
         {
             await prg.ChangeNodeDescription(textBoxDesc.Text);
@@ -79,14 +79,14 @@ public partial class FormNodeSettingsId : Form
         string nodeId = string.Format("({0},{1})", nodeNr, groupNr);
 
         //check if id already exists
-        if(_project.NodeList.Exists(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr))
+        if(_project.NetList[0].NodeList.Exists(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr))
         {
             FormInformation.ShowDialog(this, "Error", "Node with selected id already exists.");
             return;
         }
 
         //programe
-        var prg = new Programming(_project.Connection, _node);
+        var prg = new Programming(_node);
         try
         {
             await prg.ChangeNodeId(nodeNr, groupNr);
@@ -106,7 +106,7 @@ public partial class FormNodeSettingsId : Form
 
     private async void btnDefaultId_Click(object sender, EventArgs e)
     {
-        var sr = new SystemRequest(_project.Connection);
+        var sr = new SystemRequest(_node.Subnet);
         if (await sr.SetDefaultIdAsync(_node))
         {
             var msg = string.Format("{0} id has changed id to default ({1},{2}).", _nodeName, _node.NodeNumber, _node.GroupNumber);

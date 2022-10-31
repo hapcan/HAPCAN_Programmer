@@ -19,6 +19,7 @@ public class ScanForNodes
     public event ScanForNodesEvent ScanForNodesProgress;          //progress event
 
     //FIELDS
+    readonly HapcanSubnet _subnet;
     readonly HapcanConnection _connection;
     readonly byte _nodeTx;                       //interface id
     readonly byte _groupTx;
@@ -32,13 +33,14 @@ public class ScanForNodes
     public List<HapcanNode> NodeList { get { return _nodeList; } }
 
     //CONSTRUCTOR
-    public ScanForNodes(HapcanConnection connection)
+    public ScanForNodes(HapcanSubnet subnet)
     {
-        _connection = connection;
-        _nodeTx = connection.NodeTx;
-        _groupTx = connection.GroupTx;
-        GroupFrom = connection.GroupFrom;
-        GroupTo = connection.GroupTo;
+        _subnet = subnet;
+        _connection = subnet.Connection;
+        _nodeTx = _connection.NodeTx;
+        _groupTx = _connection.GroupTx;
+        GroupFrom = _connection.GroupFrom;
+        GroupTo = _connection.GroupTo;
         _nodeList = new List<HapcanNode>();
     }
 
@@ -59,7 +61,8 @@ public class ScanForNodes
             {
                 foreach (var node in _nodeList.Where(n => n.GroupNumber == i))
                 {
-                    var sr = new SystemRequest(_connection);
+                    node.Status = HapcanNode.NodeStatus.Active;
+                    var sr = new SystemRequest(_subnet);
                     await sr.FirmwareVersionRequest(rcv, node);
                     await sr.VoltageRequest(rcv, node);
                     await sr.DescriptionRequest(rcv, node);
@@ -88,6 +91,7 @@ public class ScanForNodes
             var msg = new Msg103_HardwareTypeResponse(frame);
             var node = new HapcanNode(msg.SerialNumber)
             {
+                Subnet = _subnet,
                 NodeNumber = msg.NodeNumber,
                 GroupNumber = msg.GroupNumber,
                 HardwareType = msg.HardwareType,
@@ -100,7 +104,7 @@ public class ScanForNodes
         else
             return false;
     }
-    public async Task<HapcanNode> GetNodePropertiesAsync(HapcanNode node)
+    public async Task<bool> GetNodePropertiesAsync(HapcanNode node)
     {
         //make sure all nodes are not in programming mode
         await _connection.SendAsync(new Msg020_ExitNodeFromProgramming(node.NodeNumber, node.GroupNumber).GetFrame());
@@ -110,13 +114,20 @@ public class ScanForNodes
         using var rcv = new ResponseReceiver(_connection, false);
 
         //check all groups and calculate response time
-        var sr = new SystemRequest(_connection);
-        await sr.HardwareTypeRequest(rcv, node);
-        await sr.FirmwareVersionRequest(rcv, node);
-        await sr.VoltageRequest(rcv, node);
-        await sr.DescriptionRequest(rcv, node);
-        await sr.UptimeRequest(rcv, node);
-
-        return node;
+        var sr = new SystemRequest(_subnet);
+        if (await sr.HardwareTypeRequest(rcv, node) == true)
+        {
+            node.Status = HapcanNode.NodeStatus.Active;
+            await sr.FirmwareVersionRequest(rcv, node);
+            await sr.VoltageRequest(rcv, node);
+            await sr.DescriptionRequest(rcv, node);
+            await sr.UptimeRequest(rcv, node);
+            return true;
+        }
+        else
+        {
+            node.Status = HapcanNode.NodeStatus.Inactive;
+            return false;
+        }
     }
 }

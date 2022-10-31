@@ -83,7 +83,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNodeControl.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeControl.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeControl.Image")));
-            this.btnNodeControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNodeControl.Location = new System.Drawing.Point(731, 0);
             this.btnNodeControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeControl.Name = "btnNodeControl";
@@ -104,7 +103,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNodeRefresh.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeRefresh.Image")));
-            this.btnNodeRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNodeRefresh.Location = new System.Drawing.Point(992, 0);
             this.btnNodeRefresh.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeRefresh.Name = "btnNodeRefresh";
@@ -125,7 +123,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeReboot.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNodeReboot.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeReboot.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeReboot.Image")));
-            this.btnNodeReboot.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNodeReboot.Location = new System.Drawing.Point(905, 0);
             this.btnNodeReboot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeReboot.Name = "btnNodeReboot";
@@ -146,7 +143,6 @@ namespace Hapcan.Programmer.Forms
             this.btnNodeGeneralSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNodeGeneralSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnNodeGeneralSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnNodeGeneralSettings.Image")));
-            this.btnNodeGeneralSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNodeGeneralSettings.Location = new System.Drawing.Point(818, 0);
             this.btnNodeGeneralSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNodeGeneralSettings.Name = "btnNodeGeneralSettings";
@@ -231,7 +227,6 @@ namespace Hapcan.Programmer.Forms
             this.btnScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnScan.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnScan.Image = ((System.Drawing.Image)(resources.GetObject("btnScan.Image")));
-            this.btnScan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnScan.Location = new System.Drawing.Point(1079, 0);
             this.btnScan.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnScan.Name = "btnScan";
@@ -323,6 +318,8 @@ namespace Hapcan.Programmer.Forms
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "programming_16.png");
             this.imageList1.Images.SetKeyName(1, "active_16.png");
+            this.imageList1.Images.SetKeyName(2, "inactive_16.png");
+            this.imageList1.Images.SetKeyName(3, "unknown_16.png");
             // 
             // FormNodes
             // 

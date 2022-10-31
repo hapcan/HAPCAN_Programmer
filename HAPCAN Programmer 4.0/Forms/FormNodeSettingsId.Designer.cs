@@ -426,9 +426,9 @@ partial class FormNodeSettingsId
             this.label10.Location = new System.Drawing.Point(30, 260);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(88, 23);
+            this.label10.Size = new System.Drawing.Size(96, 23);
             this.label10.TabIndex = 45;
-            this.label10.Text = "Desription";
+            this.label10.Text = "Description";
             // 
             // FormNodeSettingsId
             // 

@@ -15,7 +15,6 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormProgramming : FormProgress
 {
-    readonly HapcanConnection _connection;
     readonly HapcanNode _node;
     readonly byte[] _firmwareBuffer;
     readonly byte[] _eepromBuffer;
@@ -29,18 +28,17 @@ public partial class FormProgramming : FormProgress
     public bool ProgrammingSuccessful { get; private set; } //result of programming
 
     //CONSTRUCTOR
-    private FormProgramming(HapcanConnection connection, HapcanNode node, 
+    private FormProgramming(HapcanNode node, 
         byte[] firmwareBuffer, byte[] eepromBuffer, byte[] flashBuffer,
         Programming.ProgrammingAction action)
     {
-        _connection = connection;
         _node = node;
         _firmwareBuffer = firmwareBuffer;
         _eepromBuffer = eepromBuffer;
         _flashBuffer = flashBuffer;
         _action = action;
         _cts = new CancellationTokenSource();
-        _prg = new Programming(_connection, _node);
+        _prg = new Programming(_node);
         //module name
         _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Description, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
         InitializeComponent();
@@ -48,22 +46,22 @@ public partial class FormProgramming : FormProgress
     /// <summary>
     /// For reading memory.
     /// </summary>
-    public FormProgramming(HapcanConnection connection, HapcanNode node, Programming.ProgrammingAction action)
-    : this(connection, node, null, null, null, action)
+    public FormProgramming(HapcanNode node, Programming.ProgrammingAction action)
+    : this(node, null, null, null, action)
     {
     }
     /// <summary>
     /// For eeprom and flash writing.
     /// </summary>
-    public FormProgramming(HapcanConnection connection, HapcanNode node, byte[] eeprom, byte[] flash, Programming.ProgrammingAction action)
-        : this(connection, node, null, eeprom, flash, action)
+    public FormProgramming(HapcanNode node, byte[] eeprom, byte[] flash, Programming.ProgrammingAction action)
+        : this(node, null, eeprom, flash, action)
     {
     }
     /// <summary>
     /// For firmware writing.
     /// </summary>
-    public FormProgramming(HapcanConnection connection, HapcanNode node, byte[] firmware, Programming.ProgrammingAction action)
-        : this(connection, node, firmware, null, null, action)
+    public FormProgramming(HapcanNode node, byte[] firmware, Programming.ProgrammingAction action)
+        : this(node, firmware, null, null, action)
     {
     }
 

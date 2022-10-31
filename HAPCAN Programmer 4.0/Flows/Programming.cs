@@ -28,7 +28,6 @@ public class Programming
 
 
     //PROPERTIES 
-
     public int Address                                  //current address in use
     {
         get
@@ -61,13 +60,12 @@ public class Programming
     //CONSTRUCTOR
     /// <summary>
     /// Allows reading, writing and erasing of node memory.
-    /// </summary>
-    /// <param name="connection">HapcanConnection object that alows communication to the programmed node.</param>
+    /// </summary>>
     /// <param name="node">HapcanNode object to be programmed.</param>
-    public Programming(HapcanConnection connection, HapcanNode node)
+    public Programming(HapcanNode node)
     {
-        _conn = connection;
         _node = node;
+        _conn = node.Subnet.Connection;
         _data = new byte[0x10000];
         for (int i = 0; i < _data.Length; i++)
             _data[i] = 0xFF;
@@ -87,7 +85,7 @@ public class Programming
         }
         else
             await _conn.SendAsync(new Msg020_ExitNodeFromProgramming(_node.NodeNumber, _node.GroupNumber).GetFrame());
-        _node.InProgramming = false;
+        _node.Status = HapcanNode.NodeStatus.Active;
     }
     
     /// <summary>
@@ -97,7 +95,7 @@ public class Programming
     public async Task EnterProgrammingAsync()
     {
         //check if already in programming
-        if (_node.InProgramming)
+        if (_node.Status == HapcanNode.NodeStatus.InProgramming)
             return;
         //start receiving now
         using var receiver = new ResponseReceiver(_conn, false);
@@ -115,7 +113,7 @@ public class Programming
                 var frame = frameList[0];
                 if (frame.Source == HapcanFrame.FrameSource.Interface)
                 {
-                    _node.InProgramming = true;
+                    _node.Status = HapcanNode.NodeStatus.InProgramming;
                     await Task.Delay(100);
                     return;
                 }
@@ -136,7 +134,7 @@ public class Programming
                 var frame = frameList[0];
                 if (frame.Data[2] == _node.NodeNumber && frame.Data[3] == _node.GroupNumber)   //is response from requested node?
                 {
-                    _node.InProgramming = true;
+                    _node.Status = HapcanNode.NodeStatus.InProgramming;
                     await Task.Delay(100);
                     return;
                 }
@@ -327,7 +325,7 @@ public class Programming
 
         //refresh node firmware version
         await Task.Delay(3000);                                 //let the node restart
-        var sr = new SystemRequest(_conn);                      //ask for firmware version
+        var sr = new SystemRequest(_node.Subnet);                      //ask for firmware version
         await sr.FirmwareVersionRequest(_node);
     }
     

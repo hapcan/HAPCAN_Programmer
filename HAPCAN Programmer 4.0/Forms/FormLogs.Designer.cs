@@ -46,7 +46,7 @@ namespace Hapcan.Programmer.Forms
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(950, 35);
+            this.panelTop.Size = new System.Drawing.Size(1100, 35);
             this.panelTop.TabIndex = 4;
             // 
             // btnClear
@@ -58,7 +58,7 @@ namespace Hapcan.Programmer.Forms
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClear.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.Location = new System.Drawing.Point(864, 0);
+            this.btnClear.Location = new System.Drawing.Point(1014, 0);
             this.btnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(86, 35);
@@ -93,7 +93,7 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(950, 484);
+            this.richTextBox1.Size = new System.Drawing.Size(1100, 484);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
@@ -101,7 +101,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 519);
+            this.ClientSize = new System.Drawing.Size(1100, 519);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

@@ -39,14 +39,14 @@
             this.formsPlot1.Location = new System.Drawing.Point(0, 0);
             this.formsPlot1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(1122, 282);
+            this.formsPlot1.Size = new System.Drawing.Size(1100, 282);
             this.formsPlot1.TabIndex = 0;
             // 
             // FormBusLoad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1122, 282);
+            this.ClientSize = new System.Drawing.Size(1100, 282);
             this.Controls.Add(this.formsPlot1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormBusLoad";

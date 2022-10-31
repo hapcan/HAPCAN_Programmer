@@ -13,16 +13,18 @@ namespace Hapcan.Flows;
 public class SystemRequest
 {
     //FIELDS
+    readonly HapcanSubnet _subnet;
     readonly HapcanConnection _connection;
     readonly byte _nodeTx;                       //interface id
     readonly byte _groupTx;
 
     //CONSTRUCTOR
-    public SystemRequest(HapcanConnection connection)
+    public SystemRequest(HapcanSubnet subnet)
     {
-        _connection = connection;
-        _nodeTx = connection.NodeTx;
-        _groupTx = connection.GroupTx;
+        _subnet = subnet;
+        _connection = _subnet.Connection;
+        _nodeTx = _subnet.Connection.NodeTx;
+        _groupTx = _subnet.Connection.GroupTx;
     }
 
     //METHODS

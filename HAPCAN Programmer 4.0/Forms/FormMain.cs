@@ -41,10 +41,10 @@ public partial class FormMain : FormBase
         //set logger
         Logger.LogTimeFormat = _project.Settings.TimeFormat;
         //subscribe to connection event
-        _project.Connection.ConnectionConnecting += OnConnectionConnecting;
-        _project.Connection.ConnectionConnected += OnConnectionConnected;
-        _project.Connection.ConnectionDisconnected += OnConnectionDisconnected;
-        _project.Connection.ConnectionError += OnConnectionError;
+        _project.NetList[0].Connection.ConnectionConnecting += OnConnectionConnecting;
+        _project.NetList[0].Connection.ConnectionConnected += OnConnectionConnected;
+        _project.NetList[0].Connection.ConnectionDisconnected += OnConnectionDisconnected;
+        _project.NetList[0].Connection.ConnectionError += OnConnectionError;
     }
 
     //Move, resize, minimize, maximize, close form
@@ -118,10 +118,10 @@ public partial class FormMain : FormBase
     }
     private void btnConnect_Click(object sender, EventArgs e)
     {
-        if (!_project.Connection.IsConnected())
-            _ = _project.Connection.ConnectAsync();
+        if (!_project.NetList[0].Connection.IsConnected())
+            _ = _project.NetList[0].Connection.ConnectAsync();
         else
-            _project.Connection.Disconnect();
+            _project.NetList[0].Connection.Disconnect();
     }
 
     private void btnNodes_Click(object sender, EventArgs e)
@@ -147,7 +147,7 @@ public partial class FormMain : FormBase
     {
         if (checkBoxBusload.Checked)
         {
-            _busLoad = new FormTemplate(new FormBusLoad(_project.Connection));
+            _busLoad = new FormTemplate(new FormBusLoad(_project.NetList[0].Connection));
             _busLoad.FormClosed += OnBusLoadClose;
             _busLoad.Show();
         }

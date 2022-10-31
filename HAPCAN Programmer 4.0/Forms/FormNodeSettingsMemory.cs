@@ -15,7 +15,7 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormNodeSettingsMemory : Form
 {
-    Project _project;
+//    Project _project;
     HapcanNode _node;
     TextBox _activeCell;
     byte[] _newEeprom;              //local eeprom copy
@@ -24,7 +24,7 @@ public partial class FormNodeSettingsMemory : Form
     public FormNodeSettingsMemory(Project project, HapcanNode node)
     {
         InitializeComponent();
-        _project = project;
+    //    _project = project;
         _node = node;
         //copy node memory to new memory buffer
         _newEeprom = new byte[_node.Eeprom.Length];
@@ -225,7 +225,7 @@ public partial class FormNodeSettingsMemory : Form
     private void btnRead_Click(object sender, EventArgs e)
     {
         //program
-        var prg = new FormProgramming(_project.Connection, _node, Programming.ProgrammingAction.SmartReadData);
+        var prg = new FormProgramming(_node, Programming.ProgrammingAction.SmartReadData);
         prg.ShowDialog();
 
         if (prg.ProgrammingSuccessful == true)
@@ -244,7 +244,7 @@ public partial class FormNodeSettingsMemory : Form
     private void btnWrite_Click(object sender, EventArgs e)
     {
         //program
-        var prg = new FormProgramming(_project.Connection, _node, _newEeprom, _newFlash, Programming.ProgrammingAction.SmartWriteData);
+        var prg = new FormProgramming(_node, _newEeprom, _newFlash, Programming.ProgrammingAction.SmartWriteData);
         prg.ShowDialog();
 
         if (prg.ProgrammingSuccessful == true)

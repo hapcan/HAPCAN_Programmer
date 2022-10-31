@@ -34,6 +34,7 @@ namespace Hapcan.Programmer.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.btnClear = new System.Windows.Forms.Button();
             this.checkBoxPause = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -68,14 +69,34 @@ namespace Hapcan.Programmer.Forms
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.panelTop.Controls.Add(this.btnClear);
             this.panelTop.Controls.Add(this.checkBoxPause);
             this.panelTop.Controls.Add(this.panel2);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1433, 35);
+            this.panelTop.Size = new System.Drawing.Size(1400, 35);
             this.panelTop.TabIndex = 3;
+            // 
+            // btnClear
+            // 
+            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
+            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClear.FlatAppearance.BorderSize = 0;
+            this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClear.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
+            this.btnClear.Location = new System.Drawing.Point(1216, 0);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(93, 35);
+            this.btnClear.TabIndex = 9;
+            this.btnClear.Text = "  Clear";
+            this.btnClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // checkBoxPause
             // 
@@ -87,8 +108,7 @@ namespace Hapcan.Programmer.Forms
             this.checkBoxPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxPause.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.checkBoxPause.Image = ((System.Drawing.Image)(resources.GetObject("checkBoxPause.Image")));
-            this.checkBoxPause.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.checkBoxPause.Location = new System.Drawing.Point(1343, 0);
+            this.checkBoxPause.Location = new System.Drawing.Point(1310, 0);
             this.checkBoxPause.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxPause.Name = "checkBoxPause";
             this.checkBoxPause.Size = new System.Drawing.Size(88, 35);
@@ -183,7 +203,7 @@ namespace Hapcan.Programmer.Forms
             this.panelBottom.Location = new System.Drawing.Point(0, 491);
             this.panelBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1433, 72);
+            this.panelBottom.Size = new System.Drawing.Size(1400, 72);
             this.panelBottom.TabIndex = 4;
             // 
             // labelMsgNo
@@ -206,13 +226,13 @@ namespace Hapcan.Programmer.Forms
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSend.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(1318, 27);
+            this.btnSend.Location = new System.Drawing.Point(1268, 27);
             this.btnSend.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(93, 35);
             this.btnSend.TabIndex = 1;
             this.btnSend.Text = "  Send";
-            this.btnSend.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnSend.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSend.UseVisualStyleBackColor = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
@@ -221,7 +241,7 @@ namespace Hapcan.Programmer.Forms
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label6.Location = new System.Drawing.Point(1236, 10);
+            this.label6.Location = new System.Drawing.Point(1186, 10);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
@@ -233,7 +253,7 @@ namespace Hapcan.Programmer.Forms
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label5.Location = new System.Drawing.Point(1168, 10);
+            this.label5.Location = new System.Drawing.Point(1118, 10);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 13);
@@ -245,7 +265,7 @@ namespace Hapcan.Programmer.Forms
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(590, 10);
+            this.label4.Location = new System.Drawing.Point(540, 10);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
@@ -261,7 +281,7 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxGroup.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxGroup.FormattingEnabled = true;
             this.comboBoxGroup.ItemHeight = 18;
-            this.comboBoxGroup.Location = new System.Drawing.Point(1239, 29);
+            this.comboBoxGroup.Location = new System.Drawing.Point(1189, 29);
             this.comboBoxGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxGroup.Name = "comboBoxGroup";
             this.comboBoxGroup.Size = new System.Drawing.Size(60, 26);
@@ -277,7 +297,7 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxNode.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxNode.FormattingEnabled = true;
             this.comboBoxNode.ItemHeight = 18;
-            this.comboBoxNode.Location = new System.Drawing.Point(1171, 29);
+            this.comboBoxNode.Location = new System.Drawing.Point(1121, 29);
             this.comboBoxNode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxNode.Name = "comboBoxNode";
             this.comboBoxNode.Size = new System.Drawing.Size(60, 26);
@@ -321,7 +341,7 @@ namespace Hapcan.Programmer.Forms
             "0x115 - health check request to node",
             "0x116 - channel name request to group",
             "0x117 - channel name request to node"});
-            this.comboBoxFrame.Location = new System.Drawing.Point(593, 29);
+            this.comboBoxFrame.Location = new System.Drawing.Point(543, 29);
             this.comboBoxFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxFrame.Name = "comboBoxFrame";
             this.comboBoxFrame.Size = new System.Drawing.Size(571, 26);
@@ -336,7 +356,7 @@ namespace Hapcan.Programmer.Forms
             this.panelTxMsg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelTxMsg.Name = "panelTxMsg";
             this.panelTxMsg.Padding = new System.Windows.Forms.Padding(5);
-            this.panelTxMsg.Size = new System.Drawing.Size(420, 36);
+            this.panelTxMsg.Size = new System.Drawing.Size(365, 36);
             this.panelTxMsg.TabIndex = 5;
             // 
             // textBoxTxMsg
@@ -351,7 +371,7 @@ namespace Hapcan.Programmer.Forms
             this.textBoxTxMsg.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxTxMsg.MaxLength = 35;
             this.textBoxTxMsg.Name = "textBoxTxMsg";
-            this.textBoxTxMsg.Size = new System.Drawing.Size(410, 23);
+            this.textBoxTxMsg.Size = new System.Drawing.Size(355, 23);
             this.textBoxTxMsg.TabIndex = 4;
             this.textBoxTxMsg.Text = "10 30 F0 F0 FF FF 00 01 FF FF FF FF";
             this.textBoxTxMsg.TextChanged += new System.EventHandler(this.textBoxTxMsg_TextChanged);
@@ -362,7 +382,7 @@ namespace Hapcan.Programmer.Forms
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(536, 29);
+            this.label3.Location = new System.Drawing.Point(486, 29);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 22);
@@ -374,7 +394,7 @@ namespace Hapcan.Programmer.Forms
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(500, 29);
+            this.label2.Location = new System.Drawing.Point(450, 29);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 22);
@@ -436,14 +456,14 @@ namespace Hapcan.Programmer.Forms
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1433, 456);
+            this.dataGridView1.Size = new System.Drawing.Size(1400, 456);
             this.dataGridView1.TabIndex = 5;
             // 
             // FormMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1433, 563);
+            this.ClientSize = new System.Drawing.Size(1400, 563);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelTop);
@@ -491,5 +511,6 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label labelMsgNo;
+        private System.Windows.Forms.Button btnClear;
     }
 }

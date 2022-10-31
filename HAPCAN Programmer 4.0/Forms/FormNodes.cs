@@ -38,11 +38,11 @@ public partial class FormNodes : Form
         {
             //add status image collumn
             var CollumnStatus = new DataGridViewImageColumn() {
-                DataPropertyName = "InProgramming",
+                DataPropertyName = "Status",
                 HeaderText = "Status",
                 Name = "Status" };
             dataGridView1.Columns.Add(CollumnStatus);
-            UpdateGrid(_project.NodeList, string.Empty);
+            UpdateGrid(_project.NetList[0].NodeList, string.Empty);
         }
         catch (Exception)
         {
@@ -108,15 +108,25 @@ public partial class FormNodes : Form
             //status
             if (dataGridView1.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
-                if ((bool)e.Value == true)
+                if ((HapcanNode.NodeStatus)e.Value == HapcanNode.NodeStatus.InProgramming)
                 {
                     e.Value = imageList1.Images[0];
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "In programming";
                 }
-                else
+                else if ((HapcanNode.NodeStatus)e.Value == HapcanNode.NodeStatus.Active)
                 {
                     e.Value = imageList1.Images[1];
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Active";
+                }
+                else if ((HapcanNode.NodeStatus)e.Value == HapcanNode.NodeStatus.Inactive)
+                {
+                    e.Value = imageList1.Images[2];
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Inactive";
+                }
+                else
+                {
+                    e.Value = imageList1.Images[3];
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Unknown";
                 }
             }
             //serial number
@@ -135,7 +145,7 @@ public partial class FormNodes : Form
 
     private void textBoxSearch_TextChanged(object sender, EventArgs e)
     {
-        UpdateGrid(_project.NodeList, textBoxSearch.Text);
+        UpdateGrid(_project.NetList[0].NodeList, textBoxSearch.Text);
     }
 
     //show buttons when node selected
@@ -161,15 +171,15 @@ public partial class FormNodes : Form
     private async void btnScan_Click(object sender, EventArgs e)
     {
         //clear grid
-        _project.NodeList.Clear();
-        UpdateGrid(_project.NodeList, string.Empty);
+        _project.NetList[0].NodeList.Clear();
+        UpdateGrid(_project.NetList[0].NodeList, string.Empty);
 
         //make sure there is connection
-        if (await _project.Connection.ConnectAsync() == false)
+        if (await _project.NetList[0].Connection.ConnectAsync() == false)
             return;
 
         //scan for nodes
-        var scan = new FormScan(this, _project);
+        var scan = new FormScan(this, _project.NetList[0]);
         scan.ShowDialog();
         scan.Dispose();
     }
@@ -189,10 +199,10 @@ public partial class FormNodes : Form
             }
             else
             {
-                frm = new Msg102_RebootNode(_project.Connection.NodeTx, _project.Connection.GroupTx, node.NodeNumber, node.GroupNumber).GetFrame();
+                frm = new Msg102_RebootNode(node.Subnet.Connection.NodeTx, node.Subnet.Connection.GroupTx, node.NodeNumber, node.GroupNumber).GetFrame();
                 Logger.Log("Nodes", String.Format("Rebooting node {0}.", node.FullNodeGroupNumber));
             }
-            await _project.Connection.SendAsync(frm);
+            await node.Subnet.Connection.SendAsync(frm);
         }
 
     }
@@ -200,20 +210,27 @@ public partial class FormNodes : Form
     private async void btnNodeRefresh_Click(object sender, EventArgs e)
     {
         //get selected nodes
-        var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
-        if (node != null)
+        foreach (DataGridViewRow row in dataGridView1.SelectedRows)
         {
-            if (node.Interface == true)
+            var node = (HapcanNode)row.DataBoundItem;
+            if (node == null)
+                break;
+
+            node.Status = HapcanNode.NodeStatus.Unknown;
+            if (node != null)
             {
-                Logger.Log("Nodes", "Refresh interface node properties.");
-                var sfi = new ScanForInterface(_project.Connection);
-                await sfi.GetInterfacePropertiesAsync(node);
-            }
-            else
-            {
-                Logger.Log("Nodes", String.Format("Refresh node {0} properties.", node.FullNodeGroupNumber));
-                var snp = new ScanForNodes(_project.Connection);
-                await snp.GetNodePropertiesAsync(node);
+                if (node.Interface == true)
+                {
+                    Logger.Log("Nodes", "Refresh interface node properties.");
+                    var sfi = new ScanForInterface(node.Subnet);
+                    await sfi.GetInterfacePropertiesAsync(node);
+                }
+                else
+                {
+                    Logger.Log("Nodes", String.Format("Refresh node {0} properties.", node.FullNodeGroupNumber));
+                    var snp = new ScanForNodes(node.Subnet);
+                    await snp.GetNodePropertiesAsync(node);
+                }
             }
         }
     }

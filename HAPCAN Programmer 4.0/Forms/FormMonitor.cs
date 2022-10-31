@@ -1,6 +1,7 @@
 ﻿using Hapcan.General;
 using Hapcan.Messages;
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormMonitor : Form
 {
-    private readonly HapcanList<HapcanFrame> _monitorList;
+    private const int maxFrameNumber = 2000;
+    private readonly BindingList<HapcanFrame> _monitorList;
     private readonly Project _project;
     private System.Timers.Timer _postponeGridUpdateTimer;
 
@@ -76,8 +78,10 @@ public partial class FormMonitor : Form
     ///////////////
     // REFRESH GRID
     ///////////////
-    private void OnListChanged()
+    private void OnListChanged(object sender, ListChangedEventArgs e)
     {
+        if (_monitorList.Count > maxFrameNumber)                  //remove above limit
+            _monitorList.RemoveAt(0);
         this.UpdateGrid();
     }
 
@@ -155,6 +159,12 @@ public partial class FormMonitor : Form
         this.UpdateGrid();
     }
 
+    //CLEAR button
+    private void btnClear_Click(object sender, EventArgs e)
+    {
+        _monitorList.Clear();
+        this.UpdateGrid();
+    }
 
     private void textBoxTxMsg_KeyPress(object sender, KeyPressEventArgs e)
     {
@@ -197,7 +207,7 @@ public partial class FormMonitor : Form
     private async void btnSend_Click(object sender, EventArgs e)
     {
         var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PcToCanbus);
-        await _project.Connection.SendAsync(frm);
+        await _project.NetList[0].Connection.SendAsync(frm);
         this.UpdateGrid();
     }
     private void comboBoxFrame_SelectedIndexChanged(object sender, EventArgs e)
@@ -215,8 +225,8 @@ public partial class FormMonitor : Form
 
     private void SetFrame()
     {
-        var nodeTx = _project.Connection.NodeTx;
-        var groupTx = _project.Connection.GroupTx;
+        var nodeTx = _project.NetList[0].Connection.NodeTx;
+        var groupTx = _project.NetList[0].Connection.GroupTx;
         var nodeRx = (byte)comboBoxNode.SelectedIndex;
         var groupRx = (byte)comboBoxGroup.SelectedIndex;
 

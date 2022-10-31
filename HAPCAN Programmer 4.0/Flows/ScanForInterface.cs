@@ -12,40 +12,28 @@ namespace Hapcan.Flows;
 
 public class ScanForInterface
 {
+    readonly HapcanSubnet _subnet;
     readonly HapcanConnection _connection;
 
-    public ScanForInterface(HapcanConnection conn)
+    public ScanForInterface(HapcanSubnet subnet)
     {
-        _connection = conn;
+        _subnet = subnet;
+        _connection = subnet.Connection;
     }
 
     public async Task<HapcanNode> GetInterfaceAsync()
     {
-        //make sure interface is not in programming mode
-        await _connection.SendAsync(new IntMsg020_ExitInterfaceFromProgramming().GetFrame());
-        await Task.Delay(100);
-
-        //start receiving
-        using var rcv = new ResponseReceiver(_connection, false);
-
         var node = new HapcanNode();
         node.Interface = true;
-        var sr = new SystemRequest(_connection);
-        if (await sr.HardwareTypeRequest(rcv, node) == true)
-        {
-            await sr.FirmwareVersionRequest(rcv, node);
-            await sr.VoltageRequest(rcv, node);
-            await sr.DescriptionRequest(rcv, node);
-            await sr.UptimeRequest(rcv, node);
-        }
+        node.Subnet = _subnet;
+
+        if (await GetInterfacePropertiesAsync(node) == true)
+            return node;
         else
-        {
-            node = null;
-        }
-        return node;
+            return null;
     }
 
-    public async Task<HapcanNode> GetInterfacePropertiesAsync(HapcanNode node)
+    public async Task<bool> GetInterfacePropertiesAsync(HapcanNode node)
     {
         //make sure interface is not in programming mode
         await _connection.SendAsync(new IntMsg020_ExitInterfaceFromProgramming().GetFrame());
@@ -54,16 +42,21 @@ public class ScanForInterface
         //start receiving
         using var rcv = new ResponseReceiver(_connection, false);
 
-        //request interface and calculate resonse time
-        if (node.Interface == true)
+        //request interface
+        var sr = new SystemRequest(_subnet);
+        if (await sr.HardwareTypeRequest(rcv, node) == true)
         {
-            var sr = new SystemRequest(_connection);
-            await sr.HardwareTypeRequest(rcv, node);
+            node.Status = HapcanNode.NodeStatus.Active;
             await sr.FirmwareVersionRequest(rcv, node);
             await sr.VoltageRequest(rcv, node);
             await sr.DescriptionRequest(rcv, node);
             await sr.UptimeRequest(rcv, node);
+            return true;
         }
-        return node;
+        else
+        {
+            node.Status = HapcanNode.NodeStatus.Inactive;
+            return false;
+        }
     }
 }
