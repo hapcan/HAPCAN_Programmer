@@ -282,7 +282,8 @@ public class HapcanNode : INotifyPropertyChanged
         Unknown,
         InProgramming,
         Active,
-        Inactive
+        Inactive,
+        Rebooting
     }
 
 

@@ -320,6 +320,7 @@ namespace Hapcan.Programmer.Forms
             this.imageList1.Images.SetKeyName(1, "active_16.png");
             this.imageList1.Images.SetKeyName(2, "inactive_16.png");
             this.imageList1.Images.SetKeyName(3, "unknown_16.png");
+            this.imageList1.Images.SetKeyName(4, "reboot_16.png");
             // 
             // FormNodes
             // 

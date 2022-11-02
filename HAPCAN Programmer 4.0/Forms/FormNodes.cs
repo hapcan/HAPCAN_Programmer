@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hapcan.Programmer.Forms;
@@ -123,11 +124,17 @@ public partial class FormNodes : Form
                     e.Value = imageList1.Images[2];
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Inactive";
                 }
+                else if ((HapcanNode.NodeStatus)e.Value == HapcanNode.NodeStatus.Rebooting)
+                {
+                    e.Value = imageList1.Images[4];
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Rebooting";
+                }
                 else
                 {
                     e.Value = imageList1.Images[3];
                     dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "Unknown";
                 }
+
             }
             //serial number
             else if (dataGridView1.Columns[e.ColumnIndex].Name == "SerialNumber")
@@ -187,10 +194,18 @@ public partial class FormNodes : Form
     //REBOOT button
     private async void btnNodeReboot_Click(object sender, EventArgs e)
     {
+        if (MessageBox.Show("Do you want to reboot selected nodes?", Application.ProductName, MessageBoxButtons.YesNo) == DialogResult.No)
+            return;
+
         //get selected node
-        var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
-        if (node != null)
+        foreach (DataGridViewRow row in dataGridView1.SelectedRows)
         {
+            var node = (HapcanNode)row.DataBoundItem;
+            if (node == null)
+                break;
+
+            node.Status = HapcanNode.NodeStatus.Rebooting;
+
             HapcanFrame frm;
             if (node.Interface == true)
             {
@@ -204,7 +219,8 @@ public partial class FormNodes : Form
             }
             await node.Subnet.Connection.SendAsync(frm);
         }
-
+        await Task.Delay(3000);
+        btnNodeRefresh_Click(null, null);
     }
     //REFRESH button
     private async void btnNodeRefresh_Click(object sender, EventArgs e)
@@ -217,27 +233,30 @@ public partial class FormNodes : Form
                 break;
 
             node.Status = HapcanNode.NodeStatus.Unknown;
-            if (node != null)
+
+            if (node.Interface == true)
             {
-                if (node.Interface == true)
-                {
-                    Logger.Log("Nodes", "Refresh interface node properties.");
-                    var sfi = new ScanForInterface(node.Subnet);
-                    await sfi.GetInterfacePropertiesAsync(node);
-                }
-                else
-                {
-                    Logger.Log("Nodes", String.Format("Refresh node {0} properties.", node.FullNodeGroupNumber));
-                    var snp = new ScanForNodes(node.Subnet);
-                    await snp.GetNodePropertiesAsync(node);
-                }
+                Logger.Log("Nodes", "Refresh interface node properties.");
+                var sfi = new ScanForInterface(node.Subnet);
+                await sfi.GetInterfacePropertiesAsync(node);
+            }
+            else
+            {
+                Logger.Log("Nodes", String.Format("Refresh node {0} properties.", node.FullNodeGroupNumber));
+                var snp = new ScanForNodes(node.Subnet);
+                await snp.GetNodePropertiesAsync(node);
             }
         }
     }
 
     private void btnNodeGeneralSettings_Click(object sender, EventArgs e)
     {
-        //get selected nodes
+        if (dataGridView1.SelectedRows.Count > 1)
+        {
+            MessageBox.Show("Please select only one node.", Application.ProductName);
+            return;
+        }
+        //get selected node
         var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
         using var frm = new FormTemplate(new FormNodeSettings(_project, node));
         frm.ShowDialog();
@@ -246,6 +265,13 @@ public partial class FormNodes : Form
     private void btnNodeControl_Click(object sender, EventArgs e)
     {
         MessageBox.Show("Not ready yet.");
+        return;
+
+        if (dataGridView1.SelectedRows.Count > 1)
+        {
+            MessageBox.Show("Please select only one node.", Application.ProductName);
+            return;
+        }
     }
 
 }
