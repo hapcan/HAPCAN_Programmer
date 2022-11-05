@@ -3,7 +3,7 @@ using System;
 
 namespace Hapcan.Messages;
 
-class Msg112_UptimeResponse
+class Msg113_UptimeResponse
 {
     private HapcanFrame _frame;
 
@@ -12,7 +12,7 @@ class Msg112_UptimeResponse
         get{ return GetUptime(); }
     }
 
-    public Msg112_UptimeResponse(HapcanFrame frame)
+    public Msg113_UptimeResponse(HapcanFrame frame)
     {
         _frame = frame;
     }

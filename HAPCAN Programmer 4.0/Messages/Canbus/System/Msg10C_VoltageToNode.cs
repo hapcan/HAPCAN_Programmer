@@ -27,7 +27,7 @@ class Msg10C_VoltageToNode
         }
         else
         {
-            return new Msg10B_VoltageResponse(_frame).GetDescription();
+            return new Msg10C_VoltageResponse(_frame).GetDescription();
         }
     }
 }

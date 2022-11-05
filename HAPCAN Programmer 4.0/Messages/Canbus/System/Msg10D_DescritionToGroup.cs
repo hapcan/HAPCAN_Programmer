@@ -30,7 +30,7 @@ class Msg10D_DescriptionToGroup
         }
         else
         {
-            return new Msg10D_DescriptionResponse(_frame).GetDescription();
+            return new Msg10E_DescriptionResponse(_frame).GetDescription();
         }
     }
 }

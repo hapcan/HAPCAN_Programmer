@@ -64,7 +64,7 @@ partial class FormNodeSettingsFirmware
             // 
             // panel6
             // 
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panel6.BackColor = System.Drawing.Color.Silver;
             this.panel6.Controls.Add(this.textCurFirm);
             this.panel6.Enabled = false;
             this.panel6.Location = new System.Drawing.Point(21, 32);
@@ -76,7 +76,7 @@ partial class FormNodeSettingsFirmware
             // 
             // textCurFirm
             // 
-            this.textCurFirm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textCurFirm.BackColor = System.Drawing.Color.Silver;
             this.textCurFirm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textCurFirm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textCurFirm.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -166,7 +166,7 @@ partial class FormNodeSettingsFirmware
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panel3.BackColor = System.Drawing.Color.Silver;
             this.panel3.Controls.Add(this.textFirmVer);
             this.panel3.Enabled = false;
             this.panel3.Location = new System.Drawing.Point(21, 110);
@@ -178,7 +178,7 @@ partial class FormNodeSettingsFirmware
             // 
             // textFirmVer
             // 
-            this.textFirmVer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textFirmVer.BackColor = System.Drawing.Color.Silver;
             this.textFirmVer.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textFirmVer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textFirmVer.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -222,7 +222,7 @@ partial class FormNodeSettingsFirmware
             // 
             // panelIntPort
             // 
-            this.panelIntPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panelIntPort.BackColor = System.Drawing.Color.Silver;
             this.panelIntPort.Controls.Add(this.textFirmFile);
             this.panelIntPort.Enabled = false;
             this.panelIntPort.Location = new System.Drawing.Point(21, 41);
@@ -234,7 +234,7 @@ partial class FormNodeSettingsFirmware
             // 
             // textFirmFile
             // 
-            this.textFirmFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textFirmFile.BackColor = System.Drawing.Color.Silver;
             this.textFirmFile.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textFirmFile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textFirmFile.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

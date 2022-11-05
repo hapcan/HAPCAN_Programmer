@@ -27,7 +27,7 @@ class Msg104_HardwareTypeToNode
         }
         else
         {
-            return new Msg103_HardwareTypeResponse(_frame).GetDescription();
+            return new Msg104_HardwareTypeResponse(_frame).GetDescription();
         }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Hapcan.Messages;
 
-class Msg103_HardwareTypeResponse : CanbusMsgBase
+class Msg104_HardwareTypeResponse : CanbusMsgBase
 {
-    public Msg103_HardwareTypeResponse(HapcanFrame frame) : base(frame)
+    public Msg104_HardwareTypeResponse(HapcanFrame frame) : base(frame)
     {
         HardwareType = frame.Data[4] * 256 + frame.Data[5];
         HardwareVersion = frame.Data[6];
         SerialNumber = frame.Data[8] * 256 * 256 * 256 + frame.Data[9] * 256 * 256 + frame.Data[10] * 256 + frame.Data[11];
     }
-    public Msg103_HardwareTypeResponse(HapcanNode node) : base(node)
+    public Msg104_HardwareTypeResponse(HapcanNode node) : base(node)
     {
         HardwareType = node.HardwareType;
         HardwareVersion = node.HardwareVersion;

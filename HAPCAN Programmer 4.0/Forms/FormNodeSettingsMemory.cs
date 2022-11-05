@@ -68,16 +68,16 @@ public partial class FormNodeSettingsMemory : Form
     //----------------------------
     private void btnEeprom_Click(object sender, EventArgs e)
     {
-        btnEeprom.BackColor = Color.FromArgb(45, 45, 48);
-        btnFlash.BackColor = Color.FromArgb(28, 28, 28);
+        btnEeprom.BackColor = Color.FromArgb(28, 28, 28);
+        btnFlash.BackColor = Color.FromArgb(67, 67, 68);
         dataGridView1.Tag = _newEeprom;
         LoadGrid(_newEeprom);
     }
 
     private void btnFlash_Click(object sender, EventArgs e)
     {
-        btnFlash.BackColor = Color.FromArgb(45, 45, 48);
-        btnEeprom.BackColor = Color.FromArgb(28, 28, 28);
+        btnFlash.BackColor = Color.FromArgb(28, 28, 28);
+        btnEeprom.BackColor = Color.FromArgb(67, 67, 68);
         dataGridView1.Tag = _newFlash;
         Cursor = Cursors.WaitCursor;
         LoadGrid(_newFlash);

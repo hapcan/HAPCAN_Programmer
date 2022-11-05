@@ -297,7 +297,7 @@ public class HapcanNode : INotifyPropertyChanged
     }
     private void GetFullHardwareVersion()
     {
-        FullHardwareVersion = new Msg103_HardwareTypeResponse(this).GetFullHardwareVersion();
+        FullHardwareVersion = new Msg104_HardwareTypeResponse(this).GetFullHardwareVersion();
     }
     private string GetFullFirmwareVersion()
     {
@@ -311,7 +311,7 @@ public class HapcanNode : INotifyPropertyChanged
         else
         {
             if (FirmwareError == 0x00)
-                return new Msg105_FirmwareTypeResponse(this).GetFullFirmwareVersion();
+                return new Msg106_FirmwareTypeResponse(this).GetFullFirmwareVersion();
             else
                 return new Msg1F1_FirmwareError(this).GetFirmwareError();
         }

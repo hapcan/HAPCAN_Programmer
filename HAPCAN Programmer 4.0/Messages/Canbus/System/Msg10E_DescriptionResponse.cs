@@ -3,9 +3,9 @@ using System.Text;
 
 namespace Hapcan.Messages;
 
-class Msg10D_DescriptionResponse : CanbusMsgBase
+class Msg10E_DescriptionResponse : CanbusMsgBase
 {
-    public Msg10D_DescriptionResponse(HapcanFrame frame) : base(frame)
+    public Msg10E_DescriptionResponse(HapcanFrame frame) : base(frame)
     {
         NodeDescription = GetText(frame);
     }

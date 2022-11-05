@@ -93,7 +93,7 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(1100, 484);
+            this.richTextBox1.Size = new System.Drawing.Size(1100, 485);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
@@ -101,7 +101,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 519);
+            this.ClientSize = new System.Drawing.Size(1100, 520);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

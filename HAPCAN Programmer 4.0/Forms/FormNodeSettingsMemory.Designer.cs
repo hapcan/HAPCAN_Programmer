@@ -72,7 +72,7 @@ partial class FormNodeSettingsMemory
             this.btnSaveFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveFile.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnSaveFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveFile.Image")));
-            this.btnSaveFile.Location = new System.Drawing.Point(555, 11);
+            this.btnSaveFile.Location = new System.Drawing.Point(555, 1);
             this.btnSaveFile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSaveFile.Name = "btnSaveFile";
             this.btnSaveFile.Size = new System.Drawing.Size(110, 34);
@@ -91,7 +91,7 @@ partial class FormNodeSettingsMemory
             this.btnOpenFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenFile.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnOpenFile.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenFile.Image")));
-            this.btnOpenFile.Location = new System.Drawing.Point(666, 11);
+            this.btnOpenFile.Location = new System.Drawing.Point(666, 1);
             this.btnOpenFile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(110, 34);
@@ -111,7 +111,7 @@ partial class FormNodeSettingsMemory
             this.btnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnWrite.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnWrite.Image = ((System.Drawing.Image)(resources.GetObject("btnWrite.Image")));
-            this.btnWrite.Location = new System.Drawing.Point(777, 11);
+            this.btnWrite.Location = new System.Drawing.Point(777, 1);
             this.btnWrite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnWrite.Name = "btnWrite";
             this.btnWrite.Size = new System.Drawing.Size(110, 34);
@@ -130,7 +130,7 @@ partial class FormNodeSettingsMemory
             this.btnRead.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRead.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnRead.Image = ((System.Drawing.Image)(resources.GetObject("btnRead.Image")));
-            this.btnRead.Location = new System.Drawing.Point(888, 11);
+            this.btnRead.Location = new System.Drawing.Point(888, 1);
             this.btnRead.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnRead.Name = "btnRead";
             this.btnRead.Size = new System.Drawing.Size(110, 34);
@@ -142,14 +142,14 @@ partial class FormNodeSettingsMemory
             // 
             // btnFlash
             // 
-            this.btnFlash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnFlash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
             this.btnFlash.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnFlash.Enabled = false;
             this.btnFlash.FlatAppearance.BorderSize = 0;
             this.btnFlash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFlash.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnFlash.Image = ((System.Drawing.Image)(resources.GetObject("btnFlash.Image")));
-            this.btnFlash.Location = new System.Drawing.Point(112, 11);
+            this.btnFlash.Location = new System.Drawing.Point(112, 1);
             this.btnFlash.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnFlash.Name = "btnFlash";
             this.btnFlash.Size = new System.Drawing.Size(110, 34);
@@ -161,14 +161,14 @@ partial class FormNodeSettingsMemory
             // 
             // btnEeprom
             // 
-            this.btnEeprom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.btnEeprom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.btnEeprom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEeprom.Enabled = false;
             this.btnEeprom.FlatAppearance.BorderSize = 0;
             this.btnEeprom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEeprom.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnEeprom.Image = ((System.Drawing.Image)(resources.GetObject("btnEeprom.Image")));
-            this.btnEeprom.Location = new System.Drawing.Point(1, 11);
+            this.btnEeprom.Location = new System.Drawing.Point(1, 1);
             this.btnEeprom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnEeprom.Name = "btnEeprom";
             this.btnEeprom.Size = new System.Drawing.Size(110, 34);

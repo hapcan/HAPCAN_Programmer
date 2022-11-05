@@ -88,7 +88,7 @@ public class ScanForNodes
         //process response
         foreach (var frame in frameList)
         {
-            var msg = new Msg103_HardwareTypeResponse(frame);
+            var msg = new Msg104_HardwareTypeResponse(frame);
             var node = new HapcanNode(msg.SerialNumber)
             {
                 Subnet = _subnet,

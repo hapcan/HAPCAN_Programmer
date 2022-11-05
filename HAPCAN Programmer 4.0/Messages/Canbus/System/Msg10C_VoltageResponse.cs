@@ -2,11 +2,11 @@
 
 namespace Hapcan.Messages;
 
-class Msg10B_VoltageResponse : CanbusMsgBase
+class Msg10C_VoltageResponse : CanbusMsgBase
 {
     private HapcanFrame _frame;
 
-    public Msg10B_VoltageResponse(HapcanFrame frame) : base(frame)
+    public Msg10C_VoltageResponse(HapcanFrame frame) : base(frame)
     {
         _frame = frame;
     }

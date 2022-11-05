@@ -136,7 +136,7 @@ partial class FormNodeSettingsId
             // 
             // panel8
             // 
-            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panel8.BackColor = System.Drawing.Color.Silver;
             this.panel8.Controls.Add(this.textBoxGroupDef);
             this.panel8.Enabled = false;
             this.panel8.Location = new System.Drawing.Point(124, 36);
@@ -148,7 +148,7 @@ partial class FormNodeSettingsId
             // 
             // textBoxGroupDef
             // 
-            this.textBoxGroupDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textBoxGroupDef.BackColor = System.Drawing.Color.Silver;
             this.textBoxGroupDef.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxGroupDef.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxGroupDef.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -162,7 +162,7 @@ partial class FormNodeSettingsId
             // 
             // panel6
             // 
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panel6.BackColor = System.Drawing.Color.Silver;
             this.panel6.Controls.Add(this.textBoxNodeDef);
             this.panel6.Enabled = false;
             this.panel6.Location = new System.Drawing.Point(21, 36);
@@ -174,7 +174,7 @@ partial class FormNodeSettingsId
             // 
             // textBoxNodeDef
             // 
-            this.textBoxNodeDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textBoxNodeDef.BackColor = System.Drawing.Color.Silver;
             this.textBoxNodeDef.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxNodeDef.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxNodeDef.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

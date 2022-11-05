@@ -85,7 +85,9 @@ public class Programming
         }
         else
             await _conn.SendAsync(new Msg020_ExitNodeFromProgramming(_node.NodeNumber, _node.GroupNumber).GetFrame());
-        _node.Status = HapcanNode.NodeStatus.Active;
+
+        if (_node.Status == HapcanNode.NodeStatus.InProgramming)
+            _node.Status = HapcanNode.NodeStatus.Active;
     }
     
     /// <summary>
@@ -118,6 +120,7 @@ public class Programming
                     return;
                 }
             }
+            _node.Status = HapcanNode.NodeStatus.Inactive;
             await ExitProgrammingAsync();
             throw new TimeoutException("Interface didn't respond to enter programming mode request.");
         }
@@ -139,6 +142,7 @@ public class Programming
                     return;
                 }
             }
+            _node.Status = HapcanNode.NodeStatus.Inactive;
             await ExitProgrammingAsync();
             throw new TimeoutException("Node didn't respond to enter programming mode request.");
         }

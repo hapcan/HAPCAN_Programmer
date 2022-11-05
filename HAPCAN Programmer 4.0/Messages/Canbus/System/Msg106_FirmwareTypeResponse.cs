@@ -2,9 +2,9 @@
 
 namespace Hapcan.Messages;
 
-class Msg105_FirmwareTypeResponse : CanbusMsgBase
+class Msg106_FirmwareTypeResponse : CanbusMsgBase
 {
-    public Msg105_FirmwareTypeResponse(HapcanFrame frame) : base(frame)
+    public Msg106_FirmwareTypeResponse(HapcanFrame frame) : base(frame)
     {
         HardwareType = frame.Data[4] * 256 + frame.Data[5];
         HardwareVersion = frame.Data[6];
@@ -14,7 +14,7 @@ class Msg105_FirmwareTypeResponse : CanbusMsgBase
         BootloaderMajorVersion = frame.Data[10];
         BootloaderMinorVersion = frame.Data[11];
     }
-    public Msg105_FirmwareTypeResponse(HapcanNode node) : base(node)
+    public Msg106_FirmwareTypeResponse(HapcanNode node) : base(node)
     {
         HardwareType = node.HardwareType;
         HardwareVersion = node.HardwareVersion;

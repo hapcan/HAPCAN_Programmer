@@ -27,6 +27,9 @@ public partial class FormNodeSettings : Form
         //init from id & description
         ButtonColor(btnId);
         LoadContainer(new FormNodeSettingsId(_project, _node));
+        textBoxNode.DataBindings.Add("Text", _node, "FullNodeGroupNumber", false, DataSourceUpdateMode.OnPropertyChanged);
+        textBoxDesc.DataBindings.Add("Text", _node, "Description", false, DataSourceUpdateMode.OnPropertyChanged);
+        textBoxSn.DataBindings.Add("Text", _node, "SerialNumber", true, DataSourceUpdateMode.OnPropertyChanged, null, "X8");
     }
     private bool LoadContainer(Form frm)
     {

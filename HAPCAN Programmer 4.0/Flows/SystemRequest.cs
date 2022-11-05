@@ -57,7 +57,7 @@ public class SystemRequest
             //process response
             if (frameList.Count == 1)
             {
-                var msg = new Msg103_HardwareTypeResponse(frameList[0]);
+                var msg = new Msg104_HardwareTypeResponse(frameList[0]);
                 node.HardwareType = msg.HardwareType;
                 node.HardwareVersion = msg.HardwareVersion;
                 return true;
@@ -127,7 +127,7 @@ public class SystemRequest
                 //firmware ok response
                 if (frame.GetFrameType() == 0x106)
                 {
-                    var msg = new Msg105_FirmwareTypeResponse(frame);
+                    var msg = new Msg106_FirmwareTypeResponse(frame);
                     node.FirmwareError = 0;
                     node.ApplicationType = msg.ApplicationType;
                     node.ApplicationVersion = msg.ApplicationVersion;
@@ -181,7 +181,7 @@ public class SystemRequest
             //process response
             if (frameList.Count == 1)
             {
-                var msg = new Msg10B_VoltageResponse(frameList[0]);
+                var msg = new Msg10C_VoltageResponse(frameList[0]);
                 node.ModuleVoltage = msg.ModuleVoltage;
                 node.ProcessorVoltage = msg.ProcessorVoltage;
                 return true;
@@ -219,8 +219,8 @@ public class SystemRequest
             //process response
             if (frameList.Count == 2)
             {
-                var desc = new Msg10D_DescriptionResponse(frameList[0]).NodeDescription;
-                desc += new Msg10D_DescriptionResponse(frameList[1]).NodeDescription;
+                var desc = new Msg10E_DescriptionResponse(frameList[0]).NodeDescription;
+                desc += new Msg10E_DescriptionResponse(frameList[1]).NodeDescription;
                 node.Description = desc;
                 return true;
             }
@@ -256,7 +256,7 @@ public class SystemRequest
             //process response
             if (frameList.Count == 1)
             {
-                var msg = new Msg112_UptimeResponse(frameList[0]);
+                var msg = new Msg113_UptimeResponse(frameList[0]);
                 node.Uptime = msg.Uptime;
                 return true;
             }

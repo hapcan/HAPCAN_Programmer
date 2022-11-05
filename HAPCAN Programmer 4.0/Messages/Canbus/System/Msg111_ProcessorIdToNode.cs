@@ -27,7 +27,7 @@ class Msg111_ProcessorIdToNode
         }
         else
         {
-            return new Msg10F_ProcessorIdResponse(_frame).GetDescription();
+            return new Msg111_ProcessorIdResponse(_frame).GetDescription();
         }
     }
 }

@@ -30,7 +30,7 @@ class Msg105_FirmwareTypeToGroup
         }
         else
         {
-            return new Msg105_FirmwareTypeResponse(_frame).GetDescription();
+            return new Msg106_FirmwareTypeResponse(_frame).GetDescription();
         }
     }
 }

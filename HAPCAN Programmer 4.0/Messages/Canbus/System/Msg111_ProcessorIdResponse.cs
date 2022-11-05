@@ -2,11 +2,11 @@
 
 namespace Hapcan.Messages;
 
-class Msg10F_ProcessorIdResponse
+class Msg111_ProcessorIdResponse
 {
     private HapcanFrame _frame;
 
-    public Msg10F_ProcessorIdResponse(HapcanFrame frame)
+    public Msg111_ProcessorIdResponse(HapcanFrame frame)
     {
         _frame = frame;
     }

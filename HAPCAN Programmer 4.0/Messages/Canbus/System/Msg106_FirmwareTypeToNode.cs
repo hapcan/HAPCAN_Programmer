@@ -27,7 +27,7 @@ class Msg106_FirmwareTypeToNode
         }
         else
         {
-            return new Msg105_FirmwareTypeResponse(_frame).GetDescription();
+            return new Msg106_FirmwareTypeResponse(_frame).GetDescription();
         }
     }
 }

@@ -30,7 +30,7 @@ class Msg112_UptimeToGroup
         }
         else
         {
-            return new Msg112_UptimeResponse(_frame).GetDescription();
+            return new Msg113_UptimeResponse(_frame).GetDescription();
         }
     }
 }

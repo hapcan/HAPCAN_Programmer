@@ -30,7 +30,7 @@ class Msg10F_ProcessorIdToGroup
         }
         else
         {
-            return new Msg10F_ProcessorIdResponse(_frame).GetDescription();
+            return new Msg111_ProcessorIdResponse(_frame).GetDescription();
         }
     }
 }
