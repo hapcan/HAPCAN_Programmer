@@ -1,9 +1,11 @@
 ﻿using Hapcan.General;
 using Hapcan.Messages;
+using Hapcan.Utils;
 using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,17 +14,13 @@ namespace Hapcan.Programmer.Forms;
 public partial class FormMonitor : Form
 {
     private const int maxFrameNumber = 2000;
-    private readonly BindingList<HapcanFrame> _monitorList;
+    private readonly ThreadedBindingList<HapcanFrame> _monitorList;
     private readonly Project _project;
-    private System.Timers.Timer _postponeGridUpdateTimer;
 
     public FormMonitor(Project project)
     {
         _project = project;
         _monitorList = _project.FrameList;
-        _postponeGridUpdateTimer = new System.Timers.Timer();
-        _postponeGridUpdateTimer.Interval = 500;
-        _postponeGridUpdateTimer.Elapsed += PostponeGridUpdateTimer_Tick;
         InitializeComponent();
     }
 
@@ -57,10 +55,9 @@ public partial class FormMonitor : Form
             }
             comboBoxNode.SelectedIndex = 0;
             comboBoxGroup.SelectedIndex = 1;
-            //subscribe the event
-            _monitorList.ListChanged += OnListChanged;
             //load frames
-            this.UpdateGrid();
+            dataGridView1.DataSource = _monitorList;
+            GridArangeColumn();
         }
         catch (Exception)
         {
@@ -68,102 +65,95 @@ public partial class FormMonitor : Form
         }
     }
 
-    private void FormMonitor_FormClosing(object sender, FormClosingEventArgs e)
-    {
-        //unsubscribe the event
-        _monitorList.ListChanged -= OnListChanged;
-        _postponeGridUpdateTimer.Elapsed -= PostponeGridUpdateTimer_Tick;
-    }
-
     ///////////////
-    // REFRESH GRID
+    // GRID
     ///////////////
-    private void OnListChanged(object sender, ListChangedEventArgs e)
+    private void GridArangeColumn()
     {
-        if (_monitorList.Count > maxFrameNumber)                  //remove above limit
-            _monitorList.RemoveAt(0);
-        this.UpdateGrid();
-    }
-
-    private void UpdateGrid()
-    {
-        //don't update if paused
-        if (checkBoxPause.Checked)
-            return;
-        //set timer to refresh grid
-        if (_postponeGridUpdateTimer.Interval > 1)       //decrement interval to enable grid update even when frequent request
-            _postponeGridUpdateTimer.Interval--;
-        _postponeGridUpdateTimer.Enabled = true;
-    }
-
-    private void PostponeGridUpdateTimer_Tick(object sender, EventArgs e)
-    {
-        _postponeGridUpdateTimer.Interval = 500;
-        _postponeGridUpdateTimer.Enabled = false;
-        UpdateGridNow();
-    }
-
-    private void UpdateGridNow()
-    {
-        if (this.InvokeRequired)
-        {
-            Invoke(new Action(() => UpdateGridNow()));
-            return;
-        }
-        //refresh grid
-        try
-        {
-            SearchInGrid(textBoxSearch.Text);
-        }
-        catch (Exception)
-        {
-            Logger.Log("Application", this.Name + " refresh has been requested on closed form.");
-        }
-    }
-
-    private void SearchInGrid(string search)
-    {
-        if (search == "Search")
-            search = "";
-
-        dataGridView1.DataSource = new SortableBindingList<HapcanFrame>(_monitorList.
-                     OrderBy(o => o.Time).
-                     Where(o => o.Time.ToString().Contains(search.ToLowerInvariant()) == true ||
-                                o.FrameSourceText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
-                                o.FrameDataText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
-                                o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
-
         //grid
         dataGridView1.Columns["FrameSourceText"].HeaderText = "Source";
         dataGridView1.Columns["FrameDataText"].HeaderText = "Data";
         dataGridView1.Columns["Time"].DefaultCellStyle.Format = _project.Settings.TimeFormat;
+    }
 
+    private void SearchInGrid(string search)
+    {
+        if (search != "")   //get new filtered list
+        {
+            dataGridView1.DataSource = new SortableBindingList<HapcanFrame>(_monitorList.
+            OrderBy(o => o.Time).
+            Where(o => o.Time.ToString().Contains(search.ToLowerInvariant()) == true ||
+                       o.FrameSourceText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                       o.FrameDataText.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                       o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
+        }
+        else                //get original list
+        {
+            dataGridView1.DataSource = _monitorList;
+        }
+    }
+    private void SetView()
+    {
+        //search empty
+        if (textBoxSearch.Text == "")
+            if (checkBoxPause.Checked)
+                SearchInGrid(" ");
+            else
+                SearchInGrid("");
+        //search string entered
+        else
+            SearchInGrid(textBoxSearch.Text);
+    }
+    private void textBoxSearch_TextChanged(object sender, EventArgs e)
+    {
+        //pause if search entered
+        if (textBoxSearch.Text != "" && checkBoxPause.Checked != true)
+            checkBoxPause.Checked = true;
+        //unpause if search cleared
+        else if (textBoxSearch.Text == "" && checkBoxPause.Checked != false)
+            checkBoxPause.Checked = false;
+        else
+            SetView();
+    }
+
+    private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+    {
+        RowsNumberChanged(); 
+    }
+
+    private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+    {
+        RowsNumberChanged();
+    }
+
+    private void RowsNumberChanged()
+    {
         //select last row
         if (dataGridView1.RowCount > 0)
             dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.RowCount - 1].Cells[0];
+        //display frames number
         labelMsgNo.Text = "Messages: " + dataGridView1.Rows.Count;
     }
 
     //////////
     // BUTTONS
     //////////
-    
+
     //PAUSE button
     private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
     {
-        this.UpdateGrid();
-    }
-
-    private void textBoxSearch_TextChanged(object sender, EventArgs e)
-    {
-        this.UpdateGrid();
+        //clear search if paused
+        if (checkBoxPause.Checked == false && textBoxSearch.Text != "")
+            textBoxSearch.Text = "";
+        else
+            SetView();
     }
 
     //CLEAR button
     private void btnClear_Click(object sender, EventArgs e)
     {
         _monitorList.Clear();
-        this.UpdateGrid();
+        checkBoxPause.Checked = false;
     }
 
     private void textBoxTxMsg_KeyPress(object sender, KeyPressEventArgs e)
@@ -208,7 +198,6 @@ public partial class FormMonitor : Form
     {
         var frm = new HapcanFrame(textBoxTxMsg.Text, HapcanFrame.FrameSource.PcToCanbus);
         await _project.NetList[0].Connection.SendAsync(frm);
-        this.UpdateGrid();
     }
     private void comboBoxFrame_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -278,6 +267,4 @@ public partial class FormMonitor : Form
         comboBoxNode.Visible = true;
         comboBoxGroup.Visible = true;
     }
-
-
 }

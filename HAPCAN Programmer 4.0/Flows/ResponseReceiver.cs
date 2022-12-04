@@ -82,7 +82,7 @@ public class ResponseReceiver : IDisposable
                             if (_calculateResponseTime)
                             {
                                 sw1.Stop();
-                                _responsetime = 2 * (int)sw1.ElapsedMilliseconds;
+                                _responsetime = 3 * (int)sw1.ElapsedMilliseconds;
                                 _calculateResponseTime = false;
                             }
                             sw2.Restart();

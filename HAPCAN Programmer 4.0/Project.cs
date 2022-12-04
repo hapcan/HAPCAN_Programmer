@@ -1,9 +1,11 @@
 ﻿using Hapcan.Flows;
 using Hapcan.General;
+using Hapcan.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -21,7 +23,7 @@ public class Project
     public List<HapcanSubnet> NetList { get; set; }
 
     [XmlIgnore]
-    public BindingList<HapcanFrame> FrameList { get; set; }
+    public ThreadedBindingList<HapcanFrame> FrameList { get; set; }
 
     [XmlIgnore]
     public string ProjectFilePath { get; set; }
@@ -31,7 +33,7 @@ public class Project
     {
         Settings = new Settings();
         NetList = new List<HapcanSubnet>();
-        FrameList = new BindingList<HapcanFrame>();
+        FrameList = new ThreadedBindingList<HapcanFrame>();
     }
 
     //METHODS

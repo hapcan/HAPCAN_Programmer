@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Hapcan.Programmer.Forms;
 
@@ -37,6 +37,7 @@ public partial class FormMain : FormBase
         var project = new Project();
         _project = await project.OpenAsync(projectFilePath).ConfigureAwait(true);
         _project.ProjectFilePath = projectFilePath;
+        _project.FrameList.SynchronizationContext = SynchronizationContext.Current;
         _project.SubscribeEvents();
         //set logger
         Logger.LogTimeFormat = _project.Settings.TimeFormat;

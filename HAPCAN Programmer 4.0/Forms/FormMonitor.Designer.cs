@@ -458,6 +458,8 @@ namespace Hapcan.Programmer.Forms
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1400, 456);
             this.dataGridView1.TabIndex = 5;
+            this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
+            this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
             // FormMonitor
             // 
@@ -471,7 +473,6 @@ namespace Hapcan.Programmer.Forms
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FormMonitor";
             this.Text = "Form Monitor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMonitor_FormClosing);
             this.Load += new System.EventHandler(this.FormMonitor_Load);
             this.panelTop.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

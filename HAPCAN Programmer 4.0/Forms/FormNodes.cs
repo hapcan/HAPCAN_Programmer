@@ -3,7 +3,6 @@ using Hapcan.General;
 using Hapcan.Messages;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -38,11 +37,7 @@ public partial class FormNodes : Form
         try
         {
             //add status image collumn
-            var CollumnStatus = new DataGridViewImageColumn() {
-                DataPropertyName = "Status",
-                HeaderText = "Status",
-                Name = "Status" };
-            dataGridView1.Columns.Add(CollumnStatus);
+            GridAddColumns();
             UpdateGrid(_project.NetList[0].NodeList, string.Empty);
         }
         catch (Exception)
@@ -67,6 +62,16 @@ public partial class FormNodes : Form
                       string.Format("{0:X8}h", o.SerialNumber).ToLowerInvariant().Contains(search.ToLowerInvariant()) == true));
 
         //grid format
+        GridArangeColumn();
+
+        //select last row
+        if (dataGridView1.RowCount > 0)
+            dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.RowCount - 1].Cells["FullNodeGroupNumber"];
+        textBottom.Text = " Nodes: " + dataGridView1.Rows.Count;
+    }
+    private void GridArangeColumn()
+    {
+        //name
         dataGridView1.Columns["FullNodeGroupNumber"].HeaderText = "(Node,Group)";
         dataGridView1.Columns["SerialNumber"].HeaderText = "Serial number";
         dataGridView1.Columns["FullHardwareVersion"].HeaderText = "Hardware version";
@@ -74,7 +79,7 @@ public partial class FormNodes : Form
         dataGridView1.Columns["FullBootloaderVersion"].HeaderText = "Bootloader version";
         dataGridView1.Columns["ModuleVoltage"].HeaderText = "Module voltage";
         dataGridView1.Columns["ModuleVoltage"].DefaultCellStyle.Format = "0.00 V";
-
+        //hide unused
         dataGridView1.Columns["Interface"].Visible = false;
         dataGridView1.Columns["NodeNumber"].Visible = false;
         dataGridView1.Columns["GroupNumber"].Visible = false;
@@ -86,7 +91,7 @@ public partial class FormNodes : Form
         dataGridView1.Columns["BootloaderMajorVersion"].Visible = false;
         dataGridView1.Columns["BootloaderMinorVersion"].Visible = false;
         dataGridView1.Columns["ProcessorVoltage"].Visible = false;
-
+        //order
         dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 1;
         dataGridView1.Columns["Description"].DisplayIndex = 2;
         dataGridView1.Columns["SerialNumber"].DisplayIndex = 3;
@@ -94,11 +99,18 @@ public partial class FormNodes : Form
         dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 5;
         dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 6;
         dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 7;
-
-        //select last row
-        if (dataGridView1.RowCount > 0)
-            dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.RowCount - 1].Cells["FullNodeGroupNumber"];
-        textBottom.Text = " Nodes: " + dataGridView1.Rows.Count;
+        dataGridView1.Columns["Uptime"].DisplayIndex = 8;
+    }
+    private void GridAddColumns()
+    {
+        //add status image collumn
+        var CollumnStatus = new DataGridViewImageColumn()
+        {
+            DataPropertyName = "Status",
+            HeaderText = "Status",
+            Name = "Status"
+        };
+        dataGridView1.Columns.Add(CollumnStatus);
     }
 
     private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
