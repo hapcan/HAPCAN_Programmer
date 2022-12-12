@@ -3,6 +3,7 @@ using Hapcan.General;
 using Hapcan.Messages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,7 +47,7 @@ public partial class FormNodes : Form
         }
     }
 
-    internal void UpdateGrid(List<HapcanNode> list, string search)
+    internal void UpdateGrid(BindingList<HapcanNode> list, string search)
     {
         if (list == null)
             return;
@@ -187,20 +188,19 @@ public partial class FormNodes : Form
 
     }
     //ALL buttons
-    private async void btnScan_Click(object sender, EventArgs e)
+    private void btnScan_Click(object sender, EventArgs e)
     {
-        //clear grid
-        _project.NetList[0].NodeList.Clear();
-        UpdateGrid(_project.NetList[0].NodeList, string.Empty);
-
-        //make sure there is connection
-        if (await _project.NetList[0].Connection.ConnectAsync() == false)
-            return;
+        //bind grid to bindinglist that will be updated
+        dataGridView1.DataSource = _project.NetList[0].NodeList;
+        textBottom.Text = "";
 
         //scan for nodes
-        var scan = new FormScan(this, _project.NetList[0]);
+        var scan = new FormScan(_project.NetList[0]);
         scan.ShowDialog();
         scan.Dispose();
+
+        //bind to sortablebindinglist
+        UpdateGrid(_project.NetList[0].NodeList, "");
     }
 
     //REBOOT button

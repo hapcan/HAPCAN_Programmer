@@ -79,7 +79,7 @@ public partial class FormNodeSettingsId : Form
         string nodeId = string.Format("({0},{1})", nodeNr, groupNr);
 
         //check if id already exists
-        if(_project.NetList[0].NodeList.Exists(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr))
+        if(_project.NetList[0].NodeList.First(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr) != null)
         {
             FormInformation.ShowDialog(this, "Error", "Node with selected id already exists.");
             return;

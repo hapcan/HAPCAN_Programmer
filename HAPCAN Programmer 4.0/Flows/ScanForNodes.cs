@@ -3,6 +3,7 @@ using Hapcan.Messages;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -21,16 +22,17 @@ public class ScanForNodes
     //FIELDS
     readonly HapcanSubnet _subnet;
     readonly HapcanConnection _connection;
-    readonly byte _nodeTx;                       //interface id
+    readonly byte _nodeTx;                              //interface id
     readonly byte _groupTx;
-    readonly List<HapcanNode> _nodeList;         //list of nodes
+    readonly BindingList<HapcanNode> _nodeList;         //list of nodes
+    private List<HapcanNode> _nodes = new List<HapcanNode>();
 
     //PROPERTIES
     public byte GroupFrom { get; set; }
     public byte GroupTo { get; set; }
     public byte ReportGroup { get; private set; }
     public byte ReportProgress { get; private set; }
-    public List<HapcanNode> NodeList { get { return _nodeList; } }
+    public BindingList<HapcanNode> NodeList { get { return _nodeList; } }
 
     //CONSTRUCTOR
     public ScanForNodes(HapcanSubnet subnet)
@@ -41,11 +43,11 @@ public class ScanForNodes
         _groupTx = _connection.GroupTx;
         GroupFrom = _connection.GroupFrom;
         GroupTo = _connection.GroupTo;
-        _nodeList = new List<HapcanNode>();
+        _nodeList = _subnet.NodeList;
     }
 
     //METHODS
-    public async Task<List<HapcanNode>> GetNodesAsync(CancellationTokenSource cts)
+    public async Task<BindingList<HapcanNode>> GetNodesAsync(CancellationTokenSource cts)
     {
         //make sure all nodes are not in programming mode
         await _connection.SendAsync(new Msg010_ExitAllFromProgramming().GetFrame());
@@ -59,7 +61,7 @@ public class ScanForNodes
         {
             if (await HardwareTypeRequestToGroup(rcv, (byte)i))
             {
-                foreach (var node in _nodeList.Where(n => n.GroupNumber == i))
+                foreach (var node in _nodes.Where(n => n.GroupNumber == i))
                 {
                     node.Status = HapcanNode.NodeStatus.Active;
                     var sr = new SystemRequest(_subnet);
@@ -67,6 +69,7 @@ public class ScanForNodes
                     await sr.VoltageRequest(rcv, node);
                     await sr.DescriptionRequest(rcv, node);
                     await sr.UptimeRequest(rcv, node);
+                    _nodeList.Add(node);
                 }
             }
             if (cts.Token.IsCancellationRequested)
@@ -97,7 +100,7 @@ public class ScanForNodes
                 HardwareType = msg.HardwareType,
                 HardwareVersion = msg.HardwareVersion
             };
-            _nodeList.Add(node);
+            _nodes.Add(node);
         }
         if (frameList.Count > 0)
             return true;

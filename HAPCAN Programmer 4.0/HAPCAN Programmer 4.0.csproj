@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Forms\FormNetwork.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\FormNodeSettingsMemory.cs">
       <SubType>Form</SubType>
     </Compile>

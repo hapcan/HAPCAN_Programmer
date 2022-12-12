@@ -16,18 +16,16 @@ namespace Hapcan.Programmer.Forms;
 public partial class FormScan : FormProgress
 {
     readonly HapcanSubnet _subnet;
-    readonly FormNodes _form;
     HapcanNode _interfaceNode;
     ScanForNodes _scanNodes;
     int _nodesFound;
     readonly CancellationTokenSource _cts;
 
-    public FormScan(FormNodes form, HapcanSubnet subnet)
+    public FormScan(HapcanSubnet subnet)
     {
         this.Load += new System.EventHandler(this.FormScan_Load);
         this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
         _subnet = subnet;
-        _form = form;
         _cts = new CancellationTokenSource();
     }
 
@@ -44,27 +42,24 @@ public partial class FormScan : FormProgress
         {
             Info2 = "Scanning for interface failed.";
             Logger.Log("Nodes", "Scanning for interface failed.");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
         }
         else
         {
+            //show interface in grid
             Info2 = "Interface found.";
             Logger.Log("Nodes", "Interface found.");
-
-            //show interface in grid
-            _scanNodes = new ScanForNodes(_subnet);
-            _scanNodes.NodeList.Add(_interfaceNode);                        //insert interface to list
-            _form.UpdateGrid(_scanNodes.NodeList, string.Empty);
+            _subnet.NodeList.Clear();
+            _subnet.NodeList.Add(_interfaceNode);                           //insert interface to list
 
             //start scanning for other nodes
             Logger.Log("Nodes", String.Format("Scanning for nodes in groups {0}-{1}...", _subnet.Connection.GroupFrom, _subnet.Connection.GroupTo));
+            _scanNodes = new ScanForNodes(_subnet);
             _scanNodes.ScanForNodesProgress += ScanForNodesProgress;        //subscribe to progress event
-            await _scanNodes.GetNodesAsync(_cts);                              //start scaning task
+            await _scanNodes.GetNodesAsync(_cts);                           //start scaning task
             _scanNodes.ScanForNodesProgress -= ScanForNodesProgress;        //unsubscribe progress event
 
             //finish up
-            _subnet.NodeList = new List<HapcanNode>(_scanNodes.NodeList);  //set nodes to project
-            _form.UpdateGrid(_subnet.NodeList, string.Empty);
             if (_cts.IsCancellationRequested)
                 Logger.Log("Nodes", String.Format("Scanning aborted. Found {0} nodes.", _subnet.NodeList.Count));
             else
@@ -93,7 +88,6 @@ public partial class FormScan : FormProgress
             //refresh only when new node
             if (sfn.NodeList.Count != _nodesFound)
             {
-                _form.UpdateGrid(sfn.NodeList, string.Empty);
                 _nodesFound = sfn.NodeList.Count;
             }
         }

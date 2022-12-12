@@ -67,7 +67,7 @@ public class ResponseReceiver : IDisposable
         //check only for defined response time, no longer
         for (int i = 0; i < _responsetime; i++)
         {
-            await Task.Delay(1);
+            await Task.Delay(TimeSpan.FromMilliseconds(1));
             //anything received?
             if (_queue.Count > 0)
             {
@@ -82,7 +82,7 @@ public class ResponseReceiver : IDisposable
                             if (_calculateResponseTime)
                             {
                                 sw1.Stop();
-                                _responsetime = 3 * (int)sw1.ElapsedMilliseconds;
+                                _responsetime = 6 * (int)sw1.ElapsedMilliseconds;
                                 _calculateResponseTime = false;
                             }
                             sw2.Restart();

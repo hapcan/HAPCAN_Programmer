@@ -356,7 +356,7 @@ namespace Hapcan.Programmer.Forms
             this.btnNodes.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
             this.btnNodes.Size = new System.Drawing.Size(210, 58);
             this.btnNodes.TabIndex = 4;
-            this.btnNodes.Text = "  Nodes";
+            this.btnNodes.Text = "  Network";
             this.btnNodes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNodes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnNodes.UseVisualStyleBackColor = true;

@@ -10,6 +10,7 @@ namespace Hapcan.General;
 public class HapcanNode : INotifyPropertyChanged
 {
     private bool _interface;
+    private string _description;
     private int _hardwareType;
     private byte _hardwareVersion;
     private byte _applicationType;
@@ -61,12 +62,13 @@ public class HapcanNode : INotifyPropertyChanged
     {
         get //from eeprom
         {
-            string description = "";
+            _description = "";
             //convert bytes to chars
             char[] chars = Encoding.UTF8.GetChars(Eeprom, 0x30, 16);
             for (int i = 0; i < chars.Length; i++)
-                description += chars[i];
-            return description.Trim('\0'); 
+                _description += chars[i];
+            _description = _description.Trim('\0');
+            return _description;
         }
         set //to eeprom
         {
@@ -77,7 +79,11 @@ public class HapcanNode : INotifyPropertyChanged
             for (int i = 0; i < bytes.Length && i < 16; i++)
                 Eeprom[0x30 + i] = (byte)bytes[i];
             //notify
-            NotifyPropertyChanged();
+            if (_description != value)
+            {
+                _description = value;
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("SN")]
@@ -86,8 +92,11 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _serialNumber; }
         set
         {
-            _serialNumber = value;
-            NotifyPropertyChanged();
+            if (_serialNumber != value)
+            {
+                _serialNumber = value;
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlIgnore]
@@ -96,9 +105,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return Eeprom[0x26]; }
         set
         {
-            Eeprom[0x26] = value;
-            FullNodeGroupNumber = "";
-            NotifyPropertyChanged();
+            if (Eeprom[0x26] != value)
+            {
+                Eeprom[0x26] = value;
+                FullNodeGroupNumber = "";
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlIgnore]
@@ -107,9 +119,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return Eeprom[0x27]; }
         set
         {
-            Eeprom[0x27] = value;
-            FullNodeGroupNumber = "";
-            NotifyPropertyChanged();
+            if (Eeprom[0x27] != value)
+            {
+                Eeprom[0x27] = value;
+                FullNodeGroupNumber = "";
+                NotifyPropertyChanged();
+            }
         }
 
     }
@@ -119,9 +134,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _hardwareType; }
         set
         {
-            _hardwareType = value;
-            GetFullHardwareVersion();
-            NotifyPropertyChanged();
+            if (_hardwareType != value)
+            {
+                _hardwareType = value;
+                GetFullHardwareVersion();
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("HVer")]
@@ -130,9 +148,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _hardwareVersion; }
         set
         {
-            _hardwareVersion = value;
-            GetFullHardwareVersion();
-            NotifyPropertyChanged();
+            if (_hardwareVersion != value)
+            {
+                _hardwareVersion = value;
+                GetFullHardwareVersion();
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("AType")]
@@ -141,9 +162,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _applicationType; }
         set
         {
-            _applicationType = value;
-            FullFirmwareVersion = "";
-            NotifyPropertyChanged();
+            if (_applicationType != value)
+            {
+                _applicationType = value;
+                FullFirmwareVersion = "";
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("AVer")]
@@ -152,9 +176,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _applicationVersion; }
         set
         {
-            _applicationVersion = value;
-            FullFirmwareVersion = "";
-            NotifyPropertyChanged();
+            if (_applicationVersion != value)
+            {
+                _applicationVersion = value;
+                FullFirmwareVersion = "";
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("FVer")]
@@ -164,9 +191,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _firmwareVersion; }
         set
         {
-            _firmwareVersion = value;
-            FullFirmwareVersion = "";
-            NotifyPropertyChanged();
+            if (_firmwareVersion != value)
+            {
+                _firmwareVersion = value;
+                FullFirmwareVersion = "";
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("FErr")]
@@ -176,9 +206,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _firmwareError; }
         set
         {
-            _firmwareError = value;
-            FullFirmwareVersion = "";
-            NotifyPropertyChanged();
+            if (_firmwareError != value)
+            {
+                _firmwareError = value;
+                FullFirmwareVersion = "";
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("BVer")]
@@ -187,9 +220,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _bootloaderMajorVersion; }
         set
         {
-            _bootloaderMajorVersion = value;
-            GetFullBotloaderVersion();
-            NotifyPropertyChanged();
+            if (_bootloaderMajorVersion != value)
+            {
+                _bootloaderMajorVersion = value;
+                GetFullBotloaderVersion();
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("BRev")]
@@ -198,9 +234,12 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _bootloaderMinorVersion; }
         set
         {
-            _bootloaderMinorVersion = value;
-            GetFullBotloaderVersion();
-            NotifyPropertyChanged();
+            if (_bootloaderMinorVersion != value)
+            {
+                _bootloaderMinorVersion = value;
+                GetFullBotloaderVersion();
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlAttribute("Eeprom")]
@@ -222,8 +261,11 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _moduleVoltage; }
         set
         {
-            _moduleVoltage = value;
-            NotifyPropertyChanged();
+            if (_moduleVoltage != value)
+            {
+                _moduleVoltage = value;
+                NotifyPropertyChanged();
+            }
         }
     }
     [XmlIgnore]
@@ -234,8 +276,11 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _uptime; }
         set
         {
-            _uptime = value;
-            NotifyPropertyChanged();
+            if (_uptime != value)
+            {
+                _uptime = value;
+                NotifyPropertyChanged();
+            }
         }
     }
 
@@ -273,8 +318,11 @@ public class HapcanNode : INotifyPropertyChanged
         get { return _status; }
         set
         {
-            _status = value;
-            NotifyPropertyChanged();
+            if (_status != value)
+            {
+                _status = value;
+                NotifyPropertyChanged();
+            }
         }
     }
     public enum NodeStatus

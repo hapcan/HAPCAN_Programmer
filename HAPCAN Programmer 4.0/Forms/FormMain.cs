@@ -127,7 +127,7 @@ public partial class FormMain : FormBase
 
     private void btnNodes_Click(object sender, EventArgs e)
     {
-        LoadContainer(new FormNodes(_project), sender as Button);
+        LoadContainer(new FormNetwork(_project), sender as Button);
     }
 
     private void btnMonitor_Click(object sender, EventArgs e)

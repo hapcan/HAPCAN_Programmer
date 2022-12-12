@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +18,13 @@ public class HapcanSubnet
 
     [XmlArray(ElementName = "Nodes")]
     [XmlArrayItem(ElementName = "Node")]
-    public List<HapcanNode> NodeList { get; set; }
+    public BindingList<HapcanNode> NodeList { get; set; }
 
     //CONSTRUCTOR
     public HapcanSubnet()
     {
         Connection = new HapcanConnection();
-        NodeList = new List<HapcanNode>();
+        NodeList = new BindingList<HapcanNode>();
     }
 }
 
