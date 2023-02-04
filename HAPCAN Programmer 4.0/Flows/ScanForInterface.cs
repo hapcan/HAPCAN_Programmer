@@ -43,7 +43,7 @@ public class ScanForInterface
         using var rcv = new ResponseReceiver(_connection, false);
 
         //request interface
-        var sr = new SystemRequest(_subnet);
+        var sr = new SystemRequest(_connection);
         if (await sr.HardwareTypeRequest(rcv, node) == true)
         {
             node.Status = HapcanNode.NodeStatus.Active;
@@ -51,6 +51,8 @@ public class ScanForInterface
             await sr.VoltageRequest(rcv, node);
             await sr.DescriptionRequest(rcv, node);
             await sr.UptimeRequest(rcv, node);
+            //get information from firmware configs
+            HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
             return true;
         }
         else

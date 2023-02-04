@@ -51,8 +51,8 @@ partial class FormNodeSettingsId
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.textBoxDesc = new System.Windows.Forms.TextBox();
-            this.btnCgangeDesc = new System.Windows.Forms.Button();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.btnChangeName = new System.Windows.Forms.Button();
             this.labLeftBytes = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -308,9 +308,9 @@ partial class FormNodeSettingsId
             this.label6.Location = new System.Drawing.Point(30, 25);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(78, 23);
+            this.label6.Size = new System.Drawing.Size(124, 23);
             this.label6.TabIndex = 41;
-            this.label6.Text = "Identifier";
+            this.label6.Text = "Node identifier";
             // 
             // panel1
             // 
@@ -340,7 +340,7 @@ partial class FormNodeSettingsId
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel2.Controls.Add(this.panel3);
-            this.panel2.Controls.Add(this.btnCgangeDesc);
+            this.panel2.Controls.Add(this.btnChangeName);
             this.panel2.Controls.Add(this.labLeftBytes);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Location = new System.Drawing.Point(30, 300);
@@ -352,7 +352,7 @@ partial class FormNodeSettingsId
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.panel3.Controls.Add(this.textBoxDesc);
+            this.panel3.Controls.Add(this.textBoxName);
             this.panel3.Location = new System.Drawing.Point(21, 39);
             this.panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel3.Name = "panel3";
@@ -360,39 +360,39 @@ partial class FormNodeSettingsId
             this.panel3.Size = new System.Drawing.Size(195, 30);
             this.panel3.TabIndex = 47;
             // 
-            // textBoxDesc
+            // textBoxName
             // 
-            this.textBoxDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.textBoxDesc.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxDesc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDesc.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxDesc.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBoxDesc.Location = new System.Drawing.Point(5, 5);
-            this.textBoxDesc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxDesc.MaxLength = 16;
-            this.textBoxDesc.Name = "textBoxDesc";
-            this.textBoxDesc.Size = new System.Drawing.Size(185, 18);
-            this.textBoxDesc.TabIndex = 20;
-            this.textBoxDesc.TextChanged += new System.EventHandler(this.textBoxDesc_TextChanged);
-            this.textBoxDesc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDesc_KeyPress);
+            this.textBoxName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textBoxName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxName.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxName.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxName.Location = new System.Drawing.Point(5, 5);
+            this.textBoxName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxName.MaxLength = 16;
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(185, 18);
+            this.textBoxName.TabIndex = 20;
+            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            this.textBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxName_KeyPress);
             // 
-            // btnCgangeDesc
+            // btnChangeName
             // 
-            this.btnCgangeDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnCgangeDesc.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCgangeDesc.FlatAppearance.BorderSize = 0;
-            this.btnCgangeDesc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCgangeDesc.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnCgangeDesc.Image = ((System.Drawing.Image)(resources.GetObject("btnCgangeDesc.Image")));
-            this.btnCgangeDesc.Location = new System.Drawing.Point(240, 36);
-            this.btnCgangeDesc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnCgangeDesc.Name = "btnCgangeDesc";
-            this.btnCgangeDesc.Size = new System.Drawing.Size(110, 35);
-            this.btnCgangeDesc.TabIndex = 42;
-            this.btnCgangeDesc.Text = " Change";
-            this.btnCgangeDesc.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCgangeDesc.UseVisualStyleBackColor = false;
-            this.btnCgangeDesc.Click += new System.EventHandler(this.btnCgangeDesc_Click);
+            this.btnChangeName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
+            this.btnChangeName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnChangeName.FlatAppearance.BorderSize = 0;
+            this.btnChangeName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangeName.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnChangeName.Image = ((System.Drawing.Image)(resources.GetObject("btnChangeName.Image")));
+            this.btnChangeName.Location = new System.Drawing.Point(240, 36);
+            this.btnChangeName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnChangeName.Name = "btnChangeName";
+            this.btnChangeName.Size = new System.Drawing.Size(110, 35);
+            this.btnChangeName.TabIndex = 42;
+            this.btnChangeName.Text = " Change";
+            this.btnChangeName.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnChangeName.UseVisualStyleBackColor = false;
+            this.btnChangeName.Click += new System.EventHandler(this.btnChangeName_Click);
             // 
             // labLeftBytes
             // 
@@ -414,9 +414,9 @@ partial class FormNodeSettingsId
             this.label7.Location = new System.Drawing.Point(21, 21);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(67, 15);
+            this.label7.Size = new System.Drawing.Size(39, 15);
             this.label7.TabIndex = 17;
-            this.label7.Text = "Description";
+            this.label7.Text = "Name";
             // 
             // label10
             // 
@@ -426,9 +426,9 @@ partial class FormNodeSettingsId
             this.label10.Location = new System.Drawing.Point(30, 260);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(96, 23);
+            this.label10.Size = new System.Drawing.Size(100, 23);
             this.label10.TabIndex = 45;
-            this.label10.Text = "Description";
+            this.label10.Text = "Node name";
             // 
             // FormNodeSettingsId
             // 
@@ -481,11 +481,11 @@ partial class FormNodeSettingsId
     private System.Windows.Forms.Panel panel1;
     private System.Windows.Forms.RichTextBox richTextBox2;
     private System.Windows.Forms.Panel panel2;
-    private System.Windows.Forms.Button btnCgangeDesc;
+    private System.Windows.Forms.Button btnChangeName;
     private System.Windows.Forms.Label label7;
     private System.Windows.Forms.Label label10;
     private System.Windows.Forms.Panel panel3;
-    private System.Windows.Forms.TextBox textBoxDesc;
+    private System.Windows.Forms.TextBox textBoxName;
     private System.Windows.Forms.Panel panel8;
     private System.Windows.Forms.TextBox textBoxGroupDef;
     private System.Windows.Forms.Panel panel6;

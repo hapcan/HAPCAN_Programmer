@@ -1,6 +1,9 @@
-﻿using Hapcan.General;
+﻿using Hapcan.Flows;
+using Hapcan.General;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,14 +34,17 @@ public partial class FormMain : FormBase
     {
         //logs
         Logger.LogFilePath = Path.Combine(_appDataPath, "Logs", Application.ProductName + ".log");
-        Logger.Log("Application info", "Application started");
+        Logger.Log("Application info", "Application started.");
+
+        //load firmware config files
+        await LoadFirmwareConfigFiles();
+
         //open application default project
-        string projectFilePath = Path.Combine(_appDataPath, "default_project" + ".hap");
-        var project = new Project();
-        _project = await project.OpenAsync(projectFilePath).ConfigureAwait(true);
-        _project.ProjectFilePath = projectFilePath;
-        _project.FrameList.SynchronizationContext = SynchronizationContext.Current;
-        _project.SubscribeEvents();
+        await OpenProject();
+
+        //get channels to nodes on the list using firmware config
+        MatchNodesAgainstFirmwareConfig();
+
         //set logger
         Logger.LogTimeFormat = _project.Settings.TimeFormat;
         //subscribe to connection event
@@ -48,7 +54,69 @@ public partial class FormMain : FormBase
         _project.NetList[0].Connection.ConnectionError += OnConnectionError;
     }
 
-    //Move, resize, minimize, maximize, close form
+    private async Task LoadFirmwareConfigFiles()
+    {
+        //load firmware config files
+        var hfcPath = Path.Combine("Lib", "FirmCfg");
+
+        try
+        {
+            Logger.Log("Application info", "Firmware configuration - Loading firmware configuration files...");
+            var files = HapcanFirmwareConfig.GetFiles(hfcPath);
+            Logger.Log("Application info", "Firmware configuration - Found " + files.Length + " files in " + Path.GetFullPath(hfcPath));
+
+            //check all firmware config files
+            foreach (var file in files)
+            {
+                try
+                {
+                    var config = await HapcanFirmwareConfig.ReadAndValidateFileAsync(file);
+                    Logger.Log("Application info", "Firmware configuration - Firmware " + config.Firmware.Name + " has been verified positively.");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Application error", "Firmware configuration - Firmware config reading error. " + ex.Message); 
+                }
+            }
+            var logNote = string.Format("Firmware configuration - {0} of {1} firmware configs have been verified positively.",
+                HapcanFirmwareConfig.FirmwareConfigList.Count, files.Length);
+            Logger.Log("Application info", logNote);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log("Application error", "Firmware configuration - Getting firmware config files error. " + ex.Message);
+        }
+    }
+    private async Task OpenProject()
+    {
+        //open application default project
+        string projectFilePath = Path.Combine(_appDataPath, "default_project" + ".hap");
+        var project = new Project();
+        _project = await project.OpenAsync(projectFilePath).ConfigureAwait(true);
+        _project.ProjectFilePath = projectFilePath;
+        _project.FrameList.SynchronizationContext = SynchronizationContext.Current;
+        _project.SubscribeEvents();
+    }
+
+    private void MatchNodesAgainstFirmwareConfig()
+    {
+        foreach (var node in _project.NetList[0].NodeList)
+        {
+            try
+            {
+                HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
+                ScanForChannels.CreateChannelsFromFlash(node);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Application error", "MatchNodesAgainstFirmwareConfig fatal error. Node sn: " + node.SerialNumber.ToString("X8") + "h. " + ex.ToString());
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////
+    //  Move, resize, minimize, maximize, close form
+    ///////////////////////////////////////////////////////
     private void panelTop_MouseDown(object sender, MouseEventArgs e)
     {
         base.FormMove_MouseDown(sender, e);
@@ -78,12 +146,14 @@ public partial class FormMain : FormBase
         //save default project
         await _project.SaveAsync(_project.ProjectFilePath);
         //logs
-        Logger.Log("Application info", "Application terminated");
+        Logger.Log("Application info", "Application terminated.");
         await Logger.FlushAsync();
         Close();
     }
 
-
+    ///////////////////////////////////////////////////////
+    //  MENU
+    ///////////////////////////////////////////////////////
     private void LoadContainer(Form frm, Button btn)
     {
         try
@@ -109,7 +179,7 @@ public partial class FormMain : FormBase
             Logger.Log("Application error", "Loading form " + frm.Text + " error: " + ex.ToString());
         }
     }
-    //Menu
+
     private void btnMenu_Click(object sender, EventArgs e)
     {
         if (panelMenu.Width == 60)
@@ -186,7 +256,9 @@ public partial class FormMain : FormBase
         System.Diagnostics.Process.Start("explorer.exe", "https://www.hapcan.com");
     }
 
-    //update UI when connection event
+    ///////////////////////////////////////////////////////
+    //  CONECTION EVENTS
+    ///////////////////////////////////////////////////////
     private void OnConnectionConnecting(HapcanConnection conn)
     {
         if (this.InvokeRequired)
@@ -255,4 +327,8 @@ public partial class FormMain : FormBase
         }
     }
 
+    private void button2_Click(object sender, EventArgs e)
+    {
+        HapcanFirmwareConfig.GenerateFirmwareConfigTemplateAsync();
+    }
 }

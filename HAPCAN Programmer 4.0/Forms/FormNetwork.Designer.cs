@@ -47,14 +47,26 @@ namespace Hapcan.Programmer.Forms
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "nodes_16.png");
-            this.imageList1.Images.SetKeyName(1, "node_16.png");
-            this.imageList1.Images.SetKeyName(2, "node_filled_16.png");
+            this.imageList1.Images.SetKeyName(0, "Nodes");
+            this.imageList1.Images.SetKeyName(1, "Node");
+            this.imageList1.Images.SetKeyName(2, "Button");
+            this.imageList1.Images.SetKeyName(3, "Dimmer");
+            this.imageList1.Images.SetKeyName(4, "Relay");
+            this.imageList1.Images.SetKeyName(5, "Thermometer");
+            this.imageList1.Images.SetKeyName(6, "Led");
+            this.imageList1.Images.SetKeyName(7, "Open_collector");
+            this.imageList1.Images.SetKeyName(8, "Unknown");
+            this.imageList1.Images.SetKeyName(9, "Infrared_Transmitter");
+            this.imageList1.Images.SetKeyName(10, "Infrared_Receiver");
+            this.imageList1.Images.SetKeyName(11, "Shutters");
+            this.imageList1.Images.SetKeyName(12, "Thermostat");
+            this.imageList1.Images.SetKeyName(13, "Temperature_Controller");
             // 
             // splitContainer1
             // 
             this.splitContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -67,6 +79,7 @@ namespace Hapcan.Programmer.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.splitContainer1.Panel2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.splitContainer1.Size = new System.Drawing.Size(1167, 560);
             this.splitContainer1.SplitterDistance = 257;
             this.splitContainer1.TabIndex = 3;

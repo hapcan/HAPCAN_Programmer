@@ -40,7 +40,7 @@ public partial class FormProgramming : FormProgress
         _cts = new CancellationTokenSource();
         _prg = new Programming(_node);
         //module name
-        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Description, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
+        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Name, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
         InitializeComponent();
     }
     /// <summary>

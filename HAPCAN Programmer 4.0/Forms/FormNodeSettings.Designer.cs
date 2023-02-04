@@ -35,7 +35,7 @@
             this.textBoxNode = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBoxDesc = new System.Windows.Forms.TextBox();
+            this.textBoxName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.textBoxSn = new System.Windows.Forms.TextBox();
@@ -117,15 +117,15 @@
             this.label1.Location = new System.Drawing.Point(10, 371);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 15);
+            this.label1.Size = new System.Drawing.Size(39, 15);
             this.label1.TabIndex = 51;
-            this.label1.Text = "Description";
+            this.label1.Text = "Name";
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.Silver;
-            this.panel1.Controls.Add(this.textBoxDesc);
+            this.panel1.Controls.Add(this.textBoxName);
             this.panel1.Enabled = false;
             this.panel1.Location = new System.Drawing.Point(10, 391);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -134,20 +134,20 @@
             this.panel1.Size = new System.Drawing.Size(140, 30);
             this.panel1.TabIndex = 50;
             // 
-            // textBoxDesc
+            // textBoxName
             // 
-            this.textBoxDesc.BackColor = System.Drawing.Color.Silver;
-            this.textBoxDesc.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxDesc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDesc.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxDesc.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBoxDesc.Location = new System.Drawing.Point(5, 5);
-            this.textBoxDesc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxDesc.MaxLength = 16;
-            this.textBoxDesc.Name = "textBoxDesc";
-            this.textBoxDesc.Size = new System.Drawing.Size(130, 18);
-            this.textBoxDesc.TabIndex = 20;
-            this.textBoxDesc.Text = "1234567890123456";
+            this.textBoxName.BackColor = System.Drawing.Color.Silver;
+            this.textBoxName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxName.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxName.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxName.Location = new System.Drawing.Point(5, 5);
+            this.textBoxName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxName.MaxLength = 16;
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(130, 18);
+            this.textBoxName.TabIndex = 20;
+            this.textBoxName.Text = "1234567890123456";
             // 
             // label7
             // 
@@ -263,7 +263,7 @@
             this.btnId.Padding = new System.Windows.Forms.Padding(14, 0, 0, 0);
             this.btnId.Size = new System.Drawing.Size(210, 60);
             this.btnId.TabIndex = 13;
-            this.btnId.Text = "  Id && Description";
+            this.btnId.Text = "  Id && Name";
             this.btnId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnId.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnId.UseVisualStyleBackColor = true;
@@ -313,7 +313,7 @@
         private System.Windows.Forms.TextBox textBoxSn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox textBoxDesc;
+        private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel2;

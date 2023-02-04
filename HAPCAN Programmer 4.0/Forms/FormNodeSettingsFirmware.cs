@@ -35,7 +35,7 @@ public partial class FormNodeSettingsFirmware : Form
     private async Task<string> GetTextedCurrentFirmwareVersionRevision()
     {
         //check if firmware error
-        await new SystemRequest(_node.Subnet).FirmwareVersionRequest(_node);
+        await new SystemRequest(_node.Subnet.Connection).FirmwareVersionRequest(_node);
 
         //return error if firmware error
         if (_node.FirmwareError != 0)

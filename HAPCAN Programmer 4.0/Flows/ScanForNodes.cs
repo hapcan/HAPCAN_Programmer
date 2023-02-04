@@ -64,20 +64,35 @@ public class ScanForNodes
                 foreach (var node in _nodes.Where(n => n.GroupNumber == i))
                 {
                     node.Status = HapcanNode.NodeStatus.Active;
-                    var sr = new SystemRequest(_subnet);
+                    //get node properties
+                    var sr = new SystemRequest(_connection);
                     await sr.FirmwareVersionRequest(rcv, node);
                     await sr.VoltageRequest(rcv, node);
                     await sr.DescriptionRequest(rcv, node);
                     await sr.UptimeRequest(rcv, node);
+                    //get node channels
+                    await ScanForChannels.CreateChannelsFromBusAsync(rcv, node, cts);
+                    //get information from firmware configs
+                    HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
+
                     _nodeList.Add(node);
+
+                    //update task progress data on every node
+                    ReportGroup = (byte)i;
+                    ReportProgress = (byte)(100 * (i - GroupFrom) / (GroupTo - GroupFrom));
+                    ScanForNodesProgress?.Invoke(this);    //raise event
+                    //stop
+                    if (cts.Token.IsCancellationRequested)
+                        break;
                 }
             }
+            //update task progress data on every group
+            ReportGroup = (byte)i;
+            ReportProgress = (byte)(100 * (i - GroupFrom) / (GroupTo - GroupFrom));
+            ScanForNodesProgress?.Invoke(this);    //raise event
+                                                   //stop
             if (cts.Token.IsCancellationRequested)
                 break;
-            //update task progress data
-            ReportGroup = (byte)i;
-            ReportProgress = (byte)(i * 100 / (GroupTo - GroupFrom + 1));
-            ScanForNodesProgress?.Invoke(this);    //raise event
         }       
         return _nodeList;
     }
@@ -117,7 +132,7 @@ public class ScanForNodes
         using var rcv = new ResponseReceiver(_connection, false);
 
         //check all groups and calculate response time
-        var sr = new SystemRequest(_subnet);
+        var sr = new SystemRequest(_connection);
         if (await sr.HardwareTypeRequest(rcv, node) == true)
         {
             node.Status = HapcanNode.NodeStatus.Active;

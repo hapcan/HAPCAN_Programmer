@@ -43,7 +43,7 @@ public partial class FormNodes : Form
         }
         catch (Exception)
         {
-            Logger.Log("Application", this.Name + " has been closed before fully opened.");
+            Logger.Log("Application", this.Name + " has not been initialized properly.");
         }
     }
 
@@ -54,7 +54,8 @@ public partial class FormNodes : Form
 
         dataGridView1.DataSource = new SortableBindingList<HapcanNode>(list.
            OrderBy(o => !o.Interface).ThenBy(o => o.GroupNumber).ThenBy(o => o.NodeNumber).
-           Where(o => o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+           Where(o => o.Name.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                      o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullNodeGroupNumber.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullHardwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullFirmwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
@@ -80,27 +81,16 @@ public partial class FormNodes : Form
         dataGridView1.Columns["FullBootloaderVersion"].HeaderText = "Bootloader version";
         dataGridView1.Columns["ModuleVoltage"].HeaderText = "Module voltage";
         dataGridView1.Columns["ModuleVoltage"].DefaultCellStyle.Format = "0.00 V";
-        //hide unused
-        dataGridView1.Columns["Interface"].Visible = false;
-        dataGridView1.Columns["NodeNumber"].Visible = false;
-        dataGridView1.Columns["GroupNumber"].Visible = false;
-        dataGridView1.Columns["HardwareType"].Visible = false;
-        dataGridView1.Columns["HardwareVersion"].Visible = false;
-        dataGridView1.Columns["ApplicationType"].Visible = false;
-        dataGridView1.Columns["ApplicationVersion"].Visible = false;
-        dataGridView1.Columns["FirmwareVersion"].Visible = false;
-        dataGridView1.Columns["BootloaderMajorVersion"].Visible = false;
-        dataGridView1.Columns["BootloaderMinorVersion"].Visible = false;
-        dataGridView1.Columns["ProcessorVoltage"].Visible = false;
         //order
         dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 1;
-        dataGridView1.Columns["Description"].DisplayIndex = 2;
+        dataGridView1.Columns["Name"].DisplayIndex = 2;
         dataGridView1.Columns["SerialNumber"].DisplayIndex = 3;
         dataGridView1.Columns["FullHardwareVersion"].DisplayIndex = 4;
         dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 5;
-        dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 6;
-        dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 7;
-        dataGridView1.Columns["Uptime"].DisplayIndex = 8;
+        dataGridView1.Columns["Description"].DisplayIndex = 6;
+        dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 7;
+        dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 8;
+        dataGridView1.Columns["Uptime"].DisplayIndex = 9;
     }
     private void GridAddColumns()
     {
@@ -187,11 +177,13 @@ public partial class FormNodes : Form
         }
 
     }
+
     //ALL buttons
     private void btnScan_Click(object sender, EventArgs e)
     {
         //bind grid to bindinglist that will be updated
         dataGridView1.DataSource = _project.NetList[0].NodeList;
+        GridArangeColumn();
         textBottom.Text = "";
 
         //scan for nodes
@@ -260,7 +252,7 @@ public partial class FormNodes : Form
             }
         }
     }
-
+    //NODE SETTINGS button
     private void btnNodeGeneralSettings_Click(object sender, EventArgs e)
     {
         if (dataGridView1.SelectedRows.Count > 1)
@@ -273,7 +265,7 @@ public partial class FormNodes : Form
         using var frm = new FormTemplate(new FormNodeSettings(_project, node));
         frm.ShowDialog();
     }
-
+    //NODE CONTROL button
     private void btnNodeControl_Click(object sender, EventArgs e)
     {
         MessageBox.Show("Not ready yet.");

@@ -34,39 +34,39 @@ public partial class FormNodeSettingsId : Form
         //current id
         comBoxNode.SelectedIndex = _node.NodeNumber - 1;
         comBoxGroup.SelectedIndex = _node.GroupNumber - 1;
-        //description
-        textBoxDesc.Text = _node.Description;
+        //name
+        textBoxName.Text = _node.Name;
         //module name
         GetNodeName();
     }
     private void GetNodeName()
     {
-        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Description, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
+        _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Name, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
     }
-    private void textBoxDesc_KeyPress(object sender, KeyPressEventArgs e)
+    private void textBoxName_KeyPress(object sender, KeyPressEventArgs e)
     {
         //reduce text to 16 bytes (not chars) eg "ó" takes 2 bytes
         var keyLength = Encoding.UTF8.GetByteCount(e.KeyChar.ToString());
-        var textLength = Encoding.UTF8.GetBytes(textBoxDesc.Text).Length;
+        var textLength = Encoding.UTF8.GetBytes(textBoxName.Text).Length;
         if (textLength + keyLength > 16 && e.KeyChar != '\b')
             e.Handled = true;
     }
-    private async void btnCgangeDesc_Click(object sender, EventArgs e)
+    private async void btnChangeName_Click(object sender, EventArgs e)
     {
         //programe
         var prg = new Programming(_node);
         try
         {
-            await prg.ChangeNodeDescription(textBoxDesc.Text);
-            var msg = string.Format("{0} description has been changed to '{1}'.", _nodeName, textBoxDesc.Text);
+            await prg.ChangeNodeName(textBoxName.Text);
+            var msg = string.Format("{0} name has been changed to '{1}'.", _nodeName, textBoxName.Text);
             Logger.Log("Node", msg);
-            FormInformation.ShowDialog(this, "Success", "Description has been changed.");
+            FormInformation.ShowDialog(this, "Success", "Node name has been changed.");
             //get updated node name
             GetNodeName();
         }
         catch (Exception ex)
         {
-            var msg = string.Format("{0} description has not been changed to '{1}'.", _nodeName, textBoxDesc.Text);
+            var msg = string.Format("{0} name has not been changed to '{1}'.", _nodeName, textBoxName.Text);
             Logger.Log("Node", msg);
             FormInformation.ShowDialog(this, "Error", ex.Message);
         }
@@ -79,7 +79,7 @@ public partial class FormNodeSettingsId : Form
         string nodeId = string.Format("({0},{1})", nodeNr, groupNr);
 
         //check if id already exists
-        if(_project.NetList[0].NodeList.First(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr) != null)
+        if(_project.NetList[0].NodeList.FirstOrDefault(o => o.NodeNumber == nodeNr && o.GroupNumber == groupNr) != null)
         {
             FormInformation.ShowDialog(this, "Error", "Node with selected id already exists.");
             return;
@@ -106,7 +106,7 @@ public partial class FormNodeSettingsId : Form
 
     private async void btnDefaultId_Click(object sender, EventArgs e)
     {
-        var sr = new SystemRequest(_node.Subnet);
+        var sr = new SystemRequest(_node.Subnet.Connection);
         if (await sr.SetDefaultIdAsync(_node))
         {
             var msg = string.Format("{0} id has changed id to default ({1},{2}).", _nodeName, _node.NodeNumber, _node.GroupNumber);
@@ -123,9 +123,9 @@ public partial class FormNodeSettingsId : Form
         }
     }
 
-    private void textBoxDesc_TextChanged(object sender, EventArgs e)
+    private void textBoxName_TextChanged(object sender, EventArgs e)
     {
-        labLeftBytes.Text = CalculateLeftBytes(textBoxDesc.Text);
+        labLeftBytes.Text = CalculateLeftBytes(textBoxName.Text);
     }
 
     private string CalculateLeftBytes(string text)

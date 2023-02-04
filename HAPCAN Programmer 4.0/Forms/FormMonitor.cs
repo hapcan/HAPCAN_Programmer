@@ -56,12 +56,12 @@ public partial class FormMonitor : Form
             comboBoxNode.SelectedIndex = 0;
             comboBoxGroup.SelectedIndex = 1;
             //load frames
-            dataGridView1.DataSource = _monitorList;
+            SetView();
             GridArangeColumn();
         }
         catch (Exception)
         {
-            Logger.Log("Application", this.Name + " has been closed before fully opened.");
+            Logger.Log("Application", this.Name + " has not been initialized properly.");
         }
     }
 
@@ -91,16 +91,19 @@ public partial class FormMonitor : Form
         {
             dataGridView1.DataSource = _monitorList;
         }
+        RowsNumberChanged();
     }
     private void SetView()
     {
         //search empty
         if (textBoxSearch.Text == "")
+        { 
             if (checkBoxPause.Checked)
                 SearchInGrid(" ");
             else
                 SearchInGrid("");
         //search string entered
+        }
         else
             SearchInGrid(textBoxSearch.Text);
     }
@@ -249,8 +252,8 @@ public partial class FormMonitor : Form
             case 25: textBoxTxMsg.Text = new Msg116_ChannelNameToGroup(nodeTx, groupTx, groupRx, 0x00).GetFrame().GetDataString(); DisableNode(); break;
             case 26: textBoxTxMsg.Text = new Msg117_ChannelNameToNode(nodeTx, groupTx, nodeRx, groupRx, 0x00).GetFrame().GetDataString(); EnableAll(); break;
         }
-
     }
+
     //Control Node and Group number comboboxes
     private void DisableAll()
     {

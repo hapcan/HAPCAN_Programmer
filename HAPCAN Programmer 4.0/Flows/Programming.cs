@@ -329,7 +329,7 @@ public class Programming
 
         //refresh node firmware version
         await Task.Delay(3000);                                 //let the node restart
-        var sr = new SystemRequest(_node.Subnet);                      //ask for firmware version
+        var sr = new SystemRequest(_node.Subnet.Connection);                      //ask for firmware version
         await sr.FirmwareVersionRequest(_node);
     }
     
@@ -352,10 +352,10 @@ public class Programming
     /// </summary>
     /// <param name="description">New node description.</param>
     /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
-    public async Task ChangeNodeDescription(string description)
+    public async Task ChangeNodeName(string name)
     {
         //get description
-        byte[] bytes = Encoding.UTF8.GetBytes(description);
+        byte[] bytes = Encoding.UTF8.GetBytes(name);
         //position description in temp buffer
         var buffer = new byte[0x40];
         for (int i = 0; i < bytes.Length && i < 16; i++)
@@ -365,7 +365,7 @@ public class Programming
         //make sure node exits programming mode
         await ExitProgrammingAsync();
         //change node description
-        _node.Description = description;
+        _node.Name = name;
     }
     
     /// <summary>

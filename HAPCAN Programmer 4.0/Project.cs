@@ -23,6 +23,9 @@ public class Project
     public List<HapcanSubnet> NetList { get; set; }
 
     [XmlIgnore]
+    public List<HapcanFirmwareConfig> FirmwareConfigList { get; set; }
+
+    [XmlIgnore]
     public ThreadedBindingList<HapcanFrame> FrameList { get; set; }
 
     [XmlIgnore]
@@ -44,7 +47,7 @@ public class Project
         try
         {
             //read project file
-            var projfile = new ProjectFile<Project>();
+            var projfile = new ReadWriteFile<Project>();
             project = await projfile.DeserializeAsync(filename).ConfigureAwait(false);
             Logger.Log("Application info", "Opened project " + Path.GetFullPath(filename));
             
@@ -85,7 +88,7 @@ public class Project
             if (!Directory.Exists(Path.GetDirectoryName(filename)))
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
 
-            var projfile = new ProjectFile<Project>();
+            var projfile = new ReadWriteFile<Project>();
             var res = await projfile.SerializeAsync(this, filename);
             Logger.Log("Application info", "Project saved to " + Path.GetFullPath(filename));
             return res;

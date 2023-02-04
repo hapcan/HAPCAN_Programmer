@@ -7,15 +7,15 @@ using System.Xml.Serialization;
 
 namespace Hapcan;
 
-public class ProjectFile<T>
+public class ReadWriteFile<T>
 {
-    private static readonly object _lockproj = new object();
+    private readonly object _lockproj = new object();
 
     /// <summary>
-    /// Reads (xml deserializes) T type project from file.
+    /// Reads (xml deserializes) T type object from file.
     /// </summary>
-    /// <param name="filename">Project file path.</param>
-    /// <returns>Task with project instance</returns>
+    /// <param name="filename">Object file path.</param>
+    /// <returns>Task with object instance</returns>
     public async Task<T> DeserializeAsync(string filepath)
     {
         return await Task.Run(
@@ -31,9 +31,9 @@ public class ProjectFile<T>
                         project = (T)ser.Deserialize(sr);
                         return project;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw new Exception("", ex);
+                        throw;
                     }
                 }
             }
@@ -41,12 +41,12 @@ public class ProjectFile<T>
     }
 
     /// <summary>
-    /// Saves (xml serializes) T type project into the file.
+    /// Saves (xml serializes) T type object into the file.
     /// </summary>
-    /// <param name="project">T type project instance.</param>
-    /// <param name="filepath">Project file path.</param>
+    /// <param name="fileobject">T type object instance.</param>
+    /// <param name="filepath">Object file path.</param>
     /// <returns>True if save was successful, otherwise false.</returns>
-    public async Task<bool> SerializeAsync(T project, string filepath)
+    public async Task<bool> SerializeAsync(T fileobject, string filepath)
     {
         return await Task.Run(
             () =>
@@ -58,12 +58,12 @@ public class ProjectFile<T>
                         var ser = new XmlSerializer(typeof(T));
                         using var sw = new StreamWriter(filepath, false, Encoding.UTF8);
                         using var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
-                        ser.Serialize(xw, project);
+                        ser.Serialize(xw, fileobject);
                         return true;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw new Exception("", ex);
+                        throw;
                     }
                 }
             }

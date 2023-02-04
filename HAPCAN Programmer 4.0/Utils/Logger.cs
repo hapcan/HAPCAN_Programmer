@@ -90,7 +90,7 @@ public static class Logger
     {
         await FlushAsync();
         //raise event
-        LogSaved?.Invoke();             //raise event
+        LogSaved?.Invoke();
     }
 
     //update logs in LogText property

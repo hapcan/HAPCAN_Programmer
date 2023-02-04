@@ -24,11 +24,11 @@ public partial class FormNodeSettings : Form
         InitializeComponent();
         _project = project;
         _node = node;
-        //init from id & description
+        //init from id & name
         ButtonColor(btnId);
         LoadContainer(new FormNodeSettingsId(_project, _node));
         textBoxNode.DataBindings.Add("Text", _node, "FullNodeGroupNumber", false, DataSourceUpdateMode.OnPropertyChanged);
-        textBoxDesc.DataBindings.Add("Text", _node, "Description", false, DataSourceUpdateMode.OnPropertyChanged);
+        textBoxName.DataBindings.Add("Text", _node, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
         textBoxSn.DataBindings.Add("Text", _node, "SerialNumber", true, DataSourceUpdateMode.OnPropertyChanged, null, "X8");
     }
     private bool LoadContainer(Form frm)
@@ -59,7 +59,7 @@ public partial class FormNodeSettings : Form
         }
         button.BackColor = Color.FromArgb(28, 28, 28);
     }
-    //form node id and description
+    //form node id and name
     private void btnId_Click(object sender, EventArgs e)
     {
         if (LoadContainer(new FormNodeSettingsId(_project, _node)))

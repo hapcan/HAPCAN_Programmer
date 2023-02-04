@@ -6,25 +6,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
+using System.Threading;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Hapcan.Flows;
 
 public class SystemRequest
 {
     //FIELDS
-    readonly HapcanSubnet _subnet;
     readonly HapcanConnection _connection;
     readonly byte _nodeTx;                       //interface id
     readonly byte _groupTx;
 
     //CONSTRUCTOR
-    public SystemRequest(HapcanSubnet subnet)
+    public SystemRequest(HapcanConnection connection)
     {
-        _subnet = subnet;
-        _connection = _subnet.Connection;
-        _nodeTx = _subnet.Connection.NodeTx;
-        _groupTx = _subnet.Connection.GroupTx;
+    //    _subnet = subnet;
+        _connection = connection;
+        _nodeTx = _connection.NodeTx;
+        _groupTx = _connection.GroupTx;
     }
 
     //METHODS
@@ -200,12 +202,12 @@ public class SystemRequest
             //get response
             var frameList = await rcv.ReceiveAsync(new int[] { 0x10E }, 2);
             //process response
-            node.Description = string.Empty;
+            node.Name = string.Empty;
             if (frameList.Count == 2)
             {
-                var desc = new IntMsg10E_DescriptionResponse(frameList[0]).NodeDescription;
-                desc += new IntMsg10E_DescriptionResponse(frameList[1]).NodeDescription;
-                node.Description = desc;
+                var name = new IntMsg10E_DescriptionResponse(frameList[0]).NodeDescription;
+                name += new IntMsg10E_DescriptionResponse(frameList[1]).NodeDescription;
+                node.Name = name;
                 return true;
             }
             return false;
@@ -219,9 +221,9 @@ public class SystemRequest
             //process response
             if (frameList.Count == 2)
             {
-                var desc = new Msg10E_DescriptionResponse(frameList[0]).NodeDescription;
-                desc += new Msg10E_DescriptionResponse(frameList[1]).NodeDescription;
-                node.Description = desc;
+                var name = new Msg10E_DescriptionResponse(frameList[0]).NodeDescription;
+                name += new Msg10E_DescriptionResponse(frameList[1]).NodeDescription;
+                node.Name = name;
                 return true;
             }
             else
@@ -283,7 +285,7 @@ public class SystemRequest
             if (frameList.Count == 1)
             {
                 var frame = frameList[0];
-                //id comes form serial number?
+                //id comes from serial number?
                 if (frame.Data[2] == (byte)(node.SerialNumber >> 8) && frame.Data[3] == (byte)node.SerialNumber)
                 {
                     //update node id
@@ -295,6 +297,32 @@ public class SystemRequest
                 }
             }
             return false;
+        }
+    }
+
+    public async Task<string> ChannelNameRequest(ResponseReceiver rcv, HapcanNode node, byte channelNo)
+    {
+        if (node.Interface)
+        {
+            return "";
+        }
+        else
+        {
+            //send request
+            await _connection.SendAsync(new Msg117_ChannelNameToNode(_connection.NodeTx, _connection.GroupTx, node.NodeNumber, node.GroupNumber, channelNo).GetFrame());
+            //get response
+            var frameList = await rcv.ReceiveAsync(new int[] { 0x117 }, 5);
+            //process response
+            if (frameList.Count == 5)
+            {
+                var name = "";
+                for (int i = 0; i < frameList.Count; i++)
+                {
+                    name += new Msg117_ChannelNameResponse(frameList[i]).GetText();
+                }
+                return name;
+            }
+            return "";
         }
     }
 }

@@ -15,17 +15,17 @@ class Msg117_ChannelNameResponse
     public string GetDescription()
     {
         return string.Format("SYSTEM - Channel {0} name, frame {1}: {2}",
-            _frame.Data[4] >> 3, _frame.Data[4] & 0x7, GetText(_frame));
+            _frame.Data[4] >> 3, _frame.Data[4] & 0x7, GetText());
 
     }
 
-    private string GetText(HapcanFrame frame)
+    public string GetText()
     {
         var desc = "";
         var charsData = new byte[7];
         //get chars bytes from frame
         for (int i = 0; i < 7; i++)
-            charsData[i] = frame.Data[i + 5];
+            charsData[i] = _frame.Data[i + 5];
         //convert bytes to chars
         char[] chars = Encoding.UTF8.GetChars(charsData);
         for (int i = 0; i < chars.Length; i++)

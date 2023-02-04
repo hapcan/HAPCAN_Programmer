@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HapcanFirmwareConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <File Revision="0" />
+  <Firmware Name="UNIV 3.6.0.2" Version="3000.3.6.0.2" Description="Dimmer  - 1 channel trailing edge 250W 230V dimmer"/>
+  <Channels>
+    <ChannelList>
+      <Channel Id="1" Type="Dimmer" NameAdr="0x008800" Description="250W 230V trailing edge dimmer"/>
+    </ChannelList>
+  </Channels>
+</HapcanFirmwareConfig>

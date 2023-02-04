@@ -35,6 +35,7 @@ namespace Hapcan.Programmer.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnNodeControl = new System.Windows.Forms.Button();
             this.btnNodeRefresh = new System.Windows.Forms.Button();
             this.btnNodeReboot = new System.Windows.Forms.Button();
@@ -61,6 +62,7 @@ namespace Hapcan.Programmer.Forms
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.panelTop.Controls.Add(this.label1);
             this.panelTop.Controls.Add(this.btnNodeControl);
             this.panelTop.Controls.Add(this.btnNodeRefresh);
             this.panelTop.Controls.Add(this.btnNodeReboot);
@@ -73,6 +75,17 @@ namespace Hapcan.Programmer.Forms
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1167, 35);
             this.panelTop.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(5, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 23);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Nodes";
             // 
             // btnNodeControl
             // 
@@ -156,10 +169,11 @@ namespace Hapcan.Programmer.Forms
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.panel3);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Location = new System.Drawing.Point(304, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(424, 35);
@@ -335,6 +349,7 @@ namespace Hapcan.Programmer.Forms
             this.Text = "Form Nodes";
             this.Load += new System.EventHandler(this.FormNodes_Load);
             this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -364,5 +379,6 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.Button btnNodeReboot;
         private System.Windows.Forms.Button btnNodeRefresh;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Label label1;
     }
 }

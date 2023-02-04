@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HapcanFirmwareConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <File Revision="0" />
+  <Firmware Name="UNIV 3.2.4.3" Version="3000.3.2.4.3" Description="Relay - 6 channel 16A 250V bistable relay"/>
+  <Channels>
+    <ChannelList>
+      <Channel Id="1" Type="Relay" NameAdr="0x008800" Description="16A 250V bistable relay 1"/>
+      <Channel Id="2" Type="Relay" NameAdr="0x008820" Description="16A 250V bistable relay 2"/>
+      <Channel Id="3" Type="Relay" NameAdr="0x008840" Description="16A 250V bistable relay 3"/>
+      <Channel Id="4" Type="Relay" NameAdr="0x008860" Description="16A 250V bistable relay 4"/>
+      <Channel Id="5" Type="Relay" NameAdr="0x008880" Description="16A 250V bistable relay 5"/>
+      <Channel Id="6" Type="Relay" NameAdr="0x0088A0" Description="16A 250V bistable relay 6"/>
+    </ChannelList>
+  </Channels>
+</HapcanFirmwareConfig>

@@ -20,33 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot.WinForms" Version="4.1.59" />
+    <PackageReference Include="ScottPlot.WinForms" Version="4.1.60" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\FormNetwork.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormNodeSettingsMemory.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormNodeSettingsFirmware.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\FormUnsupportedNode.cs" />
+    <Compile Update="Forms\FormNetwork.cs" />
+    <Compile Update="Forms\FormChannels.cs" />
+    <Compile Update="Forms\FormNodeSettingsMemory.cs" />
+    <Compile Update="Forms\FormNodeSettingsFirmware.cs" />
     <Compile Update="Forms\FormTemplate.cs" />
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   
 </Project>
