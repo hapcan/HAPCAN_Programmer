@@ -273,7 +273,7 @@ public partial class FormNodeSettingsMemory : Form
             openFileDialog.Filter = "HAPCAN node configuration file (*.hac)|*.hac|All files (*.*)|*.*";
             if(openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var cf = new HapcanConfigFile();
+                var cf = new HapcanNodeConfigFile();
                 var memory = await cf.OpenMemoryConfigFromFile(openFileDialog.FileName);
                 _newEeprom = memory.Eeprom;
                 _newFlash = memory.Flash;
@@ -302,7 +302,7 @@ public partial class FormNodeSettingsMemory : Form
             saveFileDialog.FileName = Path.GetFileName(hacFileName);
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var cf = new HapcanConfigFile();
+                var cf = new HapcanNodeConfigFile();
                 cf.SaveMemoryConfigToFile(_node.SerialNumber, _newEeprom, _newFlash, saveFileDialog.FileName);
                 Logger.Log("Info", String.Format("The node memory configuration file '{0}' has been saved", saveFileDialog.FileName));
             }

@@ -67,7 +67,8 @@ public class HapcanFirmwareConfig
             config.Channels.Validate(config.Firmware);
             if (config.Channels == null)
                 throw new ArgumentNullException(nameof(Channels), "File section is missing");
-            FirmwareConfigList.Add(config);
+            //add
+            AddConfigToList(config);
         }
         catch (Exception ex)
         {
@@ -93,7 +94,10 @@ public class HapcanFirmwareConfig
         return config;
     }
 
-
+    /// <summary>
+    /// Updates node properties from matched firmware config
+    /// </summary>
+    /// <param name="node">Node to be updated</param>
     public static void UpdateNodeFromConfigs(HapcanNode node)
     {
         //find if firmware config exists
@@ -117,11 +121,33 @@ public class HapcanFirmwareConfig
         f.Firmware = new FirmwareClass() { Name = "UNIV 4.x.x.x", Version = "3000.4.x.x.x", Description = "Firmware description" };
         //channels
         var channelList = new List<ChannelClass>();
-        channelList.Add(new ChannelClass() { Id = 1, NameAdrStr = "0x008820", Type = HapcanChannel.ChannelType.Relay });
+        channelList.Add(new ChannelClass() { Id = 1, NameAdrStr = "0x010800", Type = HapcanChannel.ChannelType.Relay });
         f.Channels = new ChannelsClass() { ChannelList = channelList };
 
         //save
         var rw = new ReadWriteFile<HapcanFirmwareConfig>();
         await rw.SerializeAsync(f, "firmware_config_template.xml");
+    }
+
+    private static void AddConfigToList(HapcanFirmwareConfig config)
+    {
+        //check for duplcates on list
+        var currentCfg = FirmwareConfigList.FirstOrDefault(o => o.Firmware.Version == config.Firmware.Version);
+        //duplicate found
+        if (currentCfg != null)
+        {
+            //current config is newer?
+            if (currentCfg.File.Revision >= config.File.Revision)
+            {
+                throw new ArgumentException(string.Format("Found duplicate {0} (file revision: {1}) has been ignored.", config.Firmware.Version, config.File.Revision));
+            }
+            //current config is older
+            else
+            {
+                FirmwareConfigList.Remove(currentCfg);
+            }
+        }
+        //add new
+        FirmwareConfigList.Add(config);
     }
 }

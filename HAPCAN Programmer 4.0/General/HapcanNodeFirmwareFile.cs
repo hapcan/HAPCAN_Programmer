@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Hapcan.General;
 
-internal class HapcanFirmwareFile
+internal class HapcanNodeFirmwareFile
 {
     /// <summary>
     /// Initializes a new instance of the HapcanFirmwareFile class for the specified file name.
     /// </summary>
-    public HapcanFirmwareFile()
+    public HapcanNodeFirmwareFile()
     {
     }
 

@@ -79,7 +79,7 @@ public partial class FormNodeSettingsFirmware : Form
                 textFirmFile.Text = _fileName;
 
                 //read the contents of the file
-                var ff = new HapcanFirmwareFile();               
+                var ff = new HapcanNodeFirmwareFile();               
                 _fileBuffer = await ff.ReadFirmwareFileAsync(_fileName);
 
                 //update form

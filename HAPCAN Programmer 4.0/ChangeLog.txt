@@ -1,0 +1,6 @@
+HAPCAN Programmer Build230205
+1. Updated About page with supported firmwares
+
+HAPCAN Programmer Build220204
+1. Scanning for node channels
+2. Firmware configuration xml files

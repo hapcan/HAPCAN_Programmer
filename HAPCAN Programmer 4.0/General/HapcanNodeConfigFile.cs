@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hapcan.General;
 
-internal class HapcanConfigFile
+internal class HapcanNodeConfigFile
 {
     public async Task<(byte[] Eeprom, byte[] Flash)> OpenMemoryConfigFromFile(string path)
     {

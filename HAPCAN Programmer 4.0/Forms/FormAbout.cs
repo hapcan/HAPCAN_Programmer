@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Hapcan.General;
+using System;
+using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.Intrinsics.X86;
 using System.Windows.Forms;
 
 namespace Hapcan.Programmer.Forms;
@@ -12,6 +15,12 @@ public partial class FormAbout : Form
     }
 
     private void FormAbout_Load(object sender, EventArgs e)
+    {
+        LoadApplicationInfo();
+        LoadSupportedFirmware();
+    }
+
+    private void LoadApplicationInfo()
     {
         //get assembly attributes
         var attrCopyright = Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(System.Reflection.AssemblyCopyrightAttribute));
@@ -30,6 +39,18 @@ public partial class FormAbout : Form
         richTextAppInfo.AppendText(copyright + Environment.NewLine);
         richTextAppInfo.AppendText(Environment.NewLine);
         richTextAppInfo.AppendText(company);
+    }
+
+    private void LoadSupportedFirmware()
+    {
+        dataGridView1.Columns.Add("Firmware", "Firmware");
+        dataGridView1.Columns.Add("Description", "Description");
+        dataGridView1.Columns.Add("File revision", "File revision");
+
+        foreach (var firmCfg in HapcanFirmwareConfig.FirmwareConfigList)
+            dataGridView1.Rows.Add(firmCfg.Firmware.Name, firmCfg.Firmware.Description, firmCfg.File.Revision );
+
+        dataGridView1.Sort(this.dataGridView1.Columns["Firmware"], ListSortDirection.Ascending);
     }
 
     private void richTextAppInfo_LinkClicked(object sender, LinkClickedEventArgs e)

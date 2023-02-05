@@ -9,7 +9,7 @@
     <Product>HAPCAN Programmer</Product>
     <Version>4.0.0.1</Version>
     <Company>hapcan.com</Company>
-    <Copyright>Copyright © hapcan.com 2004-2022</Copyright>
+    <Copyright>Copyright © hapcan.com 2004-2023</Copyright>
     <ApplicationIcon>hapcan_programmer_icon.ico</ApplicationIcon>
     <Company>www.hapcan.com</Company>
     <RootNamespace>Hapcan</RootNamespace>
@@ -22,15 +22,6 @@
   <ItemGroup>
     <PackageReference Include="ScottPlot.WinForms" Version="4.1.60" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Forms\FormUnsupportedNode.cs" />
-    <Compile Update="Forms\FormNetwork.cs" />
-    <Compile Update="Forms\FormChannels.cs" />
-    <Compile Update="Forms\FormNodeSettingsMemory.cs" />
-    <Compile Update="Forms\FormNodeSettingsFirmware.cs" />
-    <Compile Update="Forms\FormTemplate.cs" />
   </ItemGroup>
   
 </Project>

@@ -23,9 +23,6 @@ public class Project
     public List<HapcanSubnet> NetList { get; set; }
 
     [XmlIgnore]
-    public List<HapcanFirmwareConfig> FirmwareConfigList { get; set; }
-
-    [XmlIgnore]
     public ThreadedBindingList<HapcanFrame> FrameList { get; set; }
 
     [XmlIgnore]
