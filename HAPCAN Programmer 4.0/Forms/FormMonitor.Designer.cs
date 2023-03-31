@@ -33,408 +33,381 @@ namespace Hapcan.Programmer.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.btnClear = new System.Windows.Forms.Button();
-            this.checkBoxPause = new System.Windows.Forms.CheckBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.panelBottom = new System.Windows.Forms.Panel();
-            this.labelMsgNo = new System.Windows.Forms.Label();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxGroup = new System.Windows.Forms.ComboBox();
-            this.comboBoxNode = new System.Windows.Forms.ComboBox();
-            this.comboBoxFrame = new System.Windows.Forms.ComboBox();
-            this.panelTxMsg = new System.Windows.Forms.Panel();
-            this.textBoxTxMsg = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panelTop.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.panelBottom.SuspendLayout();
-            this.panelTxMsg.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.SuspendLayout();
+            panelTop = new System.Windows.Forms.Panel();
+            btnClear = new System.Windows.Forms.Button();
+            checkBoxPause = new System.Windows.Forms.CheckBox();
+            panel2 = new System.Windows.Forms.Panel();
+            panel4 = new System.Windows.Forms.Panel();
+            textBoxSearch = new System.Windows.Forms.TextBox();
+            panel3 = new System.Windows.Forms.Panel();
+            pictureBox2 = new System.Windows.Forms.PictureBox();
+            panelBottom = new System.Windows.Forms.Panel();
+            labelMsgNo = new System.Windows.Forms.Label();
+            btnSend = new System.Windows.Forms.Button();
+            label6 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            comboBoxGroup = new System.Windows.Forms.ComboBox();
+            comboBoxNode = new System.Windows.Forms.ComboBox();
+            comboBoxFrame = new System.Windows.Forms.ComboBox();
+            panelTxMsg = new System.Windows.Forms.Panel();
+            textBoxTxMsg = new System.Windows.Forms.TextBox();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            dataGridView1 = new System.Windows.Forms.DataGridView();
+            panelTop.SuspendLayout();
+            panel2.SuspendLayout();
+            panel4.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panelBottom.SuspendLayout();
+            panelTxMsg.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            SuspendLayout();
             // 
             // panelTop
             // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panelTop.Controls.Add(this.btnClear);
-            this.panelTop.Controls.Add(this.checkBoxPause);
-            this.panelTop.Controls.Add(this.panel2);
-            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1400, 35);
-            this.panelTop.TabIndex = 3;
+            panelTop.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            panelTop.Controls.Add(btnClear);
+            panelTop.Controls.Add(checkBoxPause);
+            panelTop.Controls.Add(panel2);
+            panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            panelTop.Location = new System.Drawing.Point(0, 0);
+            panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTop.Name = "panelTop";
+            panelTop.Size = new System.Drawing.Size(1400, 35);
+            panelTop.TabIndex = 3;
             // 
             // btnClear
             // 
-            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClear.FlatAppearance.BorderSize = 0;
-            this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.Location = new System.Drawing.Point(1216, 0);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(93, 35);
-            this.btnClear.TabIndex = 9;
-            this.btnClear.Text = "  Clear";
-            this.btnClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            btnClear.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            btnClear.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+            btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
+            btnClear.FlatAppearance.BorderSize = 0;
+            btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnClear.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            btnClear.Image = (System.Drawing.Image)resources.GetObject("btnClear.Image");
+            btnClear.Location = new System.Drawing.Point(1216, 0);
+            btnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new System.Drawing.Size(93, 35);
+            btnClear.TabIndex = 9;
+            btnClear.Text = "  Clear";
+            btnClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            btnClear.UseVisualStyleBackColor = false;
+            btnClear.Click += btnClear_Click;
             // 
             // checkBoxPause
             // 
-            this.checkBoxPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBoxPause.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxPause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.checkBoxPause.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.checkBoxPause.FlatAppearance.BorderSize = 0;
-            this.checkBoxPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxPause.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.checkBoxPause.Image = ((System.Drawing.Image)(resources.GetObject("checkBoxPause.Image")));
-            this.checkBoxPause.Location = new System.Drawing.Point(1310, 0);
-            this.checkBoxPause.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxPause.Name = "checkBoxPause";
-            this.checkBoxPause.Size = new System.Drawing.Size(88, 35);
-            this.checkBoxPause.TabIndex = 8;
-            this.checkBoxPause.Text = " Pause";
-            this.checkBoxPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxPause.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.checkBoxPause.UseVisualStyleBackColor = false;
-            this.checkBoxPause.CheckedChanged += new System.EventHandler(this.checkBoxPause_CheckedChanged);
+            checkBoxPause.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            checkBoxPause.Appearance = System.Windows.Forms.Appearance.Button;
+            checkBoxPause.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+            checkBoxPause.Cursor = System.Windows.Forms.Cursors.Hand;
+            checkBoxPause.FlatAppearance.BorderSize = 0;
+            checkBoxPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            checkBoxPause.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            checkBoxPause.Image = (System.Drawing.Image)resources.GetObject("checkBoxPause.Image");
+            checkBoxPause.Location = new System.Drawing.Point(1310, 0);
+            checkBoxPause.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBoxPause.Name = "checkBoxPause";
+            checkBoxPause.Size = new System.Drawing.Size(88, 35);
+            checkBoxPause.TabIndex = 8;
+            checkBoxPause.Text = " Pause";
+            checkBoxPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            checkBoxPause.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            checkBoxPause.UseVisualStyleBackColor = false;
+            checkBoxPause.CheckedChanged += checkBoxPause_CheckedChanged;
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.panel2.Controls.Add(this.panel4);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(424, 35);
-            this.panel2.TabIndex = 6;
+            panel2.BackColor = System.Drawing.Color.FromArgb(225, 225, 225);
+            panel2.Controls.Add(panel4);
+            panel2.Controls.Add(panel3);
+            panel2.Location = new System.Drawing.Point(0, 0);
+            panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(424, 35);
+            panel2.TabIndex = 6;
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.Window;
-            this.panel4.Controls.Add(this.textBoxSearch);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(35, 0);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Padding = new System.Windows.Forms.Padding(6);
-            this.panel4.Size = new System.Drawing.Size(389, 35);
-            this.panel4.TabIndex = 9;
+            panel4.BackColor = System.Drawing.SystemColors.Window;
+            panel4.Controls.Add(textBoxSearch);
+            panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel4.Location = new System.Drawing.Point(35, 0);
+            panel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel4.Name = "panel4";
+            panel4.Padding = new System.Windows.Forms.Padding(6);
+            panel4.Size = new System.Drawing.Size(389, 35);
+            panel4.TabIndex = 9;
             // 
             // textBoxSearch
             // 
-            this.textBoxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.textBoxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.RecentlyUsedList;
-            this.textBoxSearch.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxSearch.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxSearch.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBoxSearch.Location = new System.Drawing.Point(6, 6);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.PlaceholderText = "Search";
-            this.textBoxSearch.Size = new System.Drawing.Size(377, 19);
-            this.textBoxSearch.TabIndex = 5;
-            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
+            textBoxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            textBoxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.RecentlyUsedList;
+            textBoxSearch.BackColor = System.Drawing.SystemColors.Window;
+            textBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBoxSearch.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            textBoxSearch.ForeColor = System.Drawing.SystemColors.WindowText;
+            textBoxSearch.Location = new System.Drawing.Point(6, 6);
+            textBoxSearch.Margin = new System.Windows.Forms.Padding(0);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.PlaceholderText = "Search";
+            textBoxSearch.Size = new System.Drawing.Size(377, 19);
+            textBoxSearch.TabIndex = 5;
+            textBoxSearch.TextChanged += textBoxSearch_TextChanged;
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.SystemColors.Window;
-            this.panel3.Controls.Add(this.pictureBox2);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(2);
-            this.panel3.Size = new System.Drawing.Size(35, 35);
-            this.panel3.TabIndex = 8;
+            panel3.BackColor = System.Drawing.SystemColors.Window;
+            panel3.Controls.Add(pictureBox2);
+            panel3.Dock = System.Windows.Forms.DockStyle.Left;
+            panel3.Location = new System.Drawing.Point(0, 0);
+            panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel3.Name = "panel3";
+            panel3.Padding = new System.Windows.Forms.Padding(2);
+            panel3.Size = new System.Drawing.Size(35, 35);
+            panel3.TabIndex = 8;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(31, 31);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
+            pictureBox2.BackColor = System.Drawing.SystemColors.Window;
+            pictureBox2.BackgroundImage = (System.Drawing.Image)resources.GetObject("pictureBox2.BackgroundImage");
+            pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            pictureBox2.Location = new System.Drawing.Point(2, 2);
+            pictureBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new System.Drawing.Size(31, 31);
+            pictureBox2.TabIndex = 0;
+            pictureBox2.TabStop = false;
             // 
             // panelBottom
             // 
-            this.panelBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panelBottom.Controls.Add(this.labelMsgNo);
-            this.panelBottom.Controls.Add(this.btnSend);
-            this.panelBottom.Controls.Add(this.label6);
-            this.panelBottom.Controls.Add(this.label5);
-            this.panelBottom.Controls.Add(this.label4);
-            this.panelBottom.Controls.Add(this.comboBoxGroup);
-            this.panelBottom.Controls.Add(this.comboBoxNode);
-            this.panelBottom.Controls.Add(this.comboBoxFrame);
-            this.panelBottom.Controls.Add(this.panelTxMsg);
-            this.panelBottom.Controls.Add(this.label3);
-            this.panelBottom.Controls.Add(this.label2);
-            this.panelBottom.Controls.Add(this.label1);
-            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 491);
-            this.panelBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1400, 72);
-            this.panelBottom.TabIndex = 4;
+            panelBottom.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+            panelBottom.Controls.Add(labelMsgNo);
+            panelBottom.Controls.Add(btnSend);
+            panelBottom.Controls.Add(label6);
+            panelBottom.Controls.Add(label5);
+            panelBottom.Controls.Add(label4);
+            panelBottom.Controls.Add(comboBoxGroup);
+            panelBottom.Controls.Add(comboBoxNode);
+            panelBottom.Controls.Add(comboBoxFrame);
+            panelBottom.Controls.Add(panelTxMsg);
+            panelBottom.Controls.Add(label3);
+            panelBottom.Controls.Add(label2);
+            panelBottom.Controls.Add(label1);
+            panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelBottom.Location = new System.Drawing.Point(0, 491);
+            panelBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelBottom.Name = "panelBottom";
+            panelBottom.Size = new System.Drawing.Size(1400, 72);
+            panelBottom.TabIndex = 4;
             // 
             // labelMsgNo
             // 
-            this.labelMsgNo.AutoSize = true;
-            this.labelMsgNo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMsgNo.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.labelMsgNo.Location = new System.Drawing.Point(4, 3);
-            this.labelMsgNo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelMsgNo.Name = "labelMsgNo";
-            this.labelMsgNo.Size = new System.Drawing.Size(63, 13);
-            this.labelMsgNo.TabIndex = 19;
-            this.labelMsgNo.Text = "Messages: ";
+            labelMsgNo.AutoSize = true;
+            labelMsgNo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            labelMsgNo.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            labelMsgNo.Location = new System.Drawing.Point(4, 3);
+            labelMsgNo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            labelMsgNo.Name = "labelMsgNo";
+            labelMsgNo.Size = new System.Drawing.Size(63, 13);
+            labelMsgNo.TabIndex = 19;
+            labelMsgNo.Text = "Messages: ";
             // 
             // btnSend
             // 
-            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSend.FlatAppearance.BorderSize = 0;
-            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSend.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(1268, 27);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(93, 35);
-            this.btnSend.TabIndex = 1;
-            this.btnSend.Text = "  Send";
-            this.btnSend.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSend.UseVisualStyleBackColor = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            btnSend.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+            btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
+            btnSend.FlatAppearance.BorderSize = 0;
+            btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSend.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            btnSend.Image = (System.Drawing.Image)resources.GetObject("btnSend.Image");
+            btnSend.Location = new System.Drawing.Point(1268, 27);
+            btnSend.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnSend.Name = "btnSend";
+            btnSend.Size = new System.Drawing.Size(93, 35);
+            btnSend.TabIndex = 1;
+            btnSend.Text = "  Send";
+            btnSend.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            btnSend.UseVisualStyleBackColor = false;
+            btnSend.Click += btnSend_Click;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label6.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label6.Location = new System.Drawing.Point(1186, 10);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Group no";
+            label6.AutoSize = true;
+            label6.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label6.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label6.Location = new System.Drawing.Point(1186, 10);
+            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(57, 13);
+            label6.TabIndex = 18;
+            label6.Text = "Group no";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label5.Location = new System.Drawing.Point(1118, 10);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Node no";
+            label5.AutoSize = true;
+            label5.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label5.Location = new System.Drawing.Point(1118, 10);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(52, 13);
+            label5.TabIndex = 18;
+            label5.Text = "Node no";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(540, 10);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "Message";
+            label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label4.Location = new System.Drawing.Point(540, 10);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(52, 13);
+            label4.TabIndex = 18;
+            label4.Text = "Message";
             // 
             // comboBoxGroup
             // 
-            this.comboBoxGroup.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBoxGroup.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.comboBoxGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGroup.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBoxGroup.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.comboBoxGroup.FormattingEnabled = true;
-            this.comboBoxGroup.ItemHeight = 18;
-            this.comboBoxGroup.Location = new System.Drawing.Point(1189, 29);
-            this.comboBoxGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.comboBoxGroup.Name = "comboBoxGroup";
-            this.comboBoxGroup.Size = new System.Drawing.Size(60, 26);
-            this.comboBoxGroup.TabIndex = 17;
-            this.comboBoxGroup.SelectedIndexChanged += new System.EventHandler(this.comboBoxGroup_SelectedIndexChanged);
+            comboBoxGroup.BackColor = System.Drawing.SystemColors.Window;
+            comboBoxGroup.Cursor = System.Windows.Forms.Cursors.Hand;
+            comboBoxGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBoxGroup.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            comboBoxGroup.ForeColor = System.Drawing.SystemColors.WindowText;
+            comboBoxGroup.FormattingEnabled = true;
+            comboBoxGroup.ItemHeight = 18;
+            comboBoxGroup.Location = new System.Drawing.Point(1189, 29);
+            comboBoxGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            comboBoxGroup.Name = "comboBoxGroup";
+            comboBoxGroup.Size = new System.Drawing.Size(60, 26);
+            comboBoxGroup.TabIndex = 17;
+            comboBoxGroup.SelectedIndexChanged += comboBoxGroup_SelectedIndexChanged;
             // 
             // comboBoxNode
             // 
-            this.comboBoxNode.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBoxNode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.comboBoxNode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxNode.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBoxNode.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.comboBoxNode.FormattingEnabled = true;
-            this.comboBoxNode.ItemHeight = 18;
-            this.comboBoxNode.Location = new System.Drawing.Point(1121, 29);
-            this.comboBoxNode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.comboBoxNode.Name = "comboBoxNode";
-            this.comboBoxNode.Size = new System.Drawing.Size(60, 26);
-            this.comboBoxNode.TabIndex = 17;
-            this.comboBoxNode.SelectedIndexChanged += new System.EventHandler(this.comboBoxNode_SelectedIndexChanged);
+            comboBoxNode.BackColor = System.Drawing.SystemColors.Window;
+            comboBoxNode.Cursor = System.Windows.Forms.Cursors.Hand;
+            comboBoxNode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBoxNode.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            comboBoxNode.ForeColor = System.Drawing.SystemColors.WindowText;
+            comboBoxNode.FormattingEnabled = true;
+            comboBoxNode.ItemHeight = 18;
+            comboBoxNode.Location = new System.Drawing.Point(1121, 29);
+            comboBoxNode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            comboBoxNode.Name = "comboBoxNode";
+            comboBoxNode.Size = new System.Drawing.Size(60, 26);
+            comboBoxNode.TabIndex = 17;
+            comboBoxNode.SelectedIndexChanged += comboBoxNode_SelectedIndexChanged;
             // 
             // comboBoxFrame
             // 
-            this.comboBoxFrame.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBoxFrame.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.comboBoxFrame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFrame.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBoxFrame.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.comboBoxFrame.FormattingEnabled = true;
-            this.comboBoxFrame.ItemHeight = 18;
-            this.comboBoxFrame.Items.AddRange(new object[] {
-            "0x010 – exit all from programming mode",
-            "0x020 - exit node from programming mode",
-            "0x030 - programming mode - command frame",
-            "0x040 - programming mode - data frame",
-            "0x100 – enter into programming mode request to node",
-            "0x101 - reboot request to group",
-            "0x102 - reboot request to node",
-            "0x103 - hardware type request to group",
-            "0x104 - hardware type request to node",
-            "0x105 - firmware type request to group",
-            "0x106 - firmware type request to node",
-            "0x107 - set default node and group numbers request to node",
-            "0x108 - status request to group",
-            "0x109 - status request to node",
-            "0x10A - control message to node",
-            "0x10B – supply voltage request to group",
-            "0x10C - supply voltage request to node",
-            "0x10D - description request to group",
-            "0x10E - description request to node",
-            "0x10F - processor id request to group",
-            "0x111 - procesor id request to node",
-            "0x112 - uptime request to group",
-            "0x113 - uptime request to node",
-            "0x114 - health check request to group",
-            "0x115 - health check request to node",
-            "0x116 - channel name request to group",
-            "0x117 - channel name request to node"});
-            this.comboBoxFrame.Location = new System.Drawing.Point(543, 29);
-            this.comboBoxFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.comboBoxFrame.Name = "comboBoxFrame";
-            this.comboBoxFrame.Size = new System.Drawing.Size(571, 26);
-            this.comboBoxFrame.TabIndex = 17;
-            this.comboBoxFrame.SelectedIndexChanged += new System.EventHandler(this.comboBoxFrame_SelectedIndexChanged);
+            comboBoxFrame.BackColor = System.Drawing.SystemColors.Window;
+            comboBoxFrame.Cursor = System.Windows.Forms.Cursors.Hand;
+            comboBoxFrame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBoxFrame.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            comboBoxFrame.ForeColor = System.Drawing.SystemColors.WindowText;
+            comboBoxFrame.FormattingEnabled = true;
+            comboBoxFrame.ItemHeight = 18;
+            comboBoxFrame.Items.AddRange(new object[] { "0x010 – exit all from programming mode", "0x020 - exit node from programming mode", "0x030 - programming mode - command frame", "0x040 - programming mode - data frame", "0x100 – enter into programming mode request to node", "0x101 - reboot request to group", "0x102 - reboot request to node", "0x103 - hardware type request to group", "0x104 - hardware type request to node", "0x105 - firmware type request to group", "0x106 - firmware type request to node", "0x107 - set default node and group numbers request to node", "0x108 - status request to group", "0x109 - status request to node", "0x10A - control message to node", "0x10B – supply voltage request to group", "0x10C - supply voltage request to node", "0x10D - description request to group", "0x10E - description request to node", "0x10F - processor id request to group", "0x111 - procesor id request to node", "0x112 - uptime request to group", "0x113 - uptime request to node", "0x114 - health check request to group", "0x115 - health check request to node", "0x116 - channel name request to group", "0x117 - channel name request to node" });
+            comboBoxFrame.Location = new System.Drawing.Point(543, 29);
+            comboBoxFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            comboBoxFrame.Name = "comboBoxFrame";
+            comboBoxFrame.Size = new System.Drawing.Size(571, 26);
+            comboBoxFrame.TabIndex = 17;
+            comboBoxFrame.SelectedIndexChanged += comboBoxFrame_SelectedIndexChanged;
             // 
             // panelTxMsg
             // 
-            this.panelTxMsg.BackColor = System.Drawing.SystemColors.Window;
-            this.panelTxMsg.Controls.Add(this.textBoxTxMsg);
-            this.panelTxMsg.Location = new System.Drawing.Point(69, 24);
-            this.panelTxMsg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelTxMsg.Name = "panelTxMsg";
-            this.panelTxMsg.Padding = new System.Windows.Forms.Padding(5);
-            this.panelTxMsg.Size = new System.Drawing.Size(365, 36);
-            this.panelTxMsg.TabIndex = 5;
+            panelTxMsg.BackColor = System.Drawing.SystemColors.Window;
+            panelTxMsg.Controls.Add(textBoxTxMsg);
+            panelTxMsg.Location = new System.Drawing.Point(69, 24);
+            panelTxMsg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTxMsg.Name = "panelTxMsg";
+            panelTxMsg.Padding = new System.Windows.Forms.Padding(5);
+            panelTxMsg.Size = new System.Drawing.Size(365, 36);
+            panelTxMsg.TabIndex = 5;
             // 
             // textBoxTxMsg
             // 
-            this.textBoxTxMsg.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxTxMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxTxMsg.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxTxMsg.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxTxMsg.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxTxMsg.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBoxTxMsg.Location = new System.Drawing.Point(5, 5);
-            this.textBoxTxMsg.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxTxMsg.MaxLength = 35;
-            this.textBoxTxMsg.Name = "textBoxTxMsg";
-            this.textBoxTxMsg.Size = new System.Drawing.Size(355, 23);
-            this.textBoxTxMsg.TabIndex = 4;
-            this.textBoxTxMsg.Text = "10 30 F0 F0 FF FF 00 01 FF FF FF FF";
-            this.textBoxTxMsg.TextChanged += new System.EventHandler(this.textBoxTxMsg_TextChanged);
-            this.textBoxTxMsg.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxTxMsg_KeyPress);
+            textBoxTxMsg.BackColor = System.Drawing.SystemColors.Window;
+            textBoxTxMsg.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            textBoxTxMsg.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            textBoxTxMsg.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBoxTxMsg.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            textBoxTxMsg.ForeColor = System.Drawing.SystemColors.WindowText;
+            textBoxTxMsg.Location = new System.Drawing.Point(5, 5);
+            textBoxTxMsg.Margin = new System.Windows.Forms.Padding(2);
+            textBoxTxMsg.MaxLength = 35;
+            textBoxTxMsg.Name = "textBoxTxMsg";
+            textBoxTxMsg.Size = new System.Drawing.Size(355, 23);
+            textBoxTxMsg.TabIndex = 4;
+            textBoxTxMsg.Text = "10 30 F0 F0 FF FF 00 01 FF FF FF FF";
+            textBoxTxMsg.TextChanged += textBoxTxMsg_TextChanged;
+            textBoxTxMsg.KeyPress += textBoxTxMsg_KeyPress;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(486, 29);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(30, 22);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "A5";
+            label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label3.Location = new System.Drawing.Point(486, 29);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(30, 22);
+            label3.TabIndex = 4;
+            label3.Text = "A5";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(450, 29);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 22);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "FF";
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label2.Location = new System.Drawing.Point(450, 29);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(30, 22);
+            label2.TabIndex = 4;
+            label2.Text = "FF";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(27, 29);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 22);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "AA";
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            label1.Location = new System.Drawing.Point(27, 29);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(30, 22);
+            label1.TabIndex = 3;
+            label1.Text = "AA";
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AllowUserToOrderColumns = true;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
+            dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(28, 28, 28);
+            dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(45, 45, 48);
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.GrayText;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -443,50 +416,50 @@ namespace Hapcan.Programmer.Forms
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.EnableHeadersVisualStyles = false;
-            this.dataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.dataGridView1.Location = new System.Drawing.Point(0, 35);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowHeadersWidth = 50;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1400, 456);
-            this.dataGridView1.TabIndex = 5;
-            this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
-            this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.GridColor = System.Drawing.Color.FromArgb(28, 28, 28);
+            dataGridView1.Location = new System.Drawing.Point(0, 35);
+            dataGridView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidth = 50;
+            dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.Size = new System.Drawing.Size(1400, 456);
+            dataGridView1.TabIndex = 5;
+            dataGridView1.VirtualMode = true;
+            dataGridView1.RowsAdded += dataGridView1_RowsAdded;
+            dataGridView1.RowsRemoved += dataGridView1_RowsRemoved;
             // 
             // FormMonitor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1400, 563);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.panelBottom);
-            this.Controls.Add(this.panelTop);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "FormMonitor";
-            this.Text = "Form Monitor";
-            this.Load += new System.EventHandler(this.FormMonitor_Load);
-            this.panelTop.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.panelBottom.ResumeLayout(false);
-            this.panelBottom.PerformLayout();
-            this.panelTxMsg.ResumeLayout(false);
-            this.panelTxMsg.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1400, 563);
+            Controls.Add(dataGridView1);
+            Controls.Add(panelBottom);
+            Controls.Add(panelTop);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "FormMonitor";
+            Text = "Form Monitor";
+            Load += FormMonitor_Load;
+            panelTop.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panelBottom.ResumeLayout(false);
+            panelBottom.PerformLayout();
+            panelTxMsg.ResumeLayout(false);
+            panelTxMsg.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

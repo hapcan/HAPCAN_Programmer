@@ -348,9 +348,9 @@ public class Programming
     }
     
     /// <summary>
-    /// Changes node desription
+    /// Changes node name
     /// </summary>
-    /// <param name="description">New node description.</param>
+    /// <param name="name">New node name.</param>
     /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
     public async Task ChangeNodeName(string name)
     {

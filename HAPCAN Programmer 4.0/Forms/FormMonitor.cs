@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hapcan.Programmer.Forms;
@@ -29,18 +30,13 @@ public partial class FormMonitor : Form
     ///////////////
     private void FormMonitor_Load(object sender, EventArgs e)
     {
-        //load form content in 10ms
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 10;
-        timer.Tick += OnLoadTimer;
-        timer.Start();
+        //load form content in 100ms
+        Invoke(LoadDelayed);
     }
 
-    private void OnLoadTimer(object sender, EventArgs e)
+    private async void LoadDelayed()
     {
-        //dispose timer
-        var timer = (System.Windows.Forms.Timer)sender;
-        timer.Dispose();
+        await Task.Delay(100).ConfigureAwait(true);
 
         //show project nodes
         try
@@ -97,12 +93,12 @@ public partial class FormMonitor : Form
     {
         //search empty
         if (textBoxSearch.Text == "")
-        { 
+        {
             if (checkBoxPause.Checked)
                 SearchInGrid(" ");
             else
                 SearchInGrid("");
-        //search string entered
+            //search string entered
         }
         else
             SearchInGrid(textBoxSearch.Text);
@@ -121,7 +117,7 @@ public partial class FormMonitor : Form
 
     private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
     {
-        RowsNumberChanged(); 
+        RowsNumberChanged();
     }
 
     private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -226,8 +222,8 @@ public partial class FormMonitor : Form
         {
             case 0: textBoxTxMsg.Text = new Msg010_ExitAllFromProgramming().GetFrame().GetDataString(); DisableAll(); break;
             case 1: textBoxTxMsg.Text = new Msg020_ExitNodeFromProgramming(nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
-            case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx,0,1).GetFrame().GetDataString(); EnableAll(); break;
-            case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx,new byte[8]).GetFrame().GetDataString(); EnableAll(); break;
+            case 2: textBoxTxMsg.Text = new Msg030_ProgrammingAddress(nodeRx, groupRx, 0, 1).GetFrame().GetDataString(); EnableAll(); break;
+            case 3: textBoxTxMsg.Text = new Msg040_ProgrammingData(nodeRx, groupRx, new byte[8]).GetFrame().GetDataString(); EnableAll(); break;
             case 4: textBoxTxMsg.Text = new Msg100_EnterProgramming(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;
             case 5: textBoxTxMsg.Text = new Msg101_RebootGroup(nodeTx, groupTx, groupRx).GetFrame().GetDataString(); DisableNode(); break;
             case 6: textBoxTxMsg.Text = new Msg102_RebootNode(nodeTx, groupTx, nodeRx, groupRx).GetFrame().GetDataString(); EnableAll(); break;

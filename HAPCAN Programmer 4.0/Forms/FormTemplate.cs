@@ -7,9 +7,11 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormTemplate : FormBase
 {
+    Form _frm;
 
     public FormTemplate(Form frm)
     {
+        _frm = frm;
         InitializeComponent();
         if (frm != null)
         {
@@ -29,7 +31,9 @@ public partial class FormTemplate : FormBase
     //form close
     private void btnExit_Click(object sender, EventArgs e)
     {
-        Close();
+        _frm.Close();
+        if (_frm.IsDisposed)
+            Close();
     }
 
     //form move

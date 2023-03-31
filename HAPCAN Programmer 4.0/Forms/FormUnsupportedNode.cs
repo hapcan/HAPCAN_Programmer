@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hapcan.General;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,17 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormUnsupportedNode : Form
 {
-    public FormUnsupportedNode()
+    HapcanNode _node;
+    public FormUnsupportedNode(HapcanNode node)
     {
+        _node = node;
         InitializeComponent();
+    }
+
+    private void FormUnsupportedNode_Load(object sender, EventArgs e)
+    {
+        if (_node.FirmwareError != 0)
+            richTextBox1.Text = "Node firmware error. Please upload correct firmware into the node.";
     }
 
     private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)

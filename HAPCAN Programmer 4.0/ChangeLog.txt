@@ -1,3 +1,9 @@
+HAPCAN Programmer Build230331
+1. Control & configure form
+2. Edit channel names in Control & configure section
+3. Node notes in Control & configure section
+
+
 HAPCAN Programmer Build230205
 1. Updated About page with supported firmwares
 

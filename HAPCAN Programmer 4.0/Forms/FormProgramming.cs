@@ -68,17 +68,12 @@ public partial class FormProgramming : FormProgress
     //METHODS
     private void FormProgramming_Load(object sender, EventArgs e)
     {
-        //load in 10ms
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 10;
-        timer.Tick += OnLoadTimer;
-        timer.Start();
+        //load form content in 100ms
+        Invoke(LoadDelayed);
     }
-    private async void OnLoadTimer(object sender, EventArgs e)
+    private async void LoadDelayed()
     {
-        //dispose timer
-        var timer = (System.Windows.Forms.Timer)sender;
-        timer.Dispose();
+        await Task.Delay(100).ConfigureAwait(true);
 
         _prg.ProgrammingProgress += ProgrammingProgress;        //subscribe to progress event
 

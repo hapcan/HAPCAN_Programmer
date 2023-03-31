@@ -32,6 +32,9 @@ namespace Hapcan.Programmer.Forms
             this.labelInterace = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panelTimeout = new System.Windows.Forms.Panel();
+            this.textBoxTimeout = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.chkBoxAvailCom = new System.Windows.Forms.CheckBox();
             this.comboBoxIntCom = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -58,7 +61,10 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.richTextBox5 = new System.Windows.Forms.RichTextBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.richTextBox6 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
+            this.panelTimeout.SuspendLayout();
             this.panelIntPort.SuspendLayout();
             this.panelIntIp.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -67,6 +73,7 @@ namespace Hapcan.Programmer.Forms
             this.panel5.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel10.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelInterace
@@ -86,7 +93,7 @@ namespace Hapcan.Programmer.Forms
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(31, 365);
+            this.label4.Location = new System.Drawing.Point(31, 403);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(137, 25);
@@ -96,6 +103,8 @@ namespace Hapcan.Programmer.Forms
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.panel1.Controls.Add(this.panelTimeout);
+            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.chkBoxAvailCom);
             this.panel1.Controls.Add(this.comboBoxIntCom);
             this.panel1.Controls.Add(this.label5);
@@ -105,11 +114,50 @@ namespace Hapcan.Programmer.Forms
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.comboBoxIntType);
-            this.panel1.Location = new System.Drawing.Point(33, 77);
+            this.panel1.Location = new System.Drawing.Point(33, 80);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(376, 228);
+            this.panel1.Size = new System.Drawing.Size(376, 300);
             this.panel1.TabIndex = 26;
+            // 
+            // panelTimeout
+            // 
+            this.panelTimeout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.panelTimeout.Controls.Add(this.textBoxTimeout);
+            this.panelTimeout.Location = new System.Drawing.Point(149, 250);
+            this.panelTimeout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelTimeout.Name = "panelTimeout";
+            this.panelTimeout.Padding = new System.Windows.Forms.Padding(5);
+            this.panelTimeout.Size = new System.Drawing.Size(202, 30);
+            this.panelTimeout.TabIndex = 34;
+            // 
+            // textBoxTimeout
+            // 
+            this.textBoxTimeout.AcceptsReturn = true;
+            this.textBoxTimeout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.textBoxTimeout.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxTimeout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxTimeout.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxTimeout.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxTimeout.Location = new System.Drawing.Point(5, 5);
+            this.textBoxTimeout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxTimeout.Name = "textBoxTimeout";
+            this.textBoxTimeout.Size = new System.Drawing.Size(192, 18);
+            this.textBoxTimeout.TabIndex = 20;
+            this.textBoxTimeout.Text = "2000";
+            this.textBoxTimeout.TextChanged += new System.EventHandler(this.textBoxTimeout_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label8.Location = new System.Drawing.Point(16, 255);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 15);
+            this.label8.TabIndex = 33;
+            this.label8.Text = "Timeout";
             // 
             // chkBoxAvailCom
             // 
@@ -117,7 +165,7 @@ namespace Hapcan.Programmer.Forms
             this.chkBoxAvailCom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.chkBoxAvailCom.FlatAppearance.BorderSize = 0;
             this.chkBoxAvailCom.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.chkBoxAvailCom.Location = new System.Drawing.Point(251, 177);
+            this.chkBoxAvailCom.Location = new System.Drawing.Point(251, 192);
             this.chkBoxAvailCom.Name = "chkBoxAvailCom";
             this.chkBoxAvailCom.Size = new System.Drawing.Size(100, 19);
             this.chkBoxAvailCom.TabIndex = 32;
@@ -134,7 +182,7 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxIntCom.ForeColor = System.Drawing.SystemColors.WindowText;
             this.comboBoxIntCom.FormattingEnabled = true;
             this.comboBoxIntCom.ItemHeight = 18;
-            this.comboBoxIntCom.Location = new System.Drawing.Point(149, 173);
+            this.comboBoxIntCom.Location = new System.Drawing.Point(149, 190);
             this.comboBoxIntCom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxIntCom.Name = "comboBoxIntCom";
             this.comboBoxIntCom.Size = new System.Drawing.Size(92, 26);
@@ -146,7 +194,7 @@ namespace Hapcan.Programmer.Forms
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label5.Location = new System.Drawing.Point(16, 179);
+            this.label5.Location = new System.Drawing.Point(16, 195);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 15);
@@ -157,7 +205,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panelIntPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.panelIntPort.Controls.Add(this.textBoxIntPort);
-            this.panelIntPort.Location = new System.Drawing.Point(149, 121);
+            this.panelIntPort.Location = new System.Drawing.Point(149, 130);
             this.panelIntPort.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelIntPort.Name = "panelIntPort";
             this.panelIntPort.Padding = new System.Windows.Forms.Padding(5);
@@ -183,7 +231,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panelIntIp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.panelIntIp.Controls.Add(this.textBoxIntIp);
-            this.panelIntIp.Location = new System.Drawing.Point(149, 69);
+            this.panelIntIp.Location = new System.Drawing.Point(149, 75);
             this.panelIntIp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelIntIp.Name = "panelIntIp";
             this.panelIntIp.Padding = new System.Windows.Forms.Padding(5);
@@ -210,7 +258,7 @@ namespace Hapcan.Programmer.Forms
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(16, 127);
+            this.label3.Location = new System.Drawing.Point(16, 135);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(74, 15);
@@ -222,7 +270,7 @@ namespace Hapcan.Programmer.Forms
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(16, 75);
+            this.label2.Location = new System.Drawing.Point(16, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 15);
@@ -234,7 +282,7 @@ namespace Hapcan.Programmer.Forms
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(16, 23);
+            this.label1.Location = new System.Drawing.Point(16, 25);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 15);
@@ -253,7 +301,7 @@ namespace Hapcan.Programmer.Forms
             this.comboBoxIntType.Items.AddRange(new object[] {
             "Ethernet",
             "RS232"});
-            this.comboBoxIntType.Location = new System.Drawing.Point(149, 17);
+            this.comboBoxIntType.Location = new System.Drawing.Point(149, 20);
             this.comboBoxIntType.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxIntType.Name = "comboBoxIntType";
             this.comboBoxIntType.Size = new System.Drawing.Size(201, 26);
@@ -267,7 +315,7 @@ namespace Hapcan.Programmer.Forms
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.comboBoxGroupFrom);
-            this.panel2.Location = new System.Drawing.Point(33, 412);
+            this.panel2.Location = new System.Drawing.Point(33, 450);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(376, 115);
@@ -333,11 +381,11 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel3.Controls.Add(this.richTextBox1);
-            this.panel3.Location = new System.Drawing.Point(435, 77);
+            this.panel3.Location = new System.Drawing.Point(435, 80);
             this.panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(12);
-            this.panel3.Size = new System.Drawing.Size(377, 58);
+            this.panel3.Size = new System.Drawing.Size(377, 60);
             this.panel3.TabIndex = 29;
             // 
             // richTextBox1
@@ -349,7 +397,7 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox1.Location = new System.Drawing.Point(12, 12);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(353, 34);
+            this.richTextBox1.Size = new System.Drawing.Size(353, 36);
             this.richTextBox1.TabIndex = 29;
             this.richTextBox1.Text = "Choose the interface type you are using to connect to the HAPCAN network.";
             // 
@@ -357,7 +405,7 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel4.Controls.Add(this.richTextBox2);
-            this.panel4.Location = new System.Drawing.Point(435, 412);
+            this.panel4.Location = new System.Drawing.Point(435, 450);
             this.panel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(12);
@@ -382,11 +430,11 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel5.Controls.Add(this.richTextBox3);
-            this.panel5.Location = new System.Drawing.Point(435, 135);
+            this.panel5.Location = new System.Drawing.Point(435, 140);
             this.panel5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel5.Name = "panel5";
             this.panel5.Padding = new System.Windows.Forms.Padding(12);
-            this.panel5.Size = new System.Drawing.Size(377, 58);
+            this.panel5.Size = new System.Drawing.Size(377, 60);
             this.panel5.TabIndex = 29;
             // 
             // richTextBox3
@@ -398,7 +446,7 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox3.Location = new System.Drawing.Point(12, 12);
             this.richTextBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(353, 34);
+            this.richTextBox3.Size = new System.Drawing.Size(353, 36);
             this.richTextBox3.TabIndex = 29;
             this.richTextBox3.Text = "For the Ethernet interface enter its IP address. The default one is 192.168.0.100" +
     ".";
@@ -407,11 +455,11 @@ namespace Hapcan.Programmer.Forms
             // 
             this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel8.Controls.Add(this.richTextBox4);
-            this.panel8.Location = new System.Drawing.Point(435, 193);
+            this.panel8.Location = new System.Drawing.Point(435, 200);
             this.panel8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel8.Name = "panel8";
             this.panel8.Padding = new System.Windows.Forms.Padding(12);
-            this.panel8.Size = new System.Drawing.Size(377, 58);
+            this.panel8.Size = new System.Drawing.Size(377, 60);
             this.panel8.TabIndex = 29;
             // 
             // richTextBox4
@@ -423,20 +471,20 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox4.Location = new System.Drawing.Point(12, 12);
             this.richTextBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox4.Name = "richTextBox4";
-            this.richTextBox4.Size = new System.Drawing.Size(353, 34);
+            this.richTextBox4.Size = new System.Drawing.Size(353, 36);
             this.richTextBox4.TabIndex = 29;
             this.richTextBox4.Text = "For the Ethernet interface enter its connection port number. The default one is 1" +
-    "001.";
+    "001. Allowed ports from 1 to 65536.";
             // 
             // panel10
             // 
             this.panel10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.panel10.Controls.Add(this.richTextBox5);
-            this.panel10.Location = new System.Drawing.Point(435, 250);
+            this.panel10.Location = new System.Drawing.Point(435, 260);
             this.panel10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel10.Name = "panel10";
             this.panel10.Padding = new System.Windows.Forms.Padding(12);
-            this.panel10.Size = new System.Drawing.Size(377, 58);
+            this.panel10.Size = new System.Drawing.Size(377, 60);
             this.panel10.TabIndex = 31;
             // 
             // richTextBox5
@@ -448,9 +496,34 @@ namespace Hapcan.Programmer.Forms
             this.richTextBox5.Location = new System.Drawing.Point(12, 12);
             this.richTextBox5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox5.Name = "richTextBox5";
-            this.richTextBox5.Size = new System.Drawing.Size(353, 34);
+            this.richTextBox5.Size = new System.Drawing.Size(353, 36);
             this.richTextBox5.TabIndex = 29;
             this.richTextBox5.Text = "For the RS232 interface enter the com port.";
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.panel6.Controls.Add(this.richTextBox6);
+            this.panel6.Location = new System.Drawing.Point(435, 320);
+            this.panel6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panel6.Name = "panel6";
+            this.panel6.Padding = new System.Windows.Forms.Padding(12);
+            this.panel6.Size = new System.Drawing.Size(377, 60);
+            this.panel6.TabIndex = 32;
+            // 
+            // richTextBox6
+            // 
+            this.richTextBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.richTextBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox6.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.richTextBox6.Location = new System.Drawing.Point(12, 12);
+            this.richTextBox6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.richTextBox6.Name = "richTextBox6";
+            this.richTextBox6.Size = new System.Drawing.Size(353, 36);
+            this.richTextBox6.TabIndex = 29;
+            this.richTextBox6.Text = "Maximum waiting time for a response from a node in ms. Allowed timeout from 500ms" +
+    " to 5000ms.";
             // 
             // FormSettings
             // 
@@ -458,7 +531,8 @@ namespace Hapcan.Programmer.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(1167, 577);
+            this.ClientSize = new System.Drawing.Size(1167, 631);
+            this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel10);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel8);
@@ -475,6 +549,8 @@ namespace Hapcan.Programmer.Forms
             this.Load += new System.EventHandler(this.FormSettings_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panelTimeout.ResumeLayout(false);
+            this.panelTimeout.PerformLayout();
             this.panelIntPort.ResumeLayout(false);
             this.panelIntPort.PerformLayout();
             this.panelIntIp.ResumeLayout(false);
@@ -486,6 +562,7 @@ namespace Hapcan.Programmer.Forms
             this.panel5.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -521,5 +598,10 @@ namespace Hapcan.Programmer.Forms
         private System.Windows.Forms.RichTextBox richTextBox5;
         private System.Windows.Forms.ComboBox comboBoxIntCom;
         private System.Windows.Forms.CheckBox chkBoxAvailCom;
+        private System.Windows.Forms.Panel panelTimeout;
+        private System.Windows.Forms.TextBox textBoxTimeout;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.RichTextBox richTextBox6;
     }
 }

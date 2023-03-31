@@ -58,7 +58,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value>This node is not supported.
+    <value>This node firmware is not supported by HAPCAN Programmer.
 
 Make sure you use the latest HAPCAN Programmer (http://hapcan.com/software/hap) and the node has the latest firmware installed.
 

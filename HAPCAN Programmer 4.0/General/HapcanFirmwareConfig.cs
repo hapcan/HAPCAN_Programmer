@@ -20,6 +20,7 @@ public class HapcanFirmwareConfig
     public static List<HapcanFirmwareConfig> FirmwareConfigList { get; set; } = new List<HapcanFirmwareConfig>();
     public FileClass File { get; set; }
     public FirmwareClass Firmware { get; set; }
+    public NodeClass Node { get; set; }
     public ChannelsClass Channels { get; set; }
 
 
@@ -27,7 +28,7 @@ public class HapcanFirmwareConfig
     /// Reads all firmware config files from given directory path and its subdirectories
     /// </summary>
     /// <param name="path">Folder where firmware config are read</param>
-    /// <returns>Array of string containg file paths</returns>
+    /// <returns>Array of string containing file paths</returns>
     /// <exception cref="Exception"></exception>
     public static string[] GetFiles(string path)
     {
@@ -57,16 +58,20 @@ public class HapcanFirmwareConfig
             config = await rwf.DeserializeAsync(path);
             //File
             if (config.File == null)
-                throw new ArgumentNullException(nameof(File), "File section is missing");
+                throw new ArgumentException("'File' section is missing");
             config.File.Validate();
             //Firmware
             if (config.Firmware == null)
-                throw new ArgumentNullException(nameof(Firmware), "File section is missing");
+                throw new ArgumentException("'Firmware' section is missing");
             config.Firmware.Validate();
+            //Node
+            if (config.Node == null)
+                throw new ArgumentException("'Node' section is missing");
+            config.Node.Validate(config.Firmware);
             //Channels
-            config.Channels.Validate(config.Firmware);
             if (config.Channels == null)
-                throw new ArgumentNullException(nameof(Channels), "File section is missing");
+                throw new ArgumentException("'Channels' section is missing");
+            config.Channels.Validate(config.Firmware);
             //add
             AddConfigToList(config);
         }
@@ -83,7 +88,7 @@ public class HapcanFirmwareConfig
     /// Checks if firmware config file exists for given node
     /// </summary>
     /// <param name="node">Hapcan node with hardware and firmware defined</param>
-    /// <returns></returns>
+    /// <returns>Firmware config object</returns>
     public static HapcanFirmwareConfig GetMatched(HapcanNode node)
     {
         var firm = string.Format("{0:X4}.{1}.{2}.{3}.{4}",
@@ -103,9 +108,14 @@ public class HapcanFirmwareConfig
         //find if firmware config exists
         var cfg = GetMatched(node);
         if (cfg != null)
-            node.Description = cfg.Firmware.Description;
+        {
+            node.FirmwareDescription = cfg.Firmware.Description;
+            node.NotesAdr = cfg.Node.NotesAdr;
+        }
         else
-            node.Description = "Node not supported by Programmer";
+        {
+            node.FirmwareDescription = "Unknown firmware, not supported by Programmer";
+        }
     }
 
 
@@ -119,6 +129,8 @@ public class HapcanFirmwareConfig
         f.File = new FileClass() { Revision = 456 };
         //firmware
         f.Firmware = new FirmwareClass() { Name = "UNIV 4.x.x.x", Version = "3000.4.x.x.x", Description = "Firmware description" };
+        //node
+        f.Node = new NodeClass() { NotesAdrStr = "0x010000" };
         //channels
         var channelList = new List<ChannelClass>();
         channelList.Add(new ChannelClass() { Id = 1, NameAdrStr = "0x010800", Type = HapcanChannel.ChannelType.Relay });

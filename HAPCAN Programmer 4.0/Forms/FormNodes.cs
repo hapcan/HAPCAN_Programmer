@@ -4,6 +4,7 @@ using Hapcan.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,20 +20,19 @@ public partial class FormNodes : Form
         _project = project;
         InitializeComponent();
     }
+
+    ///////////////
+    // FORM LOADING
+    ///////////////
     private void FormNodes_Load(object sender, EventArgs e)
     {
-        //load in 10ms
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 10;
-        timer.Tick += OnLoadTimer;
-        timer.Start();
+        //load form content in 100ms
+        Invoke(LoadDelayed);
     }
 
-    private void OnLoadTimer(object sender, EventArgs e)
+    private async void LoadDelayed()
     {
-        //dispose timer
-        var timer = (System.Windows.Forms.Timer)sender;
-        timer.Dispose();
+        await Task.Delay(100).ConfigureAwait(true);
 
         //show project nodes
         try
@@ -55,7 +55,7 @@ public partial class FormNodes : Form
         dataGridView1.DataSource = new SortableBindingList<HapcanNode>(list.
            OrderBy(o => !o.Interface).ThenBy(o => o.GroupNumber).ThenBy(o => o.NodeNumber).
            Where(o => o.Name.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
-                      o.Description.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
+                      o.FirmwareDescription.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullNodeGroupNumber.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullHardwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
                       o.FullFirmwareVersion.ToLowerInvariant().Contains(search.ToLowerInvariant()) == true ||
@@ -78,16 +78,17 @@ public partial class FormNodes : Form
         dataGridView1.Columns["SerialNumber"].HeaderText = "Serial number";
         dataGridView1.Columns["FullHardwareVersion"].HeaderText = "Hardware version";
         dataGridView1.Columns["FullFirmwareVersion"].HeaderText = "Firmware version";
+        dataGridView1.Columns["FirmwareDescription"].HeaderText = "Firmware description";
         dataGridView1.Columns["FullBootloaderVersion"].HeaderText = "Bootloader version";
         dataGridView1.Columns["ModuleVoltage"].HeaderText = "Module voltage";
         dataGridView1.Columns["ModuleVoltage"].DefaultCellStyle.Format = "0.00 V";
         //order
-        dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 1;
-        dataGridView1.Columns["Name"].DisplayIndex = 2;
+        dataGridView1.Columns["Name"].DisplayIndex = 1;
+        dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 2;
         dataGridView1.Columns["SerialNumber"].DisplayIndex = 3;
         dataGridView1.Columns["FullHardwareVersion"].DisplayIndex = 4;
         dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 5;
-        dataGridView1.Columns["Description"].DisplayIndex = 6;
+        dataGridView1.Columns["FirmwareDescription"].DisplayIndex = 6;
         dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 7;
         dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 8;
         dataGridView1.Columns["Uptime"].DisplayIndex = 9;
@@ -226,6 +227,7 @@ public partial class FormNodes : Form
         await Task.Delay(3000);
         btnNodeRefresh_Click(null, null);
     }
+
     //REFRESH button
     private async void btnNodeRefresh_Click(object sender, EventArgs e)
     {
@@ -252,6 +254,7 @@ public partial class FormNodes : Form
             }
         }
     }
+
     //NODE SETTINGS button
     private void btnNodeGeneralSettings_Click(object sender, EventArgs e)
     {
@@ -262,20 +265,39 @@ public partial class FormNodes : Form
         }
         //get selected node
         var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
-        using var frm = new FormTemplate(new FormNodeSettings(_project, node));
+        using var frm = new FormTemplate(new FormNodeGeneralSettings(_project, node));
         frm.ShowDialog();
+        frm.Dispose();
     }
+
     //NODE CONTROL button
     private void btnNodeControl_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("Not ready yet.");
-        return;
-
         if (dataGridView1.SelectedRows.Count > 1)
         {
             MessageBox.Show("Please select only one node.", Application.ProductName);
             return;
         }
+        //get selected node
+        var node = (HapcanNode)dataGridView1.SelectedRows[0].DataBoundItem;
+        string msg = "";
+        if (node.FirmwareError != 0)
+        {
+            msg = "Node firmware error. Please upload correct firmware into the node.";
+            MessageBox.Show(msg, Application.ProductName);
+        }
+        else if (node.Supported != true)
+        {
+            msg = "This node firmware is not supported by HAPCAN Programmer.\r\n\r\n" +
+                "Make sure you use the latest HAPCAN Programmer and the node has the latest firmware installed.\r\n\r\n" +
+                "The list of all supported devices is in the About section.";
+            MessageBox.Show(msg, Application.ProductName);
+        }
+        else
+        {
+            using var frm = new FormTemplate(new FormNodeConfiguration(node));
+            frm.ShowDialog();
+            frm.Dispose();
+        }
     }
-
 }

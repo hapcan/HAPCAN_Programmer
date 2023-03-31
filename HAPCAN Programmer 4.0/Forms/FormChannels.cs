@@ -12,12 +12,10 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormChannels : Form
 {
-    private readonly Project _project;
     private readonly HapcanNode _node;
 
-    public FormChannels(Project project, HapcanNode node)
+    public FormChannels(HapcanNode node)
     {
-        _project = project;
         _node = node;
         InitializeComponent();
     }
@@ -39,8 +37,6 @@ public partial class FormChannels : Form
         //show project nodes
         try
         {
-            //add status image collumn
-            GridAddColumns();
             UpdateGrid(_node.Channels);
         }
         catch (Exception)
@@ -69,32 +65,8 @@ public partial class FormChannels : Form
     {
         ////name
         //dataGridView1.Columns["Id"].HeaderText = "(Node,Group)";
-        //dataGridView1.Columns["SerialNumber"].HeaderText = "Serial number";
-        //dataGridView1.Columns["FullHardwareVersion"].HeaderText = "Hardware version";
-        //dataGridView1.Columns["FullFirmwareVersion"].HeaderText = "Firmware version";
-        //dataGridView1.Columns["FullBootloaderVersion"].HeaderText = "Bootloader version";
-        //dataGridView1.Columns["ModuleVoltage"].HeaderText = "Module voltage";
-        //dataGridView1.Columns["ModuleVoltage"].DefaultCellStyle.Format = "0.00 V";
         ////order
         //dataGridView1.Columns["FullNodeGroupNumber"].DisplayIndex = 1;
-        //dataGridView1.Columns["Description"].DisplayIndex = 2;
-        //dataGridView1.Columns["SerialNumber"].DisplayIndex = 3;
-        //dataGridView1.Columns["FullHardwareVersion"].DisplayIndex = 4;
-        //dataGridView1.Columns["FullFirmwareVersion"].DisplayIndex = 5;
-        //dataGridView1.Columns["FullBootloaderVersion"].DisplayIndex = 6;
-        //dataGridView1.Columns["ModuleVoltage"].DisplayIndex = 7;
-        //dataGridView1.Columns["Uptime"].DisplayIndex = 8;
-    }
-    private void GridAddColumns()
-    {
-        ////add status image collumn
-        //var CollumnStatus = new DataGridViewImageColumn()
-        //{
-        //    DataPropertyName = "Status",
-        //    HeaderText = "Status",
-        //    Name = "Status"
-        //};
-        //dataGridView1.Columns.Add(CollumnStatus);
     }
 
     private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

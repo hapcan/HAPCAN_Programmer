@@ -2,11 +2,12 @@
 <HapcanFirmwareConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <File Revision="0" />
   <Firmware Name="UNIV 3.8.0.0" Version="3000.3.8.0.0" Description="LED - 3 channel LED controller 5A 10-24V"/>
+  <Node NotesAdr="0x008000"/>
   <Channels>
     <ChannelList>
-      <Channel Id="1" Type="Led" NameAdr="0x008800" Description="LED controller 5A 10-24V channel 1"/>
-	  <Channel Id="2" Type="Led" NameAdr="0x008820" Description="LED controller 5A 10-24V channel 2"/>
-	  <Channel Id="3" Type="Led" NameAdr="0x008840" Description="LED controller 5A 10-24V channel 3"/>
+      <Channel Id="1" Type="Led" NameAdr="0x008400" Description="LED controller 5A 10-24V channel 1 (red)"/>
+	  <Channel Id="2" Type="Led" NameAdr="0x008420" Description="LED controller 5A 10-24V channel 2 (green)"/>
+	  <Channel Id="3" Type="Led" NameAdr="0x008440" Description="LED controller 5A 10-24V channel 3 (blue)"/>
     </ChannelList>
   </Channels>
 </HapcanFirmwareConfig>

@@ -25,11 +25,12 @@ public class HapcanNode : INotifyPropertyChanged
     private int _serialNumber;
     private NodeStatus _status;
     private string _name = "";
+    private string _notes = "";
     private string _fullNodeGroupNumber = "";
     private string _fullHardwareVersion = "";
     private string _fullFirmwareVersion = "";
     private string _fullBootloaderVersion;
-    private string _description = "";
+    private string _firmwareDescription = "";
     private byte[] _eeprom = new byte[0x400];
     private byte[] _flash = new byte [0x8000];
     private BindingList<HapcanChannel> _channels = new BindingList<HapcanChannel>();
@@ -185,23 +186,21 @@ public class HapcanNode : INotifyPropertyChanged
     public byte[] Eeprom
     {
         get { return _eeprom; }
-        set { _eeprom = value; }
+        set
+        {
+            _eeprom = value;
+            SetFullNodeGroupNumber();   //init _fullNodeGroupNumber
+        }
     }
-
     [XmlAttribute("Flash")]
     [Browsable(false)]
     public byte[] Flash
     {
         get { return _flash; }
-        set { _flash = value; }
-    }
-    [XmlIgnore]
-    // [XmlArray("Channels")]
-    // [XmlArrayItem("Channel")]
-    public BindingList<HapcanChannel> Channels
-    {
-        get { return _channels; }
-        set { _channels = value; }
+        set 
+        {
+            _flash = value;
+        }
     }
     #endregion
 
@@ -225,7 +224,7 @@ public class HapcanNode : INotifyPropertyChanged
         {
             //convert given value to bytes
             byte[] bytes = Encoding.UTF8.GetBytes(value);
-            //position description in eeprom
+            //position name in memory
             Array.Fill<byte>(Eeprom, 0, 0x30, 16);
             for (int i = 0; i < bytes.Length && i < 16; i++)
                 Eeprom[0x30 + i] = (byte)bytes[i];
@@ -293,7 +292,6 @@ public class HapcanNode : INotifyPropertyChanged
     {
         get
         {
-            SetFullNodeGroupNumber();   //init _fullNodeGroupNumber
             return _fullNodeGroupNumber;
         }
         set
@@ -358,17 +356,34 @@ public class HapcanNode : INotifyPropertyChanged
     }
 
     [XmlIgnore]
-    public string Description
+    public string FirmwareDescription
     {
         get
         {
-            return _description;
+            return _firmwareDescription;
         }
         set
         {
-            if (_description != value)
+            if (_firmwareDescription != value)
             {
-                _description = value;
+                _firmwareDescription = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    [XmlIgnore]
+    public BindingList<HapcanChannel> Channels
+    {
+        get
+        {
+            return _channels; 
+        }
+        set
+        {
+          //  if (_channels != value)       to allow forcing property changed event
+            {
+                _channels = value;
                 NotifyPropertyChanged();
             }
         }
@@ -377,7 +392,37 @@ public class HapcanNode : INotifyPropertyChanged
 
 
     #region other properties
-
+    [XmlIgnore]
+    [Browsable(false)]
+    public string Notes
+    {
+        get //from flash
+        {
+            _notes = "";
+            //convert bytes to chars
+            char[] chars = Encoding.UTF8.GetChars(Flash, NotesAdr, 1024);
+            for (int i = 0; i < chars.Length; i++)
+                _notes += chars[i];
+            return _notes;
+        }
+        set //to flash
+        {
+            //convert given value to bytes
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            //position notes in memory
+            Array.Fill<byte>(Flash, 0, NotesAdr, 1024);
+            for (int i = 0; i < bytes.Length && i < 1024; i++)
+                Flash[NotesAdr + i] = (byte)bytes[i];
+            //notify
+            if (_notes != value)
+            {
+                _notes = value;
+            }
+        }
+    }
+    [XmlIgnore]
+    [Browsable(false)]
+    public int NotesAdr { get; set; }
     [XmlIgnore]
     [Browsable(false)]
     public bool Supported { get; set; }
@@ -417,6 +462,7 @@ public class HapcanNode : INotifyPropertyChanged
             SetFullNodeGroupNumber();
         }
     }
+
     #endregion
 
 

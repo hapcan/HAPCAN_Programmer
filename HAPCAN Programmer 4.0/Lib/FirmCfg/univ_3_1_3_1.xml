@@ -2,23 +2,24 @@
 <HapcanFirmwareConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <File Revision="0" />
   <Firmware Name="UNIV 3.1.3.1" Version="3000.3.1.3.1" Description="Button - 14 channel back box button"/>
+  <Node NotesAdr="0x008000"/>
   <Channels>
     <ChannelList>
-      <Channel Id="1" Type="Button" NameAdr="0x008800" Description="Touch button 1"/>
-      <Channel Id="2" Type="Button" NameAdr="0x008820" Description="Touch button 2"/>
-      <Channel Id="3" Type="Button" NameAdr="0x008840" Description="Touch button 3"/>
-      <Channel Id="4" Type="Button" NameAdr="0x008860" Description="Touch button 4"/>
-      <Channel Id="5" Type="Button" NameAdr="0x008880" Description="Touch button 5"/>
-      <Channel Id="6" Type="Button" NameAdr="0x0088A0" Description="Touch button 6"/>  	  
-      <Channel Id="7" Type="Button" NameAdr="0x0088C0" Description="Touch button 7"/> 	  
-      <Channel Id="8" Type="Button" NameAdr="0x0088E0" Description="Touch button 8"/>
-      <Channel Id="9" Type="Button" NameAdr="0x008900" Description="Touch button 9"/>
-      <Channel Id="10" Type="Button" NameAdr="0x008920" Description="Touch button 10"/>
-      <Channel Id="11" Type="Button" NameAdr="0x008940" Description="Touch button 11"/>
-      <Channel Id="12" Type="Button" NameAdr="0x008960" Description="Touch button 12"/>
-      <Channel Id="13" Type="Button" NameAdr="0x008980" Description="Touch button 13"/>  	  
-      <Channel Id="14" Type="Button" NameAdr="0x0089A0" Description="Touch button 14"/> 	
-      <Channel Id="15" Type="Thermometer" NameAdr="0x0089C0" Description="Temperature 1"/>	 	  
+      <Channel Id="1" Type="Button" NameAdr="0x008400" Description="Button 1"/>
+      <Channel Id="2" Type="Button" NameAdr="0x008420" Description="Button 2"/>
+      <Channel Id="3" Type="Button" NameAdr="0x008440" Description="Button 3"/>
+      <Channel Id="4" Type="Button" NameAdr="0x008460" Description="Button 4"/>
+      <Channel Id="5" Type="Button" NameAdr="0x008480" Description="Button 5"/>
+      <Channel Id="6" Type="Button" NameAdr="0x0084A0" Description="Button 6"/>  	  
+      <Channel Id="7" Type="Button" NameAdr="0x0084C0" Description="Button 7"/> 	  
+      <Channel Id="8" Type="Button" NameAdr="0x0084E0" Description="Button 8"/>
+      <Channel Id="9" Type="Button" NameAdr="0x008500" Description="Button 9"/>
+      <Channel Id="10" Type="Button" NameAdr="0x008520" Description="Button 10"/>
+      <Channel Id="11" Type="Button" NameAdr="0x008540" Description="Button 11"/>
+      <Channel Id="12" Type="Button" NameAdr="0x008560" Description="Button 12"/>
+      <Channel Id="13" Type="Button" NameAdr="0x008580" Description="Button 13"/>  	  
+      <Channel Id="14" Type="Button" NameAdr="0x0085A0" Description="Button 14"/> 	
+      <Channel Id="15" Type="Thermometer" NameAdr="0x0085C0" Description="Temperature 1"/>	 	  
     </ChannelList>
   </Channels>
 </HapcanFirmwareConfig>

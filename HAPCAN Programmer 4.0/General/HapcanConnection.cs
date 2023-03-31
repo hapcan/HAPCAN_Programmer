@@ -50,15 +50,6 @@ public class HapcanConnection
         InterfaceType = intface;
         IP = ip;
         Port = port;
-        Timeout = 1000;
-        //interface id on CAN bus
-        NodeTx = 240;
-        GroupTx = 240;
-        //network range
-        GroupFrom = 1;
-        GroupTo = 255;
-        //com
-        Com = "COM1";
     }
 
     //PROPERTIES
@@ -70,17 +61,17 @@ public class HapcanConnection
     [XmlAttribute("Port")]
     public int Port { get; set; }
     [XmlAttribute("Timeout")]
-    public int Timeout { get; set; }
+    public int Timeout { get; set; } = 2000;
     [XmlAttribute("Com")]
-    public string Com { get; set; }
+    public string Com { get; set; } = "COM1";
     [XmlAttribute("NodeTx")]
-    public byte NodeTx { get; set; }
+    public byte NodeTx { get; set; } = 240; //interface id on CAN bus
     [XmlAttribute("GroupTx")]
-    public byte GroupTx { get; set; }
+    public byte GroupTx { get; set; } = 240;
     [XmlAttribute("GroupFrom")]
-    public byte GroupFrom { get; set; }
+    public byte GroupFrom { get; set; } = 1;
     [XmlAttribute("GroupTo")]
-    public byte GroupTo { get; set; }
+    public byte GroupTo { get; set; } = 255;
 
 
     //METHODS
@@ -103,7 +94,7 @@ public class HapcanConnection
     }
 
     /// <summary>
-    /// Checks if given string is valid 32bit integer.
+    /// Checks if given string is valid port number.
     /// </summary>
     /// <param name="port"></param>
     /// <returns>True if it is valid, otherwise false.</returns>
@@ -120,6 +111,23 @@ public class HapcanConnection
             return false;
     }
 
+    /// <summary>
+    /// Checks if given string is valid timeout.
+    /// </summary>
+    /// <param name="timeout"></param>
+    /// <returns>True if it is valid, otherwise false.</returns>
+    public static bool IsTimeoutValid(string timeout)
+    {
+        if (Int32.TryParse(timeout, out var timeoutint))
+        {
+            if (timeoutint >= 500 && timeoutint <= 5000)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
     /// <summary>
     /// Connects to HAPCAN interface.
     /// </summary>

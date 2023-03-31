@@ -28,24 +28,19 @@ public partial class FormNetwork : Form
     }
     private void FormNodes_Load(object sender, EventArgs e)
     {
-        //load in 10ms
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 10;
-        timer.Tick += OnLoadTimer;
-        timer.Start();
+        //load form content in 100ms
+        Invoke(LoadDelayed);
     }
 
-    private void OnLoadTimer(object sender, EventArgs e)
+    private async void LoadDelayed()
     {
-        //dispose timer
-        var timer = (System.Windows.Forms.Timer)sender;
-        timer.Dispose();
+        await Task.Delay(100).ConfigureAwait(true);
 
         //show project nodes
         try
         {
             //set treeview theme
-            SetWindowTheme(treeView1.Handle, "DarkMode_Explorer", null);
+            _ = SetWindowTheme(treeView1.Handle, "DarkMode_Explorer", null);
             //subsribe to NodeListChanged event
             _project.NetList[0].NodeList.ListChanged += OnSubnetChanged;
             //create treeview nodes
@@ -78,11 +73,22 @@ public partial class FormNetwork : Form
     private void TreeViewAddNode(HapcanNode node)
     {
         //node
-        var treeNode = new TreeNode(node.Name);                             //create treeNode
+        var treeNode = new TreeNode(node.Name + " " + node.FullNodeGroupNumber); //create treeNode
         treeNode.ImageIndex = imageList1.Images.IndexOfKey("Node");         //icon when not selected
-        treeNode.SelectedImageIndex = imageList1.Images.IndexOfKey("Node"); //icon when seleced
+        treeNode.SelectedImageIndex = imageList1.Images.IndexOfKey("Node"); //icon when selected
         treeNode.Tag = node;                                                //reference to real node
         //channels
+        TreeViewAddChannels(treeNode);
+        //add node to treeview
+        var nodes = treeView1.Nodes[0];                                     
+        nodes.Nodes.Add(treeNode);
+        nodes.Text = string.Format("{0} ({1})", _nodesText, nodes.Nodes.Count);
+        treeView1.ExpandAll();
+    }
+    private void TreeViewAddChannels(TreeNode treeNode)
+    {
+        treeNode.Nodes.Clear();
+        var node = (HapcanNode)treeNode.Tag;
         foreach (var channel in node.Channels)
         {
             var treeChannel = new TreeNode(channel.Id + ". " + channel.Name);
@@ -91,10 +97,6 @@ public partial class FormNetwork : Form
             treeChannel.Tag = channel;
             treeNode.Nodes.Add(treeChannel);
         }
-        var nodes = treeView1.Nodes[0];                         //add node to treeview
-        nodes.Nodes.Add(treeNode);
-        nodes.Text = string.Format("{0} ({1})", _nodesText, nodes.Nodes.Count);
-        treeView1.ExpandAll();
     }
 
     private void TreeViewResetNodes()
@@ -104,6 +106,7 @@ public partial class FormNetwork : Form
         treeView1.Nodes.RemoveAt(0);
         treeView1.Nodes.Insert(0, treeNodes);
     }
+    //Update nodes in treeview
     private void OnSubnetChanged(object sender, ListChangedEventArgs e)
     {
         //delete all nodes
@@ -120,10 +123,27 @@ public partial class FormNetwork : Form
         //node name changed
         else if (e.ListChangedType == ListChangedType.ItemChanged && e.PropertyDescriptor.Name == "Name")
         {
-            treeView1.Nodes[0].Nodes[e.NewIndex].Text = _project.NetList[0].NodeList[e.NewIndex].Name;
+            treeView1.Nodes[0].Nodes[e.NewIndex].Text =
+                _project.NetList[0].NodeList[e.NewIndex].Name
+                + " "
+                + _project.NetList[0].NodeList[e.NewIndex].FullNodeGroupNumber;
+        }
+        //node name id
+        else if (e.ListChangedType == ListChangedType.ItemChanged && e.PropertyDescriptor.Name == "FullNodeGroupNumber")
+        {
+            treeView1.Nodes[0].Nodes[e.NewIndex].Text =
+                _project.NetList[0].NodeList[e.NewIndex].Name
+                + " "
+                + _project.NetList[0].NodeList[e.NewIndex].FullNodeGroupNumber;
+        }
+        else if (e.ListChangedType == ListChangedType.ItemChanged && e.PropertyDescriptor.Name == "Channels")
+        {
+            //add new channels
+            TreeViewAddChannels(treeView1.Nodes[0].Nodes[e.NewIndex]);
         }
     }
 
+    //Select node or channel in treeview
     private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
     {
         if (e.Node == null)
@@ -141,16 +161,16 @@ public partial class FormNetwork : Form
         {
             var node = (HapcanNode)e.Node.Tag;                      //get HapcanNode
             if (node.Supported)
-                LoadContainer(new FormChannels(_project, (HapcanNode)e.Node.Tag));
+                LoadContainer(new FormChannels((HapcanNode)e.Node.Tag));
             else
-                LoadContainer(new FormUnsupportedNode());
+                LoadContainer(new FormUnsupportedNode((HapcanNode)e.Node.Tag));
         }
         //Select Channel -  - Load FormChannels
         else if (e.Node.Parent.Parent.Parent == null &&             //its parent's parent has no parent (2nd level)
                  e.Node.Parent.Parent.Index == 0 &&                 //its parent's parent is first node of the tree
-                 e.Node.Tag.GetType() == typeof(HapcanChannel))     //it is HapcanNode type
+                 e.Node.Tag.GetType() == typeof(HapcanChannel))     //it is HapcanChannel type
         {
-            LoadContainer(new FormChannels(_project, (HapcanNode)e.Node.Parent.Tag));
+            LoadContainer(new FormChannels((HapcanNode)e.Node.Parent.Tag));
         }
     }
 

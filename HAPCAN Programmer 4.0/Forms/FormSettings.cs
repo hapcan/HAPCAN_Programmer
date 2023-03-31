@@ -30,6 +30,8 @@ public partial class FormSettings : Form
         //com
         comboBoxIntCom.Items.AddRange(SetPortNames());
         comboBoxIntCom.SelectedIndex = comboBoxIntCom.Items.IndexOf(_project.NetList[0].Connection.Com);
+        //timeout
+        textBoxTimeout.Text = _project.NetList[0].Connection.Timeout.ToString();
         //network range
         for (int i = 1; i < 256; i++)
         {
@@ -134,4 +136,19 @@ public partial class FormSettings : Form
     {
         _project.NetList[0].Connection.Com = comboBoxIntCom.SelectedItem.ToString();
     }
+
+    private void textBoxTimeout_TextChanged(object sender, EventArgs e)
+    {
+        if (HapcanConnection.IsTimeoutValid(textBoxTimeout.Text) == false)
+            panelTimeout.BackColor = Color.Red;
+        else
+        {
+            panelTimeout.BackColor = Color.FromArgb(225, 225, 225);
+            //save
+            if (Int32.TryParse(textBoxTimeout.Text, out int timeout))
+                _project.NetList[0].Connection.Timeout = timeout;
+        }
+    }
+
+
 }

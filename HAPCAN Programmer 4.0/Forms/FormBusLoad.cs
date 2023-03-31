@@ -69,7 +69,7 @@ public partial class FormBusLoad : Form
 
         plt.Legend();
 
-        plt.AxisAutoX(0.05);        //automaticaly adjust axis
+        plt.AxisAutoX(0.05);        //automatically adjust axis
         plt.AxisAutoY(0.05);
 
         formsPlot1.Refresh();
