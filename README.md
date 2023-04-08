@@ -1,4 +1,4 @@
-# HAPCAN Programmer 4.0
+# HAPCAN Programmer 4.x.x
 
 The Windows software for system programming (under development)
 
