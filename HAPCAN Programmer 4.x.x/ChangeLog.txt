@@ -1,3 +1,7 @@
+HAPCAN Programmer 4.1.1	(2023-04-07)
+1. Added installer
+
+
 HAPCAN Programmer Build230331
 1. Control & configure form
 2. Edit channel names in Control & configure section
