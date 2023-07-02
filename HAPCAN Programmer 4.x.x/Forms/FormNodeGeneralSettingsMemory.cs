@@ -15,7 +15,6 @@ namespace Hapcan.Programmer.Forms;
 
 public partial class FormNodeGeneralSettingsMemory : Form
 {
-    //    Project _project;
     HapcanNode _node;
     TextBox _activeCell;
     byte[] _newEeprom;              //local eeprom copy
@@ -24,7 +23,6 @@ public partial class FormNodeGeneralSettingsMemory : Form
     public FormNodeGeneralSettingsMemory(Project project, HapcanNode node)
     {
         InitializeComponent();
-        //    _project = project;
         _node = node;
         //copy node memory to new memory buffer
         _newEeprom = new byte[_node.Eeprom.Length];
@@ -35,28 +33,27 @@ public partial class FormNodeGeneralSettingsMemory : Form
 
     private void FormNodeSettingsMemory_Load(object sender, EventArgs e)
     {
-        //load in 10ms
-        var timer = new System.Windows.Forms.Timer();
-        timer.Interval = 10;
-        timer.Tick += OnLoadTimer;
-        timer.Start();
+        //load form content in 100ms
+        Invoke(LoadDelayed);
     }
 
-    private void OnLoadTimer(object sender, EventArgs e)
+    private async void LoadDelayed()
     {
-        //dispose timer
-        var timer = (System.Windows.Forms.Timer)sender;
-        timer.Dispose();
-
+        await Task.Delay(100).ConfigureAwait(true);
         //show project nodes
         try
         {
+            CreateGrid(dataGridViewFlash);
+            CreateGrid(dataGridViewEeprom);
             if (_node.MemoryWasRead)
             {
+                //show grid
+                LoadGrid(dataGridViewEeprom, _newEeprom);
+                LoadGrid(dataGridViewFlash, _newFlash);
                 //update form
                 EnableButtons();
-                btnEeprom_Click(null, null);
             }
+            Cursor = Cursors.Default;
         }
         catch (Exception)
         {
@@ -66,59 +63,63 @@ public partial class FormNodeGeneralSettingsMemory : Form
 
     // DISPLAY GRID
     //----------------------------
+    private void CreateGrid(DataGridView grid)
+    {
+        //add columns
+        grid.TopLeftHeaderCell.Value = "Address";
+        for (int i = 0; i < 16; i++)
+        {
+            var indx = grid.Columns.Add(i.ToString("X"), i.ToString("X"));
+            grid.Columns[indx].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns[indx].DefaultCellStyle.Format = "X2";
+        }
+        grid.Columns.Add("ASCII", "ASCII");
+        grid.Columns["ASCII"].SortMode = DataGridViewColumnSortMode.NotSortable;
+        grid.Columns["ASCII"].ReadOnly = true;
+        grid.Columns.Add("Description", "Description");
+        grid.Columns["Description"].SortMode = DataGridViewColumnSortMode.NotSortable;
+        grid.Columns["Description"].ReadOnly = true;
+        //dock
+        grid.Dock = DockStyle.Fill;
+        grid.Visible = false;
+    }
+
     private void btnEeprom_Click(object sender, EventArgs e)
     {
-        btnEeprom.BackColor = Color.FromArgb(28, 28, 28);
-        btnFlash.BackColor = Color.FromArgb(67, 67, 68);
-        dataGridView1.Tag = _newEeprom;
-        LoadGrid(_newEeprom);
+        btnEeprom.BackColor = Color.FromArgb(45, 45, 48);
+        btnFlash.BackColor = Color.FromArgb(28, 28, 28);
+        dataGridViewEeprom.BringToFront();
     }
 
     private void btnFlash_Click(object sender, EventArgs e)
     {
-        btnFlash.BackColor = Color.FromArgb(28, 28, 28);
-        btnEeprom.BackColor = Color.FromArgb(67, 67, 68);
-        dataGridView1.Tag = _newFlash;
-        Cursor = Cursors.WaitCursor;
-        LoadGrid(_newFlash);
-        Cursor = Cursors.Default;
+        btnFlash.BackColor = Color.FromArgb(45, 45, 48);
+        btnEeprom.BackColor = Color.FromArgb(28, 28, 28);
+        dataGridViewFlash.BringToFront();
     }
 
-    private void LoadGrid(byte[] memory)
+    private void LoadGrid(DataGridView grid, byte[] memory)
     {
+        Cursor = Cursors.WaitCursor;
         //clear all
-        foreach (DataGridViewBand band in dataGridView1.Rows)        //frees memory
+        foreach (DataGridViewBand band in grid.Rows)        //frees memory
             band.Dispose();
-        foreach (DataGridViewBand band in dataGridView1.Columns)
-            band.Dispose();
-        dataGridView1.Rows.Clear();
-        dataGridView1.Columns.Clear();
-        //add columns
-        dataGridView1.TopLeftHeaderCell.Value = "Address";
-        for (int i = 0; i < 16; i++)
-        {
-            var indx = dataGridView1.Columns.Add(i.ToString("X"), i.ToString("X"));
-            dataGridView1.Columns[indx].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridView1.Columns[indx].DefaultCellStyle.Format = "X2";
-        }
-        dataGridView1.Columns.Add("ASCII", "ASCII");
-        dataGridView1.Columns["ASCII"].SortMode = DataGridViewColumnSortMode.NotSortable;
-        dataGridView1.Columns["ASCII"].ReadOnly = true;
-        dataGridView1.Columns.Add("Description", "Description");
-        dataGridView1.Columns["Description"].SortMode = DataGridViewColumnSortMode.NotSortable;
-        dataGridView1.Columns["Description"].ReadOnly = true;
+        grid.Rows.Clear();
         //load data
         for (int i = 0; i < memory.Length; i += 16)
         {
-            var row = dataGridView1.Rows.Add(
+            var row = grid.Rows.Add(
                 memory[i], memory[i + 1], memory[i + 2], memory[i + 3],
                 memory[i + 4], memory[i + 5], memory[i + 6], memory[i + 7],
                 memory[i + 8], memory[i + 9], memory[i + 10], memory[i + 11],
                 memory[i + 12], memory[i + 13], memory[i + 14], memory[i + 15],
                 GridAscii(memory, i), GridDescription(memory, i));
-            dataGridView1.Rows[row].HeaderCell.Value = GridAddress(memory, i);
+            grid.Rows[row].HeaderCell.Value = GridAddress(memory, i);
         }
-        dataGridView1.Update();
+        grid.Visible = true;
+        grid.Tag = memory;
+        grid.Update();
+        Cursor = Cursors.Default;
     }
 
     private string GridAddress(byte[] memory, int adr)
@@ -174,11 +175,11 @@ public partial class FormNodeGeneralSettingsMemory : Form
     //----------------------------
 
     //when enter data cell
-    private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+    private void dataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
     {
         _activeCell = (TextBox)e.Control;                           //get current cell object
         _activeCell.CharacterCasing = CharacterCasing.Upper;        //make all upper case
-        _activeCell.KeyPress += DataCell_KeyPress;                  //subscibe to cell keypress
+        _activeCell.KeyPress += DataCell_KeyPress;                  //subscribe to cell keypress
     }
 
     //when edit data cell
@@ -194,11 +195,12 @@ public partial class FormNodeGeneralSettingsMemory : Form
     }
 
     //when exit data cell editing
-    private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+    private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
     {
+        var grid = (DataGridView)sender;
         if (_activeCell != null)
         {
-            _activeCell.KeyPress -= DataCell_KeyPress;              //unsubsribe cell keypress
+            _activeCell.KeyPress -= DataCell_KeyPress;              //unsubscribe cell keypress
 
             if (e.ColumnIndex < 16)                                 //validate data cells 
             {
@@ -209,12 +211,12 @@ public partial class FormNodeGeneralSettingsMemory : Form
                 else if (data.Length == 1)                          //insert "0" if one digit entered
                     _activeCell.Text = "0" + data;
                 //update memory
-                if (dataGridView1.Tag == _newEeprom)
+                if (grid == dataGridViewEeprom)
                     _newEeprom[e.RowIndex * 16 + e.ColumnIndex] = Byte.Parse(_activeCell.Text, System.Globalization.NumberStyles.HexNumber);
-                if (dataGridView1.Tag == _newFlash)
+                if (grid == dataGridViewFlash)
                     _newFlash[e.RowIndex * 16 + e.ColumnIndex] = Byte.Parse(_activeCell.Text, System.Globalization.NumberStyles.HexNumber);
                 //update ascii column
-                dataGridView1.Rows[e.RowIndex].Cells["ASCII"].Value = GridAscii((byte[])dataGridView1.Tag, e.RowIndex * 16);
+                grid.Rows[e.RowIndex].Cells["ASCII"].Value = GridAscii((byte[])grid.Tag, e.RowIndex * 16);
             }
             _activeCell = null;
         }
@@ -236,7 +238,8 @@ public partial class FormNodeGeneralSettingsMemory : Form
             //update form
             EnableButtons();
             //show grid
-            btnEeprom_Click(null, null);
+            LoadGrid(dataGridViewFlash, _newFlash);
+            LoadGrid(dataGridViewEeprom, _newEeprom);
         }
         prg.Dispose();
     }
@@ -280,7 +283,8 @@ public partial class FormNodeGeneralSettingsMemory : Form
                 //update form
                 EnableButtons();
                 //show grid
-                btnEeprom_Click(null, null);
+                LoadGrid(dataGridViewFlash, _newFlash);
+                LoadGrid(dataGridViewEeprom, _newEeprom);
                 Logger.Log("Info", String.Format("The node memory configuration file '{0}' has been opened", openFileDialog.FileName));
             }
         }
@@ -355,14 +359,15 @@ public partial class FormNodeGeneralSettingsMemory : Form
             Dispose();
     }
 
-    private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+    private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
     {
+        var grid = (DataGridView)sender;
         int adr = -1;
         //    if (e.ColumnIndex > 15)
         //        return;
         if (e.ColumnIndex <= 15)
             adr = e.RowIndex * 16 + e.ColumnIndex;
-        if (dataGridView1.Tag == _newEeprom)
+        if (grid == dataGridViewEeprom)
         {
             e.CellStyle.BackColor = adr switch
             {
@@ -374,7 +379,7 @@ public partial class FormNodeGeneralSettingsMemory : Form
                 _ => e.CellStyle.BackColor
             };
         }
-        else if (dataGridView1.Tag == _newFlash)
+        else if (grid == dataGridViewFlash)
         {
             adr += 0x8000;
             e.CellStyle.BackColor = adr switch
@@ -386,4 +391,5 @@ public partial class FormNodeGeneralSettingsMemory : Form
             };
         }
     }
+
 }

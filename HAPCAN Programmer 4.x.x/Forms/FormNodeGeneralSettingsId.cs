@@ -53,7 +53,7 @@ public partial class FormNodeGeneralSettingsId : Form
     }
     private async void btnChangeName_Click(object sender, EventArgs e)
     {
-        //programe
+        //program
         var prg = new Programming(_node);
         try
         {
@@ -85,7 +85,7 @@ public partial class FormNodeGeneralSettingsId : Form
             return;
         }
 
-        //programe
+        //program
         var prg = new Programming(_node);
         try
         {

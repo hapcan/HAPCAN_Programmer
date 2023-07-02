@@ -35,9 +35,4 @@ public partial class FormNodeConfigurationConfigure : Form
         await Task.Delay(100).ConfigureAwait(true);
     }
 
-    private void btnUpload_Click(object sender, EventArgs e)
-    {
-
-    }
-
 }

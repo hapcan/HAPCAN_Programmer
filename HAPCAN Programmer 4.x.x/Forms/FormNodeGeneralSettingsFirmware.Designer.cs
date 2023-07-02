@@ -28,261 +28,260 @@ partial class FormNodeGeneralSettingsFirmware
     /// </summary>
     private void InitializeComponent()
     {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNodeGeneralSettingsFirmware));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.textCurFirm = new System.Windows.Forms.TextBox();
-            this.btnCheck = new System.Windows.Forms.Button();
-            this.labelInterace = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnUpload = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.textFirmVer = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.panelIntPort = new System.Windows.Forms.Panel();
-            this.textFirmFile = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.panel6.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panelIntPort.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
-            this.panel1.Controls.Add(this.panel6);
-            this.panel1.Controls.Add(this.btnCheck);
-            this.panel1.Location = new System.Drawing.Point(30, 65);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(780, 90);
-            this.panel1.TabIndex = 37;
-            // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.Silver;
-            this.panel6.Controls.Add(this.textCurFirm);
-            this.panel6.Enabled = false;
-            this.panel6.Location = new System.Drawing.Point(21, 32);
-            this.panel6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel6.Name = "panel6";
-            this.panel6.Padding = new System.Windows.Forms.Padding(5);
-            this.panel6.Size = new System.Drawing.Size(568, 26);
-            this.panel6.TabIndex = 44;
-            // 
-            // textCurFirm
-            // 
-            this.textCurFirm.BackColor = System.Drawing.Color.Silver;
-            this.textCurFirm.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textCurFirm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textCurFirm.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textCurFirm.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textCurFirm.Location = new System.Drawing.Point(5, 5);
-            this.textCurFirm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textCurFirm.MaxLength = 16;
-            this.textCurFirm.Name = "textCurFirm";
-            this.textCurFirm.Size = new System.Drawing.Size(558, 18);
-            this.textCurFirm.TabIndex = 20;
-            // 
-            // btnCheck
-            // 
-            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnCheck.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCheck.FlatAppearance.BorderSize = 0;
-            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCheck.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnCheck.Image = ((System.Drawing.Image)(resources.GetObject("btnCheck.Image")));
-            this.btnCheck.Location = new System.Drawing.Point(629, 28);
-            this.btnCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(110, 35);
-            this.btnCheck.TabIndex = 42;
-            this.btnCheck.Text = " Check";
-            this.btnCheck.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCheck.UseVisualStyleBackColor = false;
-            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
-            // 
-            // labelInterace
-            // 
-            this.labelInterace.AutoSize = true;
-            this.labelInterace.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelInterace.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.labelInterace.Location = new System.Drawing.Point(30, 25);
-            this.labelInterace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelInterace.Name = "labelInterace";
-            this.labelInterace.Size = new System.Drawing.Size(142, 23);
-            this.labelInterace.TabIndex = 36;
-            this.labelInterace.Text = "Current Firmware";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
-            this.panel2.Controls.Add(this.btnUpload);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.btnBrowse);
-            this.panel2.Controls.Add(this.panelIntPort);
-            this.panel2.Location = new System.Drawing.Point(30, 240);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(780, 180);
-            this.panel2.TabIndex = 39;
-            // 
-            // btnUpload
-            // 
-            this.btnUpload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnUpload.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUpload.Enabled = false;
-            this.btnUpload.FlatAppearance.BorderSize = 0;
-            this.btnUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUpload.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnUpload.Image = ((System.Drawing.Image)(resources.GetObject("btnUpload.Image")));
-            this.btnUpload.Location = new System.Drawing.Point(629, 107);
-            this.btnUpload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(110, 35);
-            this.btnUpload.TabIndex = 48;
-            this.btnUpload.Text = " Upload";
-            this.btnUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnUpload.UseVisualStyleBackColor = false;
-            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(21, 92);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 15);
-            this.label2.TabIndex = 47;
-            this.label2.Text = "Firmware version";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Silver;
-            this.panel3.Controls.Add(this.textFirmVer);
-            this.panel3.Enabled = false;
-            this.panel3.Location = new System.Drawing.Point(21, 110);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(5);
-            this.panel3.Size = new System.Drawing.Size(568, 30);
-            this.panel3.TabIndex = 46;
-            // 
-            // textFirmVer
-            // 
-            this.textFirmVer.BackColor = System.Drawing.Color.Silver;
-            this.textFirmVer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textFirmVer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textFirmVer.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textFirmVer.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textFirmVer.Location = new System.Drawing.Point(5, 5);
-            this.textFirmVer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textFirmVer.MaxLength = 16;
-            this.textFirmVer.Name = "textFirmVer";
-            this.textFirmVer.Size = new System.Drawing.Size(558, 18);
-            this.textFirmVer.TabIndex = 20;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(21, 23);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 15);
-            this.label1.TabIndex = 45;
-            this.label1.Text = "File";
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(68)))));
-            this.btnBrowse.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBrowse.FlatAppearance.BorderSize = 0;
-            this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBrowse.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnBrowse.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowse.Image")));
-            this.btnBrowse.Location = new System.Drawing.Point(629, 38);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(110, 35);
-            this.btnBrowse.TabIndex = 44;
-            this.btnBrowse.Text = " Browse";
-            this.btnBrowse.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnBrowse.UseVisualStyleBackColor = false;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
-            // panelIntPort
-            // 
-            this.panelIntPort.BackColor = System.Drawing.Color.Silver;
-            this.panelIntPort.Controls.Add(this.textFirmFile);
-            this.panelIntPort.Enabled = false;
-            this.panelIntPort.Location = new System.Drawing.Point(21, 41);
-            this.panelIntPort.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelIntPort.Name = "panelIntPort";
-            this.panelIntPort.Padding = new System.Windows.Forms.Padding(5);
-            this.panelIntPort.Size = new System.Drawing.Size(568, 30);
-            this.panelIntPort.TabIndex = 29;
-            // 
-            // textFirmFile
-            // 
-            this.textFirmFile.BackColor = System.Drawing.Color.Silver;
-            this.textFirmFile.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textFirmFile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textFirmFile.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textFirmFile.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textFirmFile.Location = new System.Drawing.Point(5, 5);
-            this.textFirmFile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textFirmFile.MaxLength = 16;
-            this.textFirmFile.Name = "textFirmFile";
-            this.textFirmFile.Size = new System.Drawing.Size(558, 18);
-            this.textFirmFile.TabIndex = 20;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(30, 200);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(137, 23);
-            this.label4.TabIndex = 38;
-            this.label4.Text = "Firmware upload";
-            // 
-            // FormNodeSettingsFirmware
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(840, 450);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.labelInterace);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FormNodeSettingsFirmware";
-            this.Text = "Node Firmware Update";
-            this.panel1.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panelIntPort.ResumeLayout(false);
-            this.panelIntPort.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNodeGeneralSettingsFirmware));
+        panel1 = new System.Windows.Forms.Panel();
+        panel6 = new System.Windows.Forms.Panel();
+        textCurFirm = new System.Windows.Forms.TextBox();
+        btnCheck = new System.Windows.Forms.Button();
+        labelInterace = new System.Windows.Forms.Label();
+        panel2 = new System.Windows.Forms.Panel();
+        btnUpload = new System.Windows.Forms.Button();
+        label2 = new System.Windows.Forms.Label();
+        panel3 = new System.Windows.Forms.Panel();
+        textFirmVer = new System.Windows.Forms.TextBox();
+        label1 = new System.Windows.Forms.Label();
+        btnBrowse = new System.Windows.Forms.Button();
+        panelIntPort = new System.Windows.Forms.Panel();
+        textFirmFile = new System.Windows.Forms.TextBox();
+        label4 = new System.Windows.Forms.Label();
+        panel1.SuspendLayout();
+        panel6.SuspendLayout();
+        panel2.SuspendLayout();
+        panel3.SuspendLayout();
+        panelIntPort.SuspendLayout();
+        SuspendLayout();
+        // 
+        // panel1
+        // 
+        panel1.BackColor = System.Drawing.Color.FromArgb(37, 37, 38);
+        panel1.Controls.Add(panel6);
+        panel1.Controls.Add(btnCheck);
+        panel1.Location = new System.Drawing.Point(30, 65);
+        panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        panel1.Name = "panel1";
+        panel1.Size = new System.Drawing.Size(780, 90);
+        panel1.TabIndex = 37;
+        // 
+        // panel6
+        // 
+        panel6.BackColor = System.Drawing.Color.Silver;
+        panel6.Controls.Add(textCurFirm);
+        panel6.Enabled = false;
+        panel6.Location = new System.Drawing.Point(21, 32);
+        panel6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        panel6.Name = "panel6";
+        panel6.Padding = new System.Windows.Forms.Padding(5);
+        panel6.Size = new System.Drawing.Size(568, 26);
+        panel6.TabIndex = 44;
+        // 
+        // textCurFirm
+        // 
+        textCurFirm.BackColor = System.Drawing.Color.Silver;
+        textCurFirm.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        textCurFirm.Dock = System.Windows.Forms.DockStyle.Fill;
+        textCurFirm.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        textCurFirm.ForeColor = System.Drawing.SystemColors.WindowText;
+        textCurFirm.Location = new System.Drawing.Point(5, 5);
+        textCurFirm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        textCurFirm.MaxLength = 16;
+        textCurFirm.Name = "textCurFirm";
+        textCurFirm.Size = new System.Drawing.Size(558, 18);
+        textCurFirm.TabIndex = 20;
+        // 
+        // btnCheck
+        // 
+        btnCheck.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+        btnCheck.Cursor = System.Windows.Forms.Cursors.Hand;
+        btnCheck.FlatAppearance.BorderSize = 0;
+        btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        btnCheck.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        btnCheck.Image = (System.Drawing.Image)resources.GetObject("btnCheck.Image");
+        btnCheck.Location = new System.Drawing.Point(629, 28);
+        btnCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        btnCheck.Name = "btnCheck";
+        btnCheck.Size = new System.Drawing.Size(110, 35);
+        btnCheck.TabIndex = 42;
+        btnCheck.Text = " Check";
+        btnCheck.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        btnCheck.UseVisualStyleBackColor = false;
+        btnCheck.Click += btnCheck_Click;
+        // 
+        // labelInterace
+        // 
+        labelInterace.AutoSize = true;
+        labelInterace.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        labelInterace.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        labelInterace.Location = new System.Drawing.Point(30, 25);
+        labelInterace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        labelInterace.Name = "labelInterace";
+        labelInterace.Size = new System.Drawing.Size(142, 23);
+        labelInterace.TabIndex = 36;
+        labelInterace.Text = "Current Firmware";
+        // 
+        // panel2
+        // 
+        panel2.BackColor = System.Drawing.Color.FromArgb(37, 37, 38);
+        panel2.Controls.Add(btnUpload);
+        panel2.Controls.Add(label2);
+        panel2.Controls.Add(panel3);
+        panel2.Controls.Add(label1);
+        panel2.Controls.Add(btnBrowse);
+        panel2.Controls.Add(panelIntPort);
+        panel2.Location = new System.Drawing.Point(30, 240);
+        panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        panel2.Name = "panel2";
+        panel2.Size = new System.Drawing.Size(780, 180);
+        panel2.TabIndex = 39;
+        // 
+        // btnUpload
+        // 
+        btnUpload.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+        btnUpload.Cursor = System.Windows.Forms.Cursors.Hand;
+        btnUpload.Enabled = false;
+        btnUpload.FlatAppearance.BorderSize = 0;
+        btnUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        btnUpload.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        btnUpload.Image = (System.Drawing.Image)resources.GetObject("btnUpload.Image");
+        btnUpload.Location = new System.Drawing.Point(629, 107);
+        btnUpload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        btnUpload.Name = "btnUpload";
+        btnUpload.Size = new System.Drawing.Size(110, 35);
+        btnUpload.TabIndex = 48;
+        btnUpload.Text = " Upload";
+        btnUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        btnUpload.UseVisualStyleBackColor = false;
+        btnUpload.Click += btnUpload_Click;
+        // 
+        // label2
+        // 
+        label2.AutoSize = true;
+        label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        label2.Location = new System.Drawing.Point(21, 92);
+        label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        label2.Name = "label2";
+        label2.Size = new System.Drawing.Size(97, 15);
+        label2.TabIndex = 47;
+        label2.Text = "Firmware version";
+        // 
+        // panel3
+        // 
+        panel3.BackColor = System.Drawing.Color.Silver;
+        panel3.Controls.Add(textFirmVer);
+        panel3.Enabled = false;
+        panel3.Location = new System.Drawing.Point(21, 110);
+        panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        panel3.Name = "panel3";
+        panel3.Padding = new System.Windows.Forms.Padding(5);
+        panel3.Size = new System.Drawing.Size(568, 30);
+        panel3.TabIndex = 46;
+        // 
+        // textFirmVer
+        // 
+        textFirmVer.BackColor = System.Drawing.Color.Silver;
+        textFirmVer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        textFirmVer.Dock = System.Windows.Forms.DockStyle.Fill;
+        textFirmVer.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        textFirmVer.ForeColor = System.Drawing.SystemColors.WindowText;
+        textFirmVer.Location = new System.Drawing.Point(5, 5);
+        textFirmVer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        textFirmVer.MaxLength = 16;
+        textFirmVer.Name = "textFirmVer";
+        textFirmVer.Size = new System.Drawing.Size(558, 18);
+        textFirmVer.TabIndex = 20;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        label1.Location = new System.Drawing.Point(21, 23);
+        label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        label1.Name = "label1";
+        label1.Size = new System.Drawing.Size(25, 15);
+        label1.TabIndex = 45;
+        label1.Text = "File";
+        // 
+        // btnBrowse
+        // 
+        btnBrowse.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+        btnBrowse.Cursor = System.Windows.Forms.Cursors.Hand;
+        btnBrowse.FlatAppearance.BorderSize = 0;
+        btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        btnBrowse.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        btnBrowse.Image = (System.Drawing.Image)resources.GetObject("btnBrowse.Image");
+        btnBrowse.Location = new System.Drawing.Point(629, 38);
+        btnBrowse.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        btnBrowse.Name = "btnBrowse";
+        btnBrowse.Size = new System.Drawing.Size(110, 35);
+        btnBrowse.TabIndex = 44;
+        btnBrowse.Text = " Browse";
+        btnBrowse.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        btnBrowse.UseVisualStyleBackColor = false;
+        btnBrowse.Click += btnBrowse_Click;
+        // 
+        // panelIntPort
+        // 
+        panelIntPort.BackColor = System.Drawing.Color.Silver;
+        panelIntPort.Controls.Add(textFirmFile);
+        panelIntPort.Enabled = false;
+        panelIntPort.Location = new System.Drawing.Point(21, 41);
+        panelIntPort.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        panelIntPort.Name = "panelIntPort";
+        panelIntPort.Padding = new System.Windows.Forms.Padding(5);
+        panelIntPort.Size = new System.Drawing.Size(568, 30);
+        panelIntPort.TabIndex = 29;
+        // 
+        // textFirmFile
+        // 
+        textFirmFile.BackColor = System.Drawing.Color.Silver;
+        textFirmFile.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        textFirmFile.Dock = System.Windows.Forms.DockStyle.Fill;
+        textFirmFile.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        textFirmFile.ForeColor = System.Drawing.SystemColors.WindowText;
+        textFirmFile.Location = new System.Drawing.Point(5, 5);
+        textFirmFile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        textFirmFile.MaxLength = 16;
+        textFirmFile.Name = "textFirmFile";
+        textFirmFile.Size = new System.Drawing.Size(558, 18);
+        textFirmFile.TabIndex = 20;
+        // 
+        // label4
+        // 
+        label4.AutoSize = true;
+        label4.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        label4.Location = new System.Drawing.Point(30, 200);
+        label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        label4.Name = "label4";
+        label4.Size = new System.Drawing.Size(137, 23);
+        label4.TabIndex = 38;
+        label4.Text = "Firmware upload";
+        // 
+        // FormNodeGeneralSettingsFirmware
+        // 
+        AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        ClientSize = new System.Drawing.Size(840, 450);
+        Controls.Add(panel2);
+        Controls.Add(label4);
+        Controls.Add(panel1);
+        Controls.Add(labelInterace);
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+        Name = "FormNodeGeneralSettingsFirmware";
+        Text = "Node Firmware Update";
+        panel1.ResumeLayout(false);
+        panel6.ResumeLayout(false);
+        panel6.PerformLayout();
+        panel2.ResumeLayout(false);
+        panel2.PerformLayout();
+        panel3.ResumeLayout(false);
+        panel3.PerformLayout();
+        panelIntPort.ResumeLayout(false);
+        panelIntPort.PerformLayout();
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion

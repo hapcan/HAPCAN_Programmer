@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,17 +26,12 @@ public partial class FormNodeConfigurationChannelNames : Form
         //clone channels to tempNode
         _tempNode = tempNode;
         _indicateMemoryChanged = indicateMemoryChanged;
+        InitializeForm();
     }
 
-    private void FormNodeSettingsChannelNames_Load(object sender, EventArgs e)
-    {
-        //load form content in 100ms
-        Invoke(LoadDelayed);
-    }
-    private async void LoadDelayed()
-    {
-        await Task.Delay(100).ConfigureAwait(true);
 
+    private void InitializeForm()
+    {
         for (int i = _tempNode.Channels.Count - 1; i > -1; i--)
         {
             CreateChannelPanel(_tempNode.Channels[i]);

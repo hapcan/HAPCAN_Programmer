@@ -79,8 +79,7 @@ partial class FormNodeConfigurationChannelNames
         Controls.Add(panelMiddle);
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         Name = "FormNodeConfigurationChannelNames";
-        Text = "Node Firmware Update";
-        Load += FormNodeSettingsChannelNames_Load;
+        Text = "Node Channel Names";
         panelMiddle.ResumeLayout(false);
         panelMiddle.PerformLayout();
         ResumeLayout(false);

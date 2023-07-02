@@ -7,7 +7,7 @@
 
     <Description>The HAPCAN Programmer is a software for setting up the HAPCAN system.</Description>
     <Product>HAPCAN Programmer</Product>
-    <Version>4.1.1</Version>
+    <Version>4.1.2</Version>
     <Company>hapcan.com</Company>
     <Copyright>Copyright © hapcan.com 2004-2023</Copyright>
     <ApplicationIcon>hapcan_programmer_icon.ico</ApplicationIcon>

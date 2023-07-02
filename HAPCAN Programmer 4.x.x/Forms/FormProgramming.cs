@@ -38,10 +38,10 @@ public partial class FormProgramming : FormProgress
         _flashBuffer = flashBuffer;
         _action = action;
         _cts = new CancellationTokenSource();
-        _prg = new Programming(_node);
         //module name
         _nodeName = string.Format("Module '{0}', s/n:{1:X8}h, id:({2},{3})", _node.Name, _node.SerialNumber, _node.NodeNumber, _node.GroupNumber);
         InitializeComponent();
+        Title = "Programming";
     }
     /// <summary>
     /// For reading memory.
@@ -75,10 +75,11 @@ public partial class FormProgramming : FormProgress
     {
         await Task.Delay(100).ConfigureAwait(true);
 
-        _prg.ProgrammingProgress += ProgrammingProgress;        //subscribe to progress event
-
         try
         {
+            _prg = new Programming(_node);
+            _prg.ProgrammingProgress += ProgrammingProgress;        //subscribe to progress event
+
             //start programming
             if (_action == Programming.ProgrammingAction.SmartReadData)
             {
@@ -95,7 +96,7 @@ public partial class FormProgramming : FormProgress
             else if (_action == Programming.ProgrammingAction.WriteFirmware)
             {
                 Title = "Writing firmware into memory";
-                Logger.Log("Programming", string.Format("{0} writing frimware into memory started.", _nodeName));
+                Logger.Log("Programming", string.Format("{0} writing firmware into memory started.", _nodeName));
                 await _prg.WriteFirmwareAsync(_firmwareBuffer, _cts);
             }
 
@@ -121,7 +122,8 @@ public partial class FormProgramming : FormProgress
         }
         finally
         {
-            _prg.ProgrammingProgress -= ProgrammingProgress;    //unsubscribe to progress event 
+            if (_prg != null)
+                _prg.ProgrammingProgress -= ProgrammingProgress;    //unsubscribe to progress event 
             buttonCancel.Text = "Close";
         }
     }

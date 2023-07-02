@@ -79,7 +79,7 @@ public partial class FormNodeGeneralSettingsFirmware : Form
                 textFirmFile.Text = _fileName;
 
                 //read the contents of the file
-                var ff = new HapcanNodeFirmwareFile();               
+                var ff = new HapcanNodeFirmwareFile();
                 _fileBuffer = await ff.ReadFirmwareFileAsync(_fileName);
 
                 //update form
@@ -93,7 +93,7 @@ public partial class FormNodeGeneralSettingsFirmware : Form
         {
             string msg = String.Format("Open firmware file {0} error: {1}", Path.GetFileName(_fileName), ex.Message);
             Logger.Log("Programming", msg);
-            FormInformation.ShowDialog(this, "Error", msg); 
+            FormInformation.ShowDialog(this, "Error", msg);
             //update form
             textFirmVer.Text = "File error";
             btnUpload.Enabled = false;
@@ -110,7 +110,7 @@ public partial class FormNodeGeneralSettingsFirmware : Form
         string msg = String.Format("Node ({0},{1}) firmware '{2}' uploading ", _node.NodeNumber, _node.GroupNumber, _fileFirmVersion);
         if (prgf.ProgrammingSuccessful == true)
         {
-            msg += " successed.";
+            msg += " succeeded.";
             textCurFirm.Text = _fileFirmVersion;                            //update form
         }
         else

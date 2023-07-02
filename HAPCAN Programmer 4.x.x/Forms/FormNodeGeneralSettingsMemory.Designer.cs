@@ -33,6 +33,10 @@ partial class FormNodeGeneralSettingsMemory
         System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
         System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
         System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+        System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+        System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+        System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+        System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
         panelTop = new System.Windows.Forms.Panel();
         btnSaveFile = new System.Windows.Forms.Button();
         btnOpenFile = new System.Windows.Forms.Button();
@@ -40,9 +44,11 @@ partial class FormNodeGeneralSettingsMemory
         btnRead = new System.Windows.Forms.Button();
         btnFlash = new System.Windows.Forms.Button();
         btnEeprom = new System.Windows.Forms.Button();
-        dataGridView1 = new System.Windows.Forms.DataGridView();
+        dataGridViewEeprom = new System.Windows.Forms.DataGridView();
+        dataGridViewFlash = new System.Windows.Forms.DataGridView();
         panelTop.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewEeprom).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewFlash).BeginInit();
         SuspendLayout();
         // 
         // panelTop
@@ -59,7 +65,7 @@ partial class FormNodeGeneralSettingsMemory
         panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         panelTop.Name = "panelTop";
         panelTop.Padding = new System.Windows.Forms.Padding(1);
-        panelTop.Size = new System.Drawing.Size(1000, 46);
+        panelTop.Size = new System.Drawing.Size(1000, 35);
         panelTop.TabIndex = 37;
         // 
         // btnSaveFile
@@ -142,17 +148,17 @@ partial class FormNodeGeneralSettingsMemory
         // 
         // btnFlash
         // 
-        btnFlash.BackColor = System.Drawing.Color.FromArgb(67, 67, 68);
+        btnFlash.BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
         btnFlash.Cursor = System.Windows.Forms.Cursors.Hand;
         btnFlash.Enabled = false;
         btnFlash.FlatAppearance.BorderSize = 0;
         btnFlash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         btnFlash.ForeColor = System.Drawing.SystemColors.ButtonFace;
         btnFlash.Image = (System.Drawing.Image)resources.GetObject("btnFlash.Image");
-        btnFlash.Location = new System.Drawing.Point(112, 1);
+        btnFlash.Location = new System.Drawing.Point(112, 12);
         btnFlash.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         btnFlash.Name = "btnFlash";
-        btnFlash.Size = new System.Drawing.Size(110, 34);
+        btnFlash.Size = new System.Drawing.Size(110, 23);
         btnFlash.TabIndex = 43;
         btnFlash.Text = " Flash";
         btnFlash.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -161,34 +167,34 @@ partial class FormNodeGeneralSettingsMemory
         // 
         // btnEeprom
         // 
-        btnEeprom.BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        btnEeprom.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
         btnEeprom.Cursor = System.Windows.Forms.Cursors.Hand;
         btnEeprom.Enabled = false;
         btnEeprom.FlatAppearance.BorderSize = 0;
         btnEeprom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         btnEeprom.ForeColor = System.Drawing.SystemColors.ButtonFace;
         btnEeprom.Image = (System.Drawing.Image)resources.GetObject("btnEeprom.Image");
-        btnEeprom.Location = new System.Drawing.Point(1, 1);
+        btnEeprom.Location = new System.Drawing.Point(1, 12);
         btnEeprom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         btnEeprom.Name = "btnEeprom";
-        btnEeprom.Size = new System.Drawing.Size(110, 34);
+        btnEeprom.Size = new System.Drawing.Size(110, 23);
         btnEeprom.TabIndex = 42;
         btnEeprom.Text = " Eeprom";
         btnEeprom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
         btnEeprom.UseVisualStyleBackColor = false;
         btnEeprom.Click += btnEeprom_Click;
         // 
-        // dataGridView1
+        // dataGridViewEeprom
         // 
-        dataGridView1.AllowUserToAddRows = false;
-        dataGridView1.AllowUserToDeleteRows = false;
+        dataGridViewEeprom.AllowUserToAddRows = false;
+        dataGridViewEeprom.AllowUserToDeleteRows = false;
         dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
-        dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-        dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-        dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-        dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(28, 28, 28);
-        dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+        dataGridViewEeprom.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+        dataGridViewEeprom.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+        dataGridViewEeprom.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+        dataGridViewEeprom.BackgroundColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        dataGridViewEeprom.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        dataGridViewEeprom.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
         dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
         dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -197,8 +203,8 @@ partial class FormNodeGeneralSettingsMemory
         dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(45, 45, 48);
         dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
         dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-        dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-        dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewEeprom.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+        dataGridViewEeprom.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.GrayText;
         dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -207,16 +213,15 @@ partial class FormNodeGeneralSettingsMemory
         dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
         dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
         dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-        dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-        dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-        dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-        dataGridView1.EnableHeadersVisualStyles = false;
-        dataGridView1.GridColor = System.Drawing.Color.FromArgb(28, 28, 28);
-        dataGridView1.Location = new System.Drawing.Point(0, 46);
-        dataGridView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-        dataGridView1.MultiSelect = false;
-        dataGridView1.Name = "dataGridView1";
-        dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+        dataGridViewEeprom.DefaultCellStyle = dataGridViewCellStyle3;
+        dataGridViewEeprom.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+        dataGridViewEeprom.EnableHeadersVisualStyles = false;
+        dataGridViewEeprom.GridColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        dataGridViewEeprom.Location = new System.Drawing.Point(23, 76);
+        dataGridViewEeprom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        dataGridViewEeprom.MultiSelect = false;
+        dataGridViewEeprom.Name = "dataGridViewEeprom";
+        dataGridViewEeprom.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
         dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
         dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -224,23 +229,81 @@ partial class FormNodeGeneralSettingsMemory
         dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(45, 45, 48);
         dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
         dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-        dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
-        dataGridView1.RowHeadersWidth = 100;
-        dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-        dataGridView1.ShowEditingIcon = false;
-        dataGridView1.Size = new System.Drawing.Size(1000, 554);
-        dataGridView1.TabIndex = 40;
-        dataGridView1.CellFormatting += dataGridView1_CellFormatting;
-        dataGridView1.CellValidating += dataGridView1_CellValidating;
-        dataGridView1.EditingControlShowing += dataGridView1_EditingControlShowing;
+        dataGridViewEeprom.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+        dataGridViewEeprom.RowHeadersWidth = 100;
+        dataGridViewEeprom.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+        dataGridViewEeprom.ShowEditingIcon = false;
+        dataGridViewEeprom.Size = new System.Drawing.Size(405, 364);
+        dataGridViewEeprom.TabIndex = 40;
+        dataGridViewEeprom.Visible = false;
+        dataGridViewEeprom.CellFormatting += dataGridView_CellFormatting;
+        dataGridViewEeprom.CellValidating += dataGridView_CellValidating;
+        dataGridViewEeprom.EditingControlShowing += dataGridView_EditingControlShowing;
+        // 
+        // dataGridViewFlash
+        // 
+        dataGridViewFlash.AllowUserToAddRows = false;
+        dataGridViewFlash.AllowUserToDeleteRows = false;
+        dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
+        dataGridViewFlash.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+        dataGridViewFlash.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+        dataGridViewFlash.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+        dataGridViewFlash.BackgroundColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        dataGridViewFlash.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        dataGridViewFlash.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+        dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+        dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(5);
+        dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+        dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+        dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+        dataGridViewFlash.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+        dataGridViewFlash.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.GrayText;
+        dataGridViewCellStyle7.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(5, 2, 5, 2);
+        dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+        dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+        dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+        dataGridViewFlash.DefaultCellStyle = dataGridViewCellStyle7;
+        dataGridViewFlash.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+        dataGridViewFlash.EnableHeadersVisualStyles = false;
+        dataGridViewFlash.GridColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        dataGridViewFlash.Location = new System.Drawing.Point(472, 76);
+        dataGridViewFlash.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+        dataGridViewFlash.MultiSelect = false;
+        dataGridViewFlash.Name = "dataGridViewFlash";
+        dataGridViewFlash.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+        dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+        dataGridViewCellStyle8.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ButtonFace;
+        dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(45, 45, 48);
+        dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+        dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+        dataGridViewFlash.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+        dataGridViewFlash.RowHeadersWidth = 100;
+        dataGridViewFlash.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+        dataGridViewFlash.ShowEditingIcon = false;
+        dataGridViewFlash.Size = new System.Drawing.Size(405, 364);
+        dataGridViewFlash.TabIndex = 40;
+        dataGridViewFlash.Visible = false;
+        dataGridViewFlash.CellFormatting += dataGridView_CellFormatting;
+        dataGridViewFlash.CellValidating += dataGridView_CellValidating;
+        dataGridViewFlash.EditingControlShowing += dataGridView_EditingControlShowing;
         // 
         // FormNodeGeneralSettingsMemory
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
+        BackColor = System.Drawing.Color.Black;
         ClientSize = new System.Drawing.Size(1000, 600);
-        Controls.Add(dataGridView1);
+        Controls.Add(dataGridViewFlash);
+        Controls.Add(dataGridViewEeprom);
         Controls.Add(panelTop);
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         Name = "FormNodeGeneralSettingsMemory";
@@ -248,7 +311,8 @@ partial class FormNodeGeneralSettingsMemory
         FormClosing += FormNodeSettingsMemory_FormClosing;
         Load += FormNodeSettingsMemory_Load;
         panelTop.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewEeprom).EndInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewFlash).EndInit();
         ResumeLayout(false);
     }
 
@@ -261,5 +325,6 @@ partial class FormNodeGeneralSettingsMemory
     private System.Windows.Forms.Button btnOpenFile;
     private System.Windows.Forms.Button btnWrite;
     private System.Windows.Forms.Button btnFlash;
-    private System.Windows.Forms.DataGridView dataGridView1;
+    private System.Windows.Forms.DataGridView dataGridViewEeprom;
+    private System.Windows.Forms.DataGridView dataGridViewFlash;
 }
