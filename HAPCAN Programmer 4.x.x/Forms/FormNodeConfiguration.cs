@@ -57,7 +57,7 @@ public partial class FormNodeConfiguration : Form
     //create temporary node and clone all properties that are used in configuration
     private void CreateTempNode()
     {
-        _tempNode = new HapcanNode();
+        _tempNode = HapcanNodeFactory.CreateHapcanNode(_node.HardwareVersion);
         //clone memory
         _node.Eeprom.CopyTo(_tempNode.Eeprom, 0);
         _node.Flash.CopyTo(_tempNode.Flash, 0);

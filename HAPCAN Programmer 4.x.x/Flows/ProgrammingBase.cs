@@ -1,6 +1,7 @@
 ﻿using Hapcan.General;
 using Hapcan.Messages;
 using System;
+using System.Drawing.Printing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,11 +37,11 @@ public abstract class ProgrammingBase
     {
         _reportProgress();
     }
-
    
-    public abstract Task<int> GetFirmwareRevision();
-    public abstract Task ChangeNodeName(string name);
-    public abstract Task ChangeNodeId(byte node, byte group);
+
+    public abstract Task<int> GetFirmwareRevisionAsync();
+    public abstract Task ChangeNodeNameAsync(string name);
+    public abstract Task ChangeNodeIdAsync(byte node, byte group);
     protected abstract void CheckReadWriteAddress(int addrFrom, int addrTo);
     protected abstract int BypassUnusedAddress(int addr);
     protected abstract void CheckEraseAddress(int addrFrom, int addrTo);
@@ -118,7 +119,7 @@ public abstract class ProgrammingBase
     }
 
 
-    //SIMPLE READING
+    //SIMPLE READING - 0x01
     protected async Task ReadAsync(int addrFrom, int addrTo, CancellationTokenSource cts)
     {
         CheckReadWriteAddress(addrFrom, addrTo);
@@ -177,7 +178,7 @@ public abstract class ProgrammingBase
             ReportProgress();
         }
     }
-    //SIMPLE WRITING
+    //SIMPLE WRITING - 0x02
     protected async Task WriteAsync(byte[] buffer, int addrFrom, int addrTo, CancellationTokenSource cts)
     {
         CheckReadWriteAddress(addrFrom, addrTo);
@@ -232,13 +233,12 @@ public abstract class ProgrammingBase
             if ((addrTo - _addr) < 8)                   //at the end update to last processed address
                 _addr += 7;
             BytesWritten += 8;                          //number processed bytes
-            Cycles++;                                  //numver of processed read cycles
-            //ProgrammingProgress?.Invoke(this);              //raise event
+            Cycles++;                                   //number of processed read cycles
             ReportProgress();
         }
     }
-    //SIMPLE EARSING
-    protected async Task EraseAsync(int addrFrom, int addrTo, bool invoke, CancellationTokenSource cts)
+    //SIMPLE EARSING - 0x03
+    protected async Task EraseAsync(int pageSize, int addrFrom, int addrTo, bool report, CancellationTokenSource cts)
     {
         CheckEraseAddress(addrFrom, addrTo);
 
@@ -249,7 +249,7 @@ public abstract class ProgrammingBase
         using var receiver = new ResponseReceiver(_conn, false);
 
         //erase memory
-        for (_addr = addrFrom; _addr < addrTo; _addr += 64)
+        for (_addr = addrFrom; _addr < addrTo; _addr += pageSize)
         {
             //skip unused addresses
             _addr = BypassUnusedAddress(_addr);
@@ -277,7 +277,7 @@ public abstract class ProgrammingBase
                     //check data
                     for (int j = 0; j < 8; j++)
                     {
-                        if (data[j] != 0xFF)  //all bytes must be 0xFF
+                        if (data[j] != 0xFF)            //all bytes must be 0xFF
                         {
                             result = false;
                             break;
@@ -295,17 +295,72 @@ public abstract class ProgrammingBase
             if (cts.Token.IsCancellationRequested)
                 break;
             //report progress
-            if ((addrTo - _addr) < 64)                  //at the end update to last processed address
+            if ((addrTo - _addr) < pageSize)            //at the end update to last processed address
                 _addr--;
-            BytesErased += 64;                          //number processed bytes
-            Cycles++;                                  //number of processed read cycles
-            if (invoke)
-//                ProgrammingProgress?.Invoke(this);              //raise event
-            ReportProgress();
+            BytesErased += pageSize;                    //number processed bytes
+            Cycles++;                                   //number of processed read cycles
+            if (report)
+                ReportProgress();
         }
 
     }
+    //ERASING FIRMWARE - 0x04, ERASING DATA - 0x05
+    protected async Task EraseFirmwareDataAsync(int addrFrom, int addrTo, byte command, bool report)
+    {
+        //make sure there is a programming mode
+        await EnterProgrammingAsync();
 
+        //start receiving now
+        using var receiver = new ResponseReceiver(_conn, false);
+
+        //erase memory
+        _addr = addrFrom;
+        //address frame repeat a few times if necessary
+        bool result = false;
+        for (int i = 0; i < 3; i++)
+        {
+            if (await ProcessAddressFrameAsync(receiver, Address, command))
+            {
+                result = true;
+                break;
+            }
+        }
+        if (result == false)                        //exit if address frame failed
+            throw new TimeoutException("Node didn't respond to 0x030 frame while erasing firmware");
+
+        //data frame repeat a few times if necessary
+        result = false;
+        for (int i = 0; i < 3; i++)
+        {
+            var data = await ProcessEraseDataFrameAsync(receiver);
+            if (data != null)
+            {
+                //check data
+                for (int j = 0; j < 8; j++)
+                {
+                    if (data[j] != 0xFF)            //all bytes must be 0xFF
+                    {
+                        result = false;
+                        break;
+                    }
+                    else
+                        result = true;
+                }
+                break;
+            }
+        }
+        if (result == false)                        //exit if address frame failed
+            throw new TimeoutException("Node didn't respond to 0x040 frame while erasing firmware");
+
+
+        //report progress
+        _addr = addrTo;
+        BytesErased += addrTo- addrFrom;            //number processed bytes
+        Cycles++;                                   //number of processed read cycles
+        if (report)
+            ReportProgress();
+    }
+ 
 
     //ADDRESS FRAME
     private async Task<bool> ProcessAddressFrameAsync(ResponseReceiver receiver, int address, byte command)

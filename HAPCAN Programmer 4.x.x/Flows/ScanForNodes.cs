@@ -73,7 +73,7 @@ public class ScanForNodes
                     //get node channels
                     await ScanForChannels.CreateChannelsFromBusAsync(rcv, node, cts);
                     //get information from firmware configs
-                    HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
+                    HapcanFirmwareConfig.UpdateNodeFromFirmwareConfigs(node);
 
                     _nodeList.Add(node);
 
@@ -107,14 +107,15 @@ public class ScanForNodes
         foreach (var frame in frameList)
         {
             var msg = new Msg104_HardwareTypeResponse(frame);
-            var node = new HapcanNode(msg.SerialNumber)
-            {
-                Subnet = _subnet,
-                NodeNumber = msg.NodeNumber,
-                GroupNumber = msg.GroupNumber,
-                HardwareType = msg.HardwareType,
-                HardwareVersion = msg.HardwareVersion
-            };
+            var node = HapcanNodeFactory.CreateHapcanNode(msg.HardwareVersion);
+
+            node.SerialNumber = msg.SerialNumber;
+            node.Subnet = _subnet;
+            node.NodeNumber = msg.NodeNumber;
+            node.GroupNumber = msg.GroupNumber;
+            node.HardwareType = msg.HardwareType;
+        //    node.HardwareVersion = msg.HardwareVersion;
+
             _nodes.Add(node);
         }
         if (frameList.Count > 0)
@@ -126,20 +127,23 @@ public class ScanForNodes
     {
         //make sure all nodes are not in programming mode
         await _connection.SendAsync(new Msg020_ExitNodeFromProgramming(node.NodeNumber, node.GroupNumber).GetFrame());
-        await Task.Delay(100);
+        await Task.Delay(_connection.Timeout + 100);
 
         //start receiving
         using var rcv = new ResponseReceiver(_connection, false);
 
         //check all groups and calculate response time
         var sr = new SystemRequest(_connection);
-        if (await sr.HardwareTypeRequest(rcv, node) == true)
+        var newNode = await sr.HardwareTypeRequest(rcv, node);
+        if (newNode != null)
         {
             node.Status = HapcanNode.NodeStatus.Active;
             await sr.FirmwareVersionRequest(rcv, node);
             await sr.VoltageRequest(rcv, node);
             await sr.DescriptionRequest(rcv, node);
             await sr.UptimeRequest(rcv, node);
+            //get information from firmware configs
+            HapcanFirmwareConfig.UpdateNodeFromFirmwareConfigs(newNode);
             return true;
         }
         else

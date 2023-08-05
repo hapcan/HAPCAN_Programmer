@@ -50,6 +50,7 @@ public partial class FormNodeGeneralSettingsMemory : Form
                 //show grid
                 LoadGrid(dataGridViewEeprom, _newEeprom);
                 LoadGrid(dataGridViewFlash, _newFlash);
+                btnEeprom_Click(null,null);
                 //update form
                 EnableButtons();
             }
@@ -125,9 +126,9 @@ public partial class FormNodeGeneralSettingsMemory : Form
     private string GridAddress(byte[] memory, int adr)
     {
         if (memory == _newEeprom)
-            return "0x" + (0xF00000 + adr).ToString("X6");
+            return "0x" + (_node.EepromFirstAddress + adr).ToString("X6");
         else if (memory == _newFlash)
-            return "0x" + (0x008000 + adr).ToString("X6");
+            return "0x" + (_node.FlashFirstDataAddress + adr).ToString("X6");
         else
             return "0x" + (adr).ToString("X6");
     }
@@ -240,6 +241,7 @@ public partial class FormNodeGeneralSettingsMemory : Form
             //show grid
             LoadGrid(dataGridViewFlash, _newFlash);
             LoadGrid(dataGridViewEeprom, _newEeprom);
+            btnEeprom_Click(null, null);
         }
         prg.Dispose();
     }
@@ -276,7 +278,7 @@ public partial class FormNodeGeneralSettingsMemory : Form
             openFileDialog.Filter = "HAPCAN node configuration file (*.hac)|*.hac|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var cf = new HapcanNodeConfigFile();
+                var cf = new HapcanNodesConfigFile();
                 var memory = await cf.OpenMemoryConfigFromFile(openFileDialog.FileName);
                 _newEeprom = memory.Eeprom;
                 _newFlash = memory.Flash;
@@ -306,7 +308,7 @@ public partial class FormNodeGeneralSettingsMemory : Form
             saveFileDialog.FileName = Path.GetFileName(hacFileName);
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var cf = new HapcanNodeConfigFile();
+                var cf = new HapcanNodesConfigFile();
                 cf.SaveMemoryConfigToFile(_node.SerialNumber, _newEeprom, _newFlash, saveFileDialog.FileName);
                 Logger.Log("Info", String.Format("The node memory configuration file '{0}' has been saved", saveFileDialog.FileName));
             }
@@ -326,13 +328,13 @@ public partial class FormNodeGeneralSettingsMemory : Form
         for (int i = 0; i < _newEeprom.Length; i++)
         {
             if (_node.Eeprom[i] != _newEeprom[i])
-                return i + 0xF00000;
+                return i + _node.EepromFirstAddress;
         }
         //flash
         for (int i = 0; i < _newFlash.Length; i++)
         {
             if (_node.Flash[i] != _newFlash[i])
-                return i + 0x8000;
+                return i + _node.FlashFirstDataAddress;
         }
         return -1;
     }
@@ -344,10 +346,10 @@ public partial class FormNodeGeneralSettingsMemory : Form
         if (adr != -1)
         {
             string msg = "Address changed: 0x" + adr.ToString("X6");
-            if (adr >= 0xF00000)
-                msg += ", new value: 0x" + _newEeprom[adr - 0xF00000].ToString("X2") + ", old value: 0x" + _node.Eeprom[adr - 0xF00000].ToString("X2");
+            if (adr >= _node.EepromFirstAddress)
+                msg += $", new value: 0x{_newEeprom[adr - _node.EepromFirstAddress]:X2}, old value: 0x{_node.Eeprom[adr - _node.EepromFirstAddress]:X2}";
             else
-                msg += ", new value: 0x" + _newFlash[adr - 0x8000].ToString("X2") + ", old value: 0x" + _node.Flash[adr - 0x8000].ToString("X2");
+                msg += $", new value: 0x{_newFlash[adr - _node.FlashFirstDataAddress]:X2}, old value: 0x{_node.Flash[adr - _node.FlashFirstDataAddress]:X2}";
             if (MessageBox.Show("Memory has changed. Do you want to exit anyway?\n" + msg,
                 Application.ProductName, MessageBoxButtons.YesNo) == DialogResult.No)
             {

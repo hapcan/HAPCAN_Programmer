@@ -15,7 +15,7 @@ public class ResponseReceiver : IDisposable
     bool _calculateResponseTime;             //measure real response time and use it as a timeout - it speeds up receiving next frames
 
     /// <summary>
-    /// Receives response HAPCAN frames from the bus
+    /// Receives responses to HAPCAN frames from the bus
     /// </summary>
     /// <param name="connection">Connection to interface object</param>
     /// <param name="calculateResponseTime">If true then the real real response time will be calculated and used as timeout for the next receiving. If false the Connection timeout is used.</param>

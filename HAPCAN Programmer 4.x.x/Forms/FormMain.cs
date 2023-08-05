@@ -104,7 +104,7 @@ public partial class FormMain : FormBase
         {
             try
             {
-                HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
+                HapcanFirmwareConfig.UpdateNodeFromFirmwareConfigs(node);
                 ScanForChannels.CreateChannelsFromFlash(node);
             }
             catch (Exception ex)

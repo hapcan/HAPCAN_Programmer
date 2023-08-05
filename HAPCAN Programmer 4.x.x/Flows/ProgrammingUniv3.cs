@@ -1,8 +1,9 @@
-﻿using Hapcan.General;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Security.Cryptography.Xml;
+using Hapcan.General;
 
 namespace Hapcan.Flows;
 
@@ -108,7 +109,7 @@ public class ProgrammingUniv3 : ProgrammingBase
                 return;
         }
 
-        //move flash buffer by 0x8000
+        //move flash buffer by 0x8000 to data section
         var movedFlashBuffer = new byte[0x10000];
         Buffer.BlockCopy(flashBuffer, 0, movedFlashBuffer, 0x8000, 0x8000);
 
@@ -120,7 +121,7 @@ public class ProgrammingUniv3 : ProgrammingBase
             {
                 if (_node.Flash[i] != flashBuffer[i])                   //any difference in block of 64 bytes?
                 {
-                    await EraseAsync(adr + 0x8000, adr + 0x8000 + 63, false, cts);  //erase that block
+                    await EraseAsync(64, adr + 0x8000, adr + 0x8000 + 63, false, cts);  //erase that block
                     Buffer.BlockCopy(flashBuffer, adr, _node.Flash, adr, 64);      //update node memory block
 
                     //write in 8byte blocks
@@ -155,7 +156,7 @@ public class ProgrammingUniv3 : ProgrammingBase
         if (firmBuffer == null)
             throw new ArgumentException("Buffer with data to be written can't be null.");
         if (firmBuffer.Length != 0x10000)
-            throw new ArgumentException("Buffer size is incorrect.");
+            throw new ArgumentException($"Buffer size is incorrect. Expected 0x010000, given 0x{firmBuffer.Length:X6}");
 
         //check last data address
         int lastAddress = 0;
@@ -167,23 +168,26 @@ public class ProgrammingUniv3 : ProgrammingBase
         lastAddress += (7 - lastAddress % 8);                   //adjust address to 8-byte block
 
         //get number of all cycles
-        _totalCycles = 448 + (lastAddress - 0x1000) / 8 + 1;    //448 for erasing + writing
+        _totalCycles = 448 + (lastAddress + 1 - 0x1000) / 8;    //448 for erasing + writing
 
         //process firmware writing
         for (int i = 0x1000; i < 0x8000; i += 64)
         {
             //erase block
-            await EraseAsync(i, i + 63, false, cts);
+            await EraseAsync(64, i, i + 63, false, cts);
 
             //write block
             if (i < lastAddress)
             {
                 for (int j = i; j < i + 64; j += 8)
                 {
-                    await WriteAsync(firmBuffer, j, j + 7, cts);
-                    //exit if requested
-                    if (cts.Token.IsCancellationRequested)
-                        break;
+                    if (j < lastAddress)
+                    {
+                        await WriteAsync(firmBuffer, j, j + 7, cts);
+                        //exit if requested
+                        if (cts.Token.IsCancellationRequested)
+                            break;
+                    }
                 }
             }
             else
@@ -202,7 +206,7 @@ public class ProgrammingUniv3 : ProgrammingBase
         await sr.FirmwareVersionRequest(_node);
     }
 
-    public override async Task<int> GetFirmwareRevision()
+    public override async Task<int> GetFirmwareRevisionAsync()
     {
         //read flash memory cells with revision number
         await ReadAsync(0x1010, 0x1017, new System.Threading.CancellationTokenSource());
@@ -210,7 +214,7 @@ public class ProgrammingUniv3 : ProgrammingBase
         await ExitProgrammingAsync();
         return Data[0x1016] * 256 + Data[0x1017];
     }
-    public override async Task ChangeNodeName(string name)
+    public override async Task ChangeNodeNameAsync(string name)
     {
         //get description
         byte[] bytes = Encoding.UTF8.GetBytes(name);
@@ -225,7 +229,7 @@ public class ProgrammingUniv3 : ProgrammingBase
         //change node description
         _node.Name = name;
     }
-    public override async Task ChangeNodeId(byte node, byte group)
+    public override async Task ChangeNodeIdAsync(byte node, byte group)
     {
         //position id in eeprom buffer
         var buffer = new byte[0x28];

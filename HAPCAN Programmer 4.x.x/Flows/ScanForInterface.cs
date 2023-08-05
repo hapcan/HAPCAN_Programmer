@@ -23,7 +23,7 @@ public class ScanForInterface
 
     public async Task<HapcanNode> GetInterfaceAsync()
     {
-        var node = new HapcanNode();
+        var node = HapcanNodeFactory.CreateHapcanNode(0);
         node.Interface = true;
         node.Subnet = _subnet;
 
@@ -37,22 +37,23 @@ public class ScanForInterface
     {
         //make sure interface is not in programming mode
         await _connection.SendAsync(new IntMsg020_ExitInterfaceFromProgramming().GetFrame());
-        await Task.Delay(100);
+        await Task.Delay(_connection.Timeout + 100);
 
         //start receiving
         using var rcv = new ResponseReceiver(_connection, false);
 
         //request interface
         var sr = new SystemRequest(_connection);
-        if (await sr.HardwareTypeRequest(rcv, node) == true)
+        var newNode = await sr.HardwareTypeRequest(rcv, node);
+        if (newNode != null)
         {
-            node.Status = HapcanNode.NodeStatus.Active;
-            await sr.FirmwareVersionRequest(rcv, node);
-            await sr.VoltageRequest(rcv, node);
-            await sr.DescriptionRequest(rcv, node);
-            await sr.UptimeRequest(rcv, node);
+            newNode.Status = HapcanNode.NodeStatus.Active;
+            await sr.FirmwareVersionRequest(rcv, newNode);
+            await sr.VoltageRequest(rcv, newNode);
+            await sr.DescriptionRequest(rcv, newNode);
+            await sr.UptimeRequest(rcv, newNode);
             //get information from firmware configs
-            HapcanFirmwareConfig.UpdateNodeFromConfigs(node);
+            HapcanFirmwareConfig.UpdateNodeFromFirmwareConfigs(newNode);
             return true;
         }
         else

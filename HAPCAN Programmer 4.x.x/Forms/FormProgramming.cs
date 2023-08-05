@@ -154,7 +154,7 @@ public partial class FormProgramming : FormProgress
         }
         else
         {
-            Info1 = string.Format("Current address: 0x{0:X6} ({1})", prg.Address, prg.Address >= 0xF00000 ? "eeprom" : "flash");
+            Info1 = string.Format("Current address: 0x{0:X6} ({1})", prg.Address, prg.Address >= 0x020000 ? "eeprom" : "flash");
             Info2 = string.Format("Bytes read: {0} ({1:N2} kB)", prg.BytesRead, (float)prg.BytesRead / 1024);
             Info3 = string.Format("Bytes erased: {0} ({1:N2} kB)", prg.BytesErased, (float)prg.BytesErased / 1024);
             Info4 = string.Format("Bytes written: {0} ({1:N2} kB)", prg.BytesWritten, (float)prg.BytesWritten / 1024);

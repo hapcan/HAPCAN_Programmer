@@ -103,7 +103,7 @@ public class HapcanFirmwareConfig
     /// Updates node properties from matched firmware config
     /// </summary>
     /// <param name="node">Node to be updated</param>
-    public static void UpdateNodeFromConfigs(HapcanNode node)
+    public static void UpdateNodeFromFirmwareConfigs(HapcanNode node)
     {
         //find if firmware config exists
         var cfg = GetMatched(node);

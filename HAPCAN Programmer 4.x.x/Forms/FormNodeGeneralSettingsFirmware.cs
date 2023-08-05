@@ -79,14 +79,21 @@ public partial class FormNodeGeneralSettingsFirmware : Form
                 textFirmFile.Text = _fileName;
 
                 //read the contents of the file
-                var ff = new HapcanNodeFirmwareFile();
+                var ff = new HapcanNodesFirmwareFile();
                 _fileBuffer = await ff.ReadFirmwareFileAsync(_fileName);
 
                 //update form
                 _fileFirmVersion = ff.GetTextedFileFirmwareVersionRevision(_fileBuffer);
                 textFirmVer.Text = _fileFirmVersion;
-                btnUpload.Enabled = true;
                 textCurFirm.Text = await GetTextedCurrentFirmwareVersionRevision();
+                if (ff.Processor == _node.Processor)
+                {
+                    btnUpload.Enabled = true;
+                }
+                else
+                {
+                    textFirmVer.Text += " - not compatible processor.";
+                }
             }
         }
         catch (Exception ex)

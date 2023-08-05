@@ -7,9 +7,13 @@ using System.Xml.Serialization;
 
 namespace Hapcan.General;
 
-public class HapcanNode : INotifyPropertyChanged
+[XmlInclude(typeof(HapcanNodeUniv1))]       //include delivered classes when serialize objects
+[XmlInclude(typeof(HapcanNodeUniv2))]
+[XmlInclude(typeof(HapcanNodeUniv3))]
+[XmlInclude(typeof(HapcanNodeUniv4))]
+public abstract class HapcanNode : INotifyPropertyChanged
 {
-    
+
     //FIELDS
     private bool _interface;
     private int _hardwareType;
@@ -31,8 +35,6 @@ public class HapcanNode : INotifyPropertyChanged
     private string _fullFirmwareVersion = "";
     private string _fullBootloaderVersion;
     private string _firmwareDescription = "";
-    private byte[] _eeprom = new byte[0x400];
-    private byte[] _flash = new byte [0x8000];
     private BindingList<HapcanChannel> _channels = new BindingList<HapcanChannel>();
 
 
@@ -47,16 +49,23 @@ public class HapcanNode : INotifyPropertyChanged
     }
 
     //CONSTRUCTORS
-    public HapcanNode()
-    {
-    }
+    //public HapcanNode()
+    //{
+    //}
 
-    public HapcanNode(int serial) : this()
+    public HapcanNode(byte hardVer) // : this()
     {
-        SerialNumber = serial;
+        HardwareVersion = hardVer;
     }
 
     //PROPERTIES
+
+    #region abstract properties
+    public abstract int EepromFirstAddress { get; }
+    public abstract int FlashFirstDataAddress { get; }
+    #endregion
+
+
     #region serializable properties
 
     [XmlAttribute("Intf")]
@@ -84,7 +93,7 @@ public class HapcanNode : INotifyPropertyChanged
             }
         }
     }
-    
+
     [XmlAttribute("HType")]
     [Browsable(false)]
     public int HardwareType
@@ -93,18 +102,6 @@ public class HapcanNode : INotifyPropertyChanged
         set
         {
             _hardwareType = value;
-            SetFullHardwareVersion();
-        }
-    }
-
-    [XmlAttribute("HVer")]
-    [Browsable(false)]
-    public byte HardwareVersion
-    {
-        get { return _hardwareVersion; }
-        set
-        {
-            _hardwareVersion = value;
             SetFullHardwareVersion();
         }
     }
@@ -183,30 +180,28 @@ public class HapcanNode : INotifyPropertyChanged
 
     [XmlAttribute("Eeprom")]
     [Browsable(false)]
-    public byte[] Eeprom
-    {
-        get { return _eeprom; }
-        set
-        {
-            _eeprom = value;
-            SetFullNodeGroupNumber();   //init _fullNodeGroupNumber
-        }
-    }
+    public abstract byte[] Eeprom { get; set; }
+
     [XmlAttribute("Flash")]
     [Browsable(false)]
-    public byte[] Flash
-    {
-        get { return _flash; }
-        set 
-        {
-            _flash = value;
-        }
-    }
+    public abstract byte[] Flash { get; set; }
+
     #endregion
 
 
     #region notifying property
 
+    [XmlIgnore]
+    [Browsable(false)]
+    public byte HardwareVersion
+    {
+        get { return _hardwareVersion; }
+        private set
+        {
+            _hardwareVersion = value;
+            SetFullHardwareVersion();
+        }
+    }
     [XmlIgnore]
     public string Name
     {
@@ -227,7 +222,7 @@ public class HapcanNode : INotifyPropertyChanged
             //position name in memory
             Array.Fill<byte>(Eeprom, 0, 0x30, 16);
             for (int i = 0; i < bytes.Length && i < 16; i++)
-                Eeprom[0x30 + i] = (byte)bytes[i];
+                Eeprom[0x30 + i] = bytes[i];
             //notify
             if (_name != value)
             {
@@ -250,9 +245,9 @@ public class HapcanNode : INotifyPropertyChanged
             }
         }
     }
-    
+
     [XmlIgnore]
-    public string Uptime 
+    public string Uptime
     {
         get { return _uptime; }
         set
@@ -377,11 +372,11 @@ public class HapcanNode : INotifyPropertyChanged
     {
         get
         {
-            return _channels; 
+            return _channels;
         }
         set
         {
-          //  if (_channels != value)       to allow forcing property changed event
+            //  if (_channels != value)       to allow forcing property changed event
             {
                 _channels = value;
                 NotifyPropertyChanged();
@@ -412,7 +407,7 @@ public class HapcanNode : INotifyPropertyChanged
             //position notes in memory
             Array.Fill<byte>(Flash, 0, NotesAdr, 1024);
             for (int i = 0; i < bytes.Length && i < 1024; i++)
-                Flash[NotesAdr + i] = (byte)bytes[i];
+                Flash[NotesAdr + i] = bytes[i];
             //notify
             if (_notes != value)
             {
@@ -463,11 +458,34 @@ public class HapcanNode : INotifyPropertyChanged
         }
     }
 
+    [XmlIgnore]
+    [Browsable(false)]
+    public Proc Processor
+    {
+        get
+        {
+            if (HardwareVersion == 1 || HardwareVersion == 2)
+                return Proc.PIC18F2580;
+            else if (HardwareVersion == 3)
+                return Proc.PIC18F26K80;
+            else if (HardwareVersion == 4)
+                return Proc.PIC18F27Q83;
+            else
+                return Proc.unknown;
+        }
+    }
+    public enum Proc
+    {
+        unknown,
+        PIC18F2580,
+        PIC18F26K80,
+        PIC18F27Q83
+    }
     #endregion
 
 
     //METHODS
-    private void SetFullNodeGroupNumber()
+    protected void SetFullNodeGroupNumber()
     {
         if (Interface)
             FullNodeGroupNumber = "Interface";
@@ -480,7 +498,7 @@ public class HapcanNode : INotifyPropertyChanged
     }
     private void SetFullFirmwareVersion()
     {
-        if (this.Interface)
+        if (Interface)
         {
             if (FirmwareError == 0x00)
                 FullFirmwareVersion = new IntMsg106_FirmwareTypeResponse(this).GetFullFirmwareVersion();

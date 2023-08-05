@@ -29,11 +29,20 @@ public partial class FormScan : FormProgress
         _cts = new CancellationTokenSource();
     }
 
-    private async void FormScan_Load(object sender, EventArgs e)
+    private void FormScan_Load(object sender, EventArgs e)
     {
+        //load form content in 100ms
+        Invoke(LoadDelayed);
+    }
+
+    private async void LoadDelayed()
+    {
+        await Task.Delay(100).ConfigureAwait(true);
+
         //start scanning for interface
         Title = "Scanning for interface...";
         Logger.Log("Nodes", "Scanning for interface...");
+        _subnet.NodeList.Clear();
         var scanInt = new ScanForInterface(_subnet);
         _interfaceNode = await scanInt.GetInterfaceAsync();
 
@@ -49,14 +58,13 @@ public partial class FormScan : FormProgress
             //show interface in grid
             Info2 = "Interface found.";
             Logger.Log("Nodes", "Interface found.");
-            _subnet.NodeList.Clear();
-            _subnet.NodeList.Add(_interfaceNode);                           //insert interface to list
+
 
             //start scanning for other nodes
             Logger.Log("Nodes", String.Format("Scanning for nodes in groups {0}-{1}...", _subnet.Connection.GroupFrom, _subnet.Connection.GroupTo));
             _scanNodes = new ScanForNodes(_subnet);
             _scanNodes.ScanForNodesProgress += ScanForNodesProgress;        //subscribe to progress event
-            await _scanNodes.GetNodesAsync(_cts);                           //start scaning task
+            await _scanNodes.GetNodesAsync(_cts);                           //start scanning task
             _scanNodes.ScanForNodesProgress -= ScanForNodesProgress;        //unsubscribe progress event
 
             //finish up

@@ -73,7 +73,7 @@ namespace Hapcan.Programmer.Forms
             panelTop.Location = new System.Drawing.Point(0, 0);
             panelTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTop.Name = "panelTop";
-            panelTop.Size = new System.Drawing.Size(1167, 35);
+            panelTop.Size = new System.Drawing.Size(1200, 35);
             panelTop.TabIndex = 1;
             // 
             // panelSearch
@@ -85,7 +85,7 @@ namespace Hapcan.Programmer.Forms
             panelSearch.Location = new System.Drawing.Point(150, 0);
             panelSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelSearch.Name = "panelSearch";
-            panelSearch.Size = new System.Drawing.Size(461, 35);
+            panelSearch.Size = new System.Drawing.Size(486, 35);
             panelSearch.TabIndex = 13;
             // 
             // panelSearchText
@@ -97,7 +97,7 @@ namespace Hapcan.Programmer.Forms
             panelSearchText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelSearchText.Name = "panelSearchText";
             panelSearchText.Padding = new System.Windows.Forms.Padding(6);
-            panelSearchText.Size = new System.Drawing.Size(426, 35);
+            panelSearchText.Size = new System.Drawing.Size(451, 35);
             panelSearchText.TabIndex = 9;
             // 
             // textBoxSearch
@@ -113,7 +113,7 @@ namespace Hapcan.Programmer.Forms
             textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.PlaceholderText = "Search";
-            textBoxSearch.Size = new System.Drawing.Size(414, 19);
+            textBoxSearch.Size = new System.Drawing.Size(439, 19);
             textBoxSearch.TabIndex = 5;
             textBoxSearch.TextChanged += textBoxSearch_TextChanged;
             // 
@@ -150,9 +150,9 @@ namespace Hapcan.Programmer.Forms
             panelButtons.Controls.Add(btnNodeGeneralSettings);
             panelButtons.Controls.Add(btnScan);
             panelButtons.Dock = System.Windows.Forms.DockStyle.Right;
-            panelButtons.Location = new System.Drawing.Point(611, 0);
+            panelButtons.Location = new System.Drawing.Point(636, 0);
             panelButtons.Name = "panelButtons";
-            panelButtons.Size = new System.Drawing.Size(556, 35);
+            panelButtons.Size = new System.Drawing.Size(564, 35);
             panelButtons.TabIndex = 12;
             // 
             // btnNodeControl
@@ -164,7 +164,7 @@ namespace Hapcan.Programmer.Forms
             btnNodeControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnNodeControl.ForeColor = System.Drawing.SystemColors.ButtonFace;
             btnNodeControl.Image = (System.Drawing.Image)resources.GetObject("btnNodeControl.Image");
-            btnNodeControl.Location = new System.Drawing.Point(57, 0);
+            btnNodeControl.Location = new System.Drawing.Point(1, 0);
             btnNodeControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNodeControl.Name = "btnNodeControl";
             btnNodeControl.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -184,7 +184,7 @@ namespace Hapcan.Programmer.Forms
             btnNodeRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnNodeRefresh.ForeColor = System.Drawing.SystemColors.ButtonFace;
             btnNodeRefresh.Image = (System.Drawing.Image)resources.GetObject("btnNodeRefresh.Image");
-            btnNodeRefresh.Location = new System.Drawing.Point(382, 0);
+            btnNodeRefresh.Location = new System.Drawing.Point(390, 0);
             btnNodeRefresh.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNodeRefresh.Name = "btnNodeRefresh";
             btnNodeRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -204,7 +204,7 @@ namespace Hapcan.Programmer.Forms
             btnNodeReboot.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnNodeReboot.ForeColor = System.Drawing.SystemColors.ButtonFace;
             btnNodeReboot.Image = (System.Drawing.Image)resources.GetObject("btnNodeReboot.Image");
-            btnNodeReboot.Location = new System.Drawing.Point(295, 0);
+            btnNodeReboot.Location = new System.Drawing.Point(303, 0);
             btnNodeReboot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNodeReboot.Name = "btnNodeReboot";
             btnNodeReboot.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -224,13 +224,13 @@ namespace Hapcan.Programmer.Forms
             btnNodeGeneralSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnNodeGeneralSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             btnNodeGeneralSettings.Image = (System.Drawing.Image)resources.GetObject("btnNodeGeneralSettings.Image");
-            btnNodeGeneralSettings.Location = new System.Drawing.Point(208, 0);
+            btnNodeGeneralSettings.Location = new System.Drawing.Point(152, 0);
             btnNodeGeneralSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNodeGeneralSettings.Name = "btnNodeGeneralSettings";
             btnNodeGeneralSettings.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            btnNodeGeneralSettings.Size = new System.Drawing.Size(86, 35);
+            btnNodeGeneralSettings.Size = new System.Drawing.Size(150, 35);
             btnNodeGeneralSettings.TabIndex = 13;
-            btnNodeGeneralSettings.Text = " General";
+            btnNodeGeneralSettings.Text = " General settings";
             btnNodeGeneralSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             btnNodeGeneralSettings.UseVisualStyleBackColor = false;
             btnNodeGeneralSettings.Click += btnNodeGeneralSettings_Click;
@@ -243,7 +243,7 @@ namespace Hapcan.Programmer.Forms
             btnScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnScan.ForeColor = System.Drawing.SystemColors.ButtonFace;
             btnScan.Image = (System.Drawing.Image)resources.GetObject("btnScan.Image");
-            btnScan.Location = new System.Drawing.Point(469, 0);
+            btnScan.Location = new System.Drawing.Point(477, 0);
             btnScan.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnScan.Name = "btnScan";
             btnScan.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
@@ -282,7 +282,7 @@ namespace Hapcan.Programmer.Forms
             panelContainer.Location = new System.Drawing.Point(0, 35);
             panelContainer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelContainer.Name = "panelContainer";
-            panelContainer.Size = new System.Drawing.Size(1167, 525);
+            panelContainer.Size = new System.Drawing.Size(1200, 525);
             panelContainer.TabIndex = 2;
             // 
             // dataGridView1
@@ -328,7 +328,7 @@ namespace Hapcan.Programmer.Forms
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowHeadersWidth = 50;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(1167, 512);
+            dataGridView1.Size = new System.Drawing.Size(1200, 512);
             dataGridView1.TabIndex = 6;
             dataGridView1.VirtualMode = true;
             dataGridView1.CellFormatting += dataGridView1_CellFormatting;
@@ -345,7 +345,7 @@ namespace Hapcan.Programmer.Forms
             textBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             textBottom.Name = "textBottom";
             textBottom.ReadOnly = true;
-            textBottom.Size = new System.Drawing.Size(1167, 13);
+            textBottom.Size = new System.Drawing.Size(1200, 13);
             textBottom.TabIndex = 5;
             // 
             // imageList1
@@ -363,7 +363,7 @@ namespace Hapcan.Programmer.Forms
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1167, 560);
+            ClientSize = new System.Drawing.Size(1200, 560);
             Controls.Add(panelContainer);
             Controls.Add(panelTop);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

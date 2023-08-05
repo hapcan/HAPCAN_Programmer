@@ -149,7 +149,7 @@ public partial class FormNetwork : Form
         if (e.Node == null)
             return;
 
-        //Select Nodes - Load FormNodes
+        //Select Top Nodes - Load FormNodes
         if (e.Node.Parent == null && e.Node.Index == 0)              //has no parent (it is top level) and it is first node of the tree
         {
             LoadContainer(new FormNodes(_project));
@@ -157,7 +157,7 @@ public partial class FormNetwork : Form
         //Select Node - Load FormChannels
         else if (e.Node.Parent.Parent == null &&                    //its parent has no parent (2nd level)
                  e.Node.Parent.Index == 0 &&                        //its parent is first node of the tree
-                 e.Node.Tag.GetType() == typeof(HapcanNode))        //it is HapcanNode type
+                 e.Node.Tag.GetType().BaseType == typeof(HapcanNode))        //it is HapcanNode type
         {
             var node = (HapcanNode)e.Node.Tag;                      //get HapcanNode
             if (node.Supported)

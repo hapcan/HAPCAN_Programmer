@@ -1,7 +1,7 @@
-﻿using Hapcan.General;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Threading;
+using Hapcan.General;
 
 namespace Hapcan.Flows;
 
@@ -94,7 +94,7 @@ public class Programming
     /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
     public async Task<int> GetFirmwareRevision()
     {
-        return await _prgmSub.GetFirmwareRevision();
+        return await _prgmSub.GetFirmwareRevisionAsync();
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public class Programming
     /// <exception cref="TimeoutException">Occurs when requested node doesn't respond.</exception>
     public async Task ChangeNodeName(string name)
     {
-        await _prgmSub.ChangeNodeName(name);
+        await _prgmSub.ChangeNodeNameAsync(name);
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public class Programming
     /// <returns></returns>
     public async Task ChangeNodeId(byte node, byte group)
     {
-        await _prgmSub.ChangeNodeId(node, group);
+        await _prgmSub.ChangeNodeIdAsync(node, group);
     }
 
 

@@ -1,8 +1,8 @@
-﻿using Hapcan.General;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Hapcan.General;
 
 namespace Hapcan.Flows;
 
@@ -57,7 +57,7 @@ public class ProgrammingUniv4 : ProgrammingBase
             flashTo = 0x1FFFF;
 
         //get number of all cycles
-        _totalCycles = (eepromTo - 8) / 8 + 1 + (flashTo - 0x17FFF) / 8 + 1;     //eeprom + flash reading
+        _totalCycles = (eepromTo - 8) / 8 + 1 + (flashTo - 0xFFFF) / 8 + 1;     //eeprom + flash reading
 
         //read eeprom
         if (eepromTo > 0x7)
@@ -108,23 +108,23 @@ public class ProgrammingUniv4 : ProgrammingBase
                 return;
         }
 
-        //move flash buffer by 0x8000
+        //move flash buffer by 0x10000 to data section
         var movedFlashBuffer = new byte[0x20000];
         Buffer.BlockCopy(flashBuffer, 0, movedFlashBuffer, 0x10000, 0x10000);
 
         //flash loop
-        for (int adr = 0; adr < 0x10000; adr += 64)                     //jump between 64byte blocks
+        for (int adr = 0; adr < 0x10000; adr += 256)                     //jump between 256byte blocks
         {
             //erase
-            for (int i = adr; i < adr + 64; i++)                        //check every byte in that block
+            for (int i = adr; i < adr + 256; i++)                        //check every byte in that block
             {
                 if (_node.Flash[i] != flashBuffer[i])                   //any difference in block of 64 bytes?
                 {
-                    await EraseAsync(adr + 0x10000, adr + 0x10000 + 63, false, cts);  //erase that block
-                    Buffer.BlockCopy(flashBuffer, adr, _node.Flash, adr, 64);      //update node memory block
+                    await EraseAsync(256, adr + 0x10000, adr + 0x10000 + 255, false, cts);  //erase that block
+                    Buffer.BlockCopy(flashBuffer, adr, _node.Flash, adr, 256);      //update node memory block
 
                     //write in 8byte blocks
-                    for (int subadr = adr; subadr < adr + 64; subadr += 8)          //jump eeprom in 8byte blocks
+                    for (int subadr = adr; subadr < adr + 256; subadr += 8)       //jump eeprom in 8byte blocks
                     {
                         for (int j = subadr; j < subadr + 8; j++)                 //check every byte in that block
                         {
@@ -154,8 +154,8 @@ public class ProgrammingUniv4 : ProgrammingBase
     {
         if (firmBuffer == null)
             throw new ArgumentException("Buffer with data to be written can't be null.");
-        if (firmBuffer.Length != 0x20000)
-            throw new ArgumentException("Buffer size is incorrect.");
+        if (firmBuffer.Length != 0x020000)
+            throw new ArgumentException($"Buffer size is incorrect. Expected 0x020000, given 0x{firmBuffer.Length:X6}");
 
         //check last data address
         int lastAddress = 0;
@@ -167,27 +167,16 @@ public class ProgrammingUniv4 : ProgrammingBase
         lastAddress += (7 - lastAddress % 8);                   //adjust address to 8-byte block
 
         //get number of all cycles
-        _totalCycles = 448 + (lastAddress - 0x2000) / 8 + 1;    //448 for erasing + writing
+        _totalCycles = 1 + (lastAddress + 1 - 0x2000) / 8;      //1 for erasing + writing
+
+        //erase firmware
+        await EraseFirmwareAsync(true);
 
         //process firmware writing
-        for (int i = 0x2000; i < 0x10000; i += 64)
+        for (int i = 0x2000; i < lastAddress; i += 8)
         {
-            //erase block
-            await EraseAsync(i, i + 63, false, cts);
-
             //write block
-            if (i < lastAddress)
-            {
-                for (int j = i; j < i + 64; j += 8)
-                {
-                    await WriteAsync(firmBuffer, j, j + 7, cts);
-                    //exit if requested
-                    if (cts.Token.IsCancellationRequested)
-                        break;
-                }
-            }
-            else
-                ReportProgress();  //update progress
+            await WriteAsync(firmBuffer, i, i + 7, cts);
 
             //exit if requested
             if (cts.Token.IsCancellationRequested)
@@ -198,11 +187,19 @@ public class ProgrammingUniv4 : ProgrammingBase
 
         //refresh node firmware version
         await Task.Delay(3000);                                 //let the node restart
-        var sr = new SystemRequest(_node.Subnet.Connection);                      //ask for firmware version
+        var sr = new SystemRequest(_node.Subnet.Connection);    //ask for firmware version
         await sr.FirmwareVersionRequest(_node);
     }
+    public async Task EraseFirmwareAsync(bool report)
+    {
+        await EraseFirmwareDataAsync(0x002000, 0x00FFFF, 0x04, true);
+    }
+    public async Task EraseDataAsync(bool report)
+    {
+        await EraseFirmwareDataAsync(0x010000, 0x01FFFF, 0x05, true);
+    }
 
-    public override async Task<int> GetFirmwareRevision()
+    public override async Task<int> GetFirmwareRevisionAsync()
     {
         //read flash memory cells with revision number
         await ReadAsync(0x2010, 0x2017, new System.Threading.CancellationTokenSource());
@@ -210,7 +207,7 @@ public class ProgrammingUniv4 : ProgrammingBase
         await ExitProgrammingAsync();
         return Data[0x2016] * 256 + Data[0x2017];
     }
-    public override async Task ChangeNodeName(string name)
+    public override async Task ChangeNodeNameAsync(string name)
     {
         //get description
         byte[] bytes = Encoding.UTF8.GetBytes(name);
@@ -225,7 +222,7 @@ public class ProgrammingUniv4 : ProgrammingBase
         //change node description
         _node.Name = name;
     }
-    public override async Task ChangeNodeId(byte node, byte group)
+    public override async Task ChangeNodeIdAsync(byte node, byte group)
     {
         //position id in eeprom buffer
         var buffer = new byte[0x28];
@@ -256,7 +253,7 @@ public class ProgrammingUniv4 : ProgrammingBase
     protected override void CheckEraseAddress(int addrFrom, int addrTo)
     {
         if (addrFrom >= 0x20000 || addrTo >= 0x20000 ||
-            addrFrom % 64 != 0 || addrTo % 64 != 63 || addrFrom >= addrTo)
+            addrFrom % 256 != 0 || addrTo % 256 != 255 || addrFrom >= addrTo)
             throw new ArgumentException($"Invalid erase memory range addresses (0x{addrFrom:X4} - 0x{addrTo:X4}).");
     }
     
@@ -276,14 +273,14 @@ public class ProgrammingUniv4 : ProgrammingBase
             }
         }
         //flash
-        for (int adr = 0; adr < 0x10000; adr += 64)                 //jump between 64 byte blocks
+        for (int adr = 0; adr < 0x10000; adr += 256)                //jump between 256 byte blocks
         {
-            for (int i = adr; i < adr + 64; i++)                    //check 64 byte block
+            for (int i = adr; i < adr + 256; i++)                    //check 256 byte block
             {
                 if (_node.Flash[i] != flashBuffer[i])               //any difference in block of 64 bytes?
                 {
                     cycles++;                                       //add 1 erasing
-                    for (int j = adr; j < adr + 64; j += 8)         //check 8 byte block if whole = 0xFF
+                    for (int j = adr; j < adr + 256; j += 8)        //check 8 byte block if whole = 0xFF
                     {
                         if (flashBuffer[j + 0] != 0xFF || flashBuffer[j + 1] != 0xFF || flashBuffer[j + 2] != 0xFF || flashBuffer[j + 3] != 0xFF //add 1 if any byte in block is different from 0xFF
                         || flashBuffer[j + 4] != 0xFF || flashBuffer[j + 5] != 0xFF || flashBuffer[j + 6] != 0xFF || flashBuffer[j + 7] != 0xFF)

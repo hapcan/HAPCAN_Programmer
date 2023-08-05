@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace Hapcan.General;
 
-internal class HapcanNodeFirmwareFile
+internal class HapcanNodesFirmwareFile
 {
+    public HapcanNode.Proc Processor { get; private set; }
+
     /// <summary>
     /// Initializes a new instance of the HapcanFirmwareFile class for the specified file name.
     /// </summary>
-    public HapcanNodeFirmwareFile()
+    public HapcanNodesFirmwareFile()
     {
     }
 
@@ -26,8 +28,8 @@ internal class HapcanNodeFirmwareFile
     public async Task<byte[]> ReadFirmwareFileAsync(string path)
     {
         //create buffer of hex and fill it
-        var fileBuffer = new byte[0x10000];
-        for (int i = 0; i < 0x10000; i++)
+        var fileBuffer = new byte[0x20000];
+        for (int i = 0; i < 0x20000; i++)
             fileBuffer[i] = 0xFF;
 
         try
@@ -68,13 +70,19 @@ internal class HapcanNodeFirmwareFile
                     }
                 }
             }
-            if (fileBuffer[0x1010] == 0xFF && fileBuffer[0x1011] == 0xFF &&
-                fileBuffer[0x1012] == 0xFF && fileBuffer[0x1013] == 0xFF &&
-                fileBuffer[0x1014] == 0xFF && fileBuffer[0x1015] == 0xFF &&
-                fileBuffer[0x1016] == 0xFF && fileBuffer[0x1017] == 0xFF)
+            if (fileBuffer[0x1010] != 0xFF && fileBuffer[0x1011] != 0xFF && fileBuffer[0x1012] == 3)        //UNIV3
             {
-                throw new ArgumentException("The input file is not a HAPCAN firmware file.");
+                Processor = HapcanNode.Proc.PIC18F26K80;
+                //reduce buffer size
+                Array.Resize(ref fileBuffer, 0x010000);
             }
+            else if (fileBuffer[0x2010] != 0xFF && fileBuffer[0x2011] != 0xFF && fileBuffer[0x2012] == 4)   //UNIV4
+            {
+                Processor = HapcanNode.Proc.PIC18F27Q83;
+            }
+            else
+                throw new ArgumentException("The input file is not a HAPCAN firmware file.");
+            
 
             return fileBuffer;
         }
@@ -91,12 +99,31 @@ internal class HapcanNodeFirmwareFile
     /// <returns>String of full firmware name with version and revision</returns>
     public string GetTextedFileFirmwareVersionRevision(byte[] fileBuffer)
     {
-        //create fake frame
-        var frame = new HapcanFrame(new byte[]{0xFF,0xFF,0xFF,0xFF,fileBuffer[0x1010], fileBuffer[0x1011], fileBuffer[0x1012], fileBuffer[0x1013],
+        HapcanFrame frame;
+        string version = String.Empty;
+        int revision;
+        if (Processor == HapcanNode.Proc.PIC18F26K80)
+        {
+            //create fake frame
+            frame = new HapcanFrame(new byte[]{0xFF,0xFF,0xFF,0xFF,fileBuffer[0x1010], fileBuffer[0x1011], fileBuffer[0x1012], fileBuffer[0x1013],
                                            fileBuffer[0x1014], fileBuffer[0x1015], fileBuffer[0x1016], fileBuffer[0x1017] }, HapcanFrame.FrameSource.PcToCanbus);
-        //to get version from Msg105 message
-        var version = new Msg106_FirmwareTypeResponse(frame).GetFullFirmwareVersion();
-        var revision = " (revision: " + (fileBuffer[0x1016] * 256 + fileBuffer[0x1017]) + ")";
-        return version + revision;
+            revision = fileBuffer[0x1016] * 256 + fileBuffer[0x1017];
+            //to get version from Msg105 message
+            version = new Msg106_FirmwareTypeResponse(frame).GetFullFirmwareVersion();
+        }
+        else if (Processor == HapcanNode.Proc.PIC18F27Q83)
+        {
+            //create fake frame
+            frame = new HapcanFrame(new byte[]{0xFF,0xFF,0xFF,0xFF,fileBuffer[0x2010], fileBuffer[0x2011], fileBuffer[0x2012], fileBuffer[0x2013],
+                                           fileBuffer[0x2014], fileBuffer[0x2015], fileBuffer[0x2016], fileBuffer[0x2017] }, HapcanFrame.FrameSource.PcToCanbus);
+            revision = fileBuffer[0x2016] * 256 + fileBuffer[0x2017];
+            //to get version from Msg105 message
+            version = new Msg106_FirmwareTypeResponse(frame).GetFullFirmwareVersion();
+        }
+        else
+            throw new ArgumentException("The input buffer is not a HAPCAN firmware file.");
+
+        return $"{version} (revision: {revision})";
+
     }
 }

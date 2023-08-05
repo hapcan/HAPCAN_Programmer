@@ -23,14 +23,13 @@ public class SystemRequest
     //CONSTRUCTOR
     public SystemRequest(HapcanConnection connection)
     {
-    //    _subnet = subnet;
         _connection = connection;
         _nodeTx = _connection.NodeTx;
         _groupTx = _connection.GroupTx;
     }
 
     //METHODS
-    public async Task<bool> HardwareTypeRequest(ResponseReceiver rcv, HapcanNode node)
+    public async Task<HapcanNode> HardwareTypeRequest(ResponseReceiver rcv, HapcanNode node)
     {
         if (node.Interface)
         {
@@ -43,12 +42,31 @@ public class SystemRequest
             {
                 var frame = frameList[0];
                 var msg = new IntMsg104_HardwareTypeResponse(frame);
-                node.SerialNumber = msg.SerialNumber;
-                node.HardwareType = msg.HardwareType;
-                node.HardwareVersion = msg.HardwareVersion;
-                return true;
+                //if new node is built on other processor then create a new node
+                if (node.HardwareVersion != msg.HardwareVersion)
+                {
+                    var newNode = HapcanNodeFactory.CreateHapcanNode(msg.HardwareVersion);
+                    newNode.Interface = true;
+                    newNode.Subnet = node.Subnet;
+                    newNode.SerialNumber = msg.SerialNumber;
+                    newNode.HardwareType = msg.HardwareType;
+                //    newNode.HardwareVersion = msg.HardwareVersion;
+                    //update subnet with new node
+                    var subnet = node.Subnet;
+                    subnet.NodeList.Remove(node);         //remove old if exists
+                    subnet.NodeList.Add(newNode);         //add new            
+                    return newNode;
+                }
+                else
+                {
+                    node.SerialNumber = msg.SerialNumber;
+                    node.HardwareType = msg.HardwareType;
+                //    node.HardwareVersion = msg.HardwareVersion;
+                    return node;
+                }
             }
-            return false;
+            else
+                return null;
         }
         else
         {
@@ -60,12 +78,31 @@ public class SystemRequest
             if (frameList.Count == 1)
             {
                 var msg = new Msg104_HardwareTypeResponse(frameList[0]);
-                node.HardwareType = msg.HardwareType;
-                node.HardwareVersion = msg.HardwareVersion;
-                return true;
+                //if new node is built on other processor then create a new node
+                if (node.HardwareVersion != msg.HardwareVersion)
+                {
+                    var newNode = HapcanNodeFactory.CreateHapcanNode(msg.HardwareVersion);
+                    newNode.Interface = false;
+                    newNode.Subnet = node.Subnet;
+                    newNode.SerialNumber = msg.SerialNumber;
+                    newNode.HardwareType = msg.HardwareType;
+                //    newNode.HardwareVersion = msg.HardwareVersion;
+                    //update subnet with new node
+                    var subnet = node.Subnet;
+                    subnet.NodeList.Remove(node);         //remove old if exists
+                    subnet.NodeList.Add(newNode);         //add new 
+                    return newNode;
+                }
+                else
+                {
+                    node.SerialNumber = msg.SerialNumber;
+                    node.HardwareType = msg.HardwareType;
+                //    node.HardwareVersion = msg.HardwareVersion;
+                    return node;
+                }
             }
             else
-                return false;
+                return null;
         }
     }
 

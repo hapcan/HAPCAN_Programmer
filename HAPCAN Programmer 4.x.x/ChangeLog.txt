@@ -1,15 +1,16 @@
+HAPCAN Programmer 4.1.3	(2023-08-05)
+1. Added HapcanNodeUnivX classes
+
 HAPCAN Programmer 4.1.2	(2023-07-02)
 1. Added UNIV4 programming
 
 HAPCAN Programmer 4.1.1	(2023-04-07)
 1. Added installer
 
-
 HAPCAN Programmer Build230331
 1. Control & configure form
 2. Edit channel names in Control & configure section
 3. Node notes in Control & configure section
-
 
 HAPCAN Programmer Build230205
 1. Updated About page with supported firmwares

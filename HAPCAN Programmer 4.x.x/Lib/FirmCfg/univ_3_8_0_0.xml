@@ -6,8 +6,8 @@
   <Channels>
     <ChannelList>
       <Channel Id="1" Type="Led" NameAdr="0x008400" Description="LED controller 5A 10-24V channel 1 (red)"/>
-	  <Channel Id="2" Type="Led" NameAdr="0x008420" Description="LED controller 5A 10-24V channel 2 (green)"/>
-	  <Channel Id="3" Type="Led" NameAdr="0x008440" Description="LED controller 5A 10-24V channel 3 (blue)"/>
+	    <Channel Id="2" Type="Led" NameAdr="0x008420" Description="LED controller 5A 10-24V channel 2 (green)"/>
+	    <Channel Id="3" Type="Led" NameAdr="0x008440" Description="LED controller 5A 10-24V channel 3 (blue)"/>
     </ChannelList>
   </Channels>
 </HapcanFirmwareConfig>
