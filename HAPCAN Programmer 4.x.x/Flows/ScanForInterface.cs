@@ -23,7 +23,7 @@ public class ScanForInterface
 
     public async Task<HapcanNode> GetInterfaceAsync()
     {
-        var node = HapcanNodeFactory.CreateHapcanNode(0);
+        var node = HapcanNodeFactory.CreateHapcanNode(1);           //create temp node
         node.Interface = true;
         node.Subnet = _subnet;
 

@@ -21,7 +21,7 @@ public class HapcanNodeFactory
             2 => new HapcanNodeUniv2(),
             3 => new HapcanNodeUniv3(),
             4 => new HapcanNodeUniv4(),
-            _ => new HapcanNodeUniv1()      //default
+            _ => new HapcanNodeUnivX(hardwareVersion)      //default
         }; 
     }
 }

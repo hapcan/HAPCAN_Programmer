@@ -49,11 +49,7 @@ public abstract class HapcanNode : INotifyPropertyChanged
     }
 
     //CONSTRUCTORS
-    //public HapcanNode()
-    //{
-    //}
-
-    public HapcanNode(byte hardVer) // : this()
+    public HapcanNode(byte hardVer)
     {
         HardwareVersion = hardVer;
     }
@@ -61,14 +57,30 @@ public abstract class HapcanNode : INotifyPropertyChanged
     //PROPERTIES
 
     #region abstract properties
+    [XmlIgnore]
+    [Browsable(false)]
+    public abstract int FlashEraseBlockSize { get; }
+    //eeprom
+    [XmlIgnore]
+    [Browsable(false)]
     public abstract int EepromFirstAddress { get; }
+    //flash firmware
+    [XmlIgnore]
+    [Browsable(false)]
+    public abstract int FlashFirstFirmwareAddress { get; }
+    [XmlIgnore]
+    [Browsable(false)]
+    public abstract int FlashFirmwareLength { get; }
+    //flash data
+    [XmlIgnore]
+    [Browsable(false)]
     public abstract int FlashFirstDataAddress { get; }
     #endregion
 
 
     #region serializable properties
 
-    [XmlAttribute("Intf")]
+[XmlAttribute("Intf")]
     [Browsable(false)]
     public bool Interface
     {
@@ -517,4 +529,5 @@ public abstract class HapcanNode : INotifyPropertyChanged
     {
         FullBootloaderVersion = BootloaderMajorVersion + "." + BootloaderMinorVersion;
     }
+
 }

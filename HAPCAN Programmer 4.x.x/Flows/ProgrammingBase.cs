@@ -7,50 +7,48 @@ using System.Threading.Tasks;
 
 namespace Hapcan.Flows;
 
+//declare a delegate type for the event
+public delegate void ProgrammingEvent(Programming obj);
+
 public abstract class ProgrammingBase
 {
+    //EVENTS
+    public event ProgrammingEvent ProgrammingProgress;  //progress event
+
     //FIELDS
     readonly HapcanNode _node;
-    readonly HapcanConnection _conn;      
-    readonly Action _reportProgress;
+    readonly HapcanConnection _conn;
     int _addr;                                          //current address of Data
 
     //PROPERTIES 
-    public abstract int Progress { get; }               //current read/write/erase progress
-    public int Cycles { get; private set; }             //number of processed read/write/erase cycles
     public virtual int Address { get { return _addr; } } //current address of memory in use (overridden with specified offset in derived class)
     public int BytesRead { get; private set; }          //number of bytes processed
     public int BytesErased { get; private set; }        //number of bytes processed
     public int BytesWritten { get; private set; }       //number of bytes processed
-    public virtual byte[] Data { get; protected set; }  //read memory buffer 
+    public virtual byte[] Data { get; protected set; }  //read memory buffer
+    protected int Cycles { get; private set; }          //number of processed read/write/erase cycles
 
     //CONSTRUCTOR
-    protected ProgrammingBase(HapcanNode node, Action ReportProgress)
+    protected ProgrammingBase(HapcanNode node)
     {
         _node = node;
         _conn = node.Subnet.Connection;
-        _reportProgress = ReportProgress;
     }
 
     //METHODS
-    protected void ReportProgress()
-    {
-        _reportProgress();
-    }
-   
-
-    public abstract Task<int> GetFirmwareRevisionAsync();
-    public abstract Task ChangeNodeNameAsync(string name);
-    public abstract Task ChangeNodeIdAsync(byte node, byte group);
-    protected abstract void CheckReadWriteAddress(int addrFrom, int addrTo);
+    protected abstract void CheckDataReadWriteAddress(int addrFrom, int addrTo);
     protected abstract int BypassUnusedAddress(int addr);
     protected abstract void CheckEraseAddress(int addrFrom, int addrTo);
 
-    public abstract Task SmartReadDataMemoryAsync(CancellationTokenSource cts);
-    public abstract Task SmartWriteDataMemoryAsync(byte[] eepromBuffer, byte[] flashBuffer, CancellationTokenSource cts);
-    public abstract Task WriteFirmwareAsync(byte[] firmBuffer, CancellationTokenSource cts);
+    protected void ReportProgress()
+    {
+        ProgrammingProgress?.Invoke((Programming)this);
+    }
 
-
+    /// <summary>
+    /// Exits node from programming mode.
+    /// </summary>
+    /// <returns></returns>
     public async Task ExitProgrammingAsync()
     {
         if (_node.Interface)
@@ -64,6 +62,12 @@ public abstract class ProgrammingBase
         if (_node.Status == HapcanNode.NodeStatus.InProgramming)
             _node.Status = HapcanNode.NodeStatus.Active;
     }
+
+    /// <summary>
+    /// Enters node into programming mode.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="TimeoutException">Throws when node doesn't respond within timeout.</exception>
     public async Task EnterProgrammingAsync()
     {
         //check if already in programming
@@ -122,7 +126,7 @@ public abstract class ProgrammingBase
     //SIMPLE READING - 0x01
     protected async Task ReadAsync(int addrFrom, int addrTo, CancellationTokenSource cts)
     {
-        CheckReadWriteAddress(addrFrom, addrTo);
+        CheckDataReadWriteAddress(addrFrom, addrTo);
 
         //make sure there is a programming mode
         await EnterProgrammingAsync();
@@ -173,15 +177,14 @@ public abstract class ProgrammingBase
             if ((addrTo - _addr) < 8)                   //at the end update to last processed address
                 _addr += 7;
             BytesRead += 8;                             //number processed bytes
-            Cycles++;                                  //number of processed read cycles
-      //    ProgrammingProgress?.Invoke(this);              //raise event
-            ReportProgress();
+            Cycles++;                                   //number of processed read cycles
+            ReportProgress();                           //raise event
         }
     }
     //SIMPLE WRITING - 0x02
     protected async Task WriteAsync(byte[] buffer, int addrFrom, int addrTo, CancellationTokenSource cts)
     {
-        CheckReadWriteAddress(addrFrom, addrTo);
+        CheckDataReadWriteAddress(addrFrom, addrTo);
 
         //make sure there is a programming mode
         await EnterProgrammingAsync();
@@ -234,7 +237,7 @@ public abstract class ProgrammingBase
                 _addr += 7;
             BytesWritten += 8;                          //number processed bytes
             Cycles++;                                   //number of processed read cycles
-            ReportProgress();
+            ReportProgress();                           //raise event
         }
     }
     //SIMPLE EARSING - 0x03
@@ -300,7 +303,7 @@ public abstract class ProgrammingBase
             BytesErased += pageSize;                    //number processed bytes
             Cycles++;                                   //number of processed read cycles
             if (report)
-                ReportProgress();
+                ReportProgress();                           //raise event
         }
 
     }
@@ -358,7 +361,7 @@ public abstract class ProgrammingBase
         BytesErased += addrTo- addrFrom;            //number processed bytes
         Cycles++;                                   //number of processed read cycles
         if (report)
-            ReportProgress();
+            ReportProgress();                           //raise event
     }
  
 

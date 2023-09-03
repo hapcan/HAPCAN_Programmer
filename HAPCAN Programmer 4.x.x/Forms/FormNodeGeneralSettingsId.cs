@@ -57,7 +57,7 @@ public partial class FormNodeGeneralSettingsId : Form
         var prg = new Programming(_node);
         try
         {
-            await prg.ChangeNodeName(textBoxName.Text);
+            await prg.ChangeNodeNameAsync(textBoxName.Text);
             var msg = string.Format("{0} name has been changed to '{1}'.", _nodeName, textBoxName.Text);
             Logger.Log("Node", msg);
             FormInformation.ShowDialog(this, "Success", "Node name has been changed.");
@@ -89,7 +89,7 @@ public partial class FormNodeGeneralSettingsId : Form
         var prg = new Programming(_node);
         try
         {
-            await prg.ChangeNodeId(nodeNr, groupNr);
+            await prg.ChangeNodeIdAsync(nodeNr, groupNr);
             string msg = String.Format("{0} id has been changed to ({1},{2}).", _nodeName, _node.NodeNumber, _node.GroupNumber);
             Logger.Log("Nodes", msg);
             FormInformation.ShowDialog(this, "Success", "Node id has been changed.");

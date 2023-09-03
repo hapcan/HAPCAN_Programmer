@@ -70,15 +70,19 @@ internal class HapcanNodesFirmwareFile
                     }
                 }
             }
-            if (fileBuffer[0x1010] != 0xFF && fileBuffer[0x1011] != 0xFF && fileBuffer[0x1012] == 3)        //UNIV3
+            if (fileBuffer[0x1010] != 0xFF && fileBuffer[0x1011] != 0xFF)        //UNIV1, 2 & 3
             {
-                Processor = HapcanNode.Proc.PIC18F26K80;
-                //reduce buffer size
-                Array.Resize(ref fileBuffer, 0x010000);
+                var hardwareVersion = fileBuffer[0x1012];
+                var node = HapcanNodeFactory.CreateHapcanNode(hardwareVersion); //temp node to define Processor and FlashFirmwareLength
+                Processor = node.Processor;                                     //define processor
+                Array.Resize(ref fileBuffer, node.FlashFirmwareLength);         //reduce buffer size
             }
-            else if (fileBuffer[0x2010] != 0xFF && fileBuffer[0x2011] != 0xFF && fileBuffer[0x2012] == 4)   //UNIV4
+            else if (fileBuffer[0x2010] != 0xFF && fileBuffer[0x2011] != 0xFF)   //UNIV4
             {
-                Processor = HapcanNode.Proc.PIC18F27Q83;
+                var hardwareVersion = fileBuffer[0x2012];
+                var node = HapcanNodeFactory.CreateHapcanNode(hardwareVersion); //temp node to define Processor and FlashFirmwareLength
+                Processor = node.Processor;                                     //define processor
+                Array.Resize(ref fileBuffer, node.FlashFirmwareLength);         //reduce buffer size
             }
             else
                 throw new ArgumentException("The input file is not a HAPCAN firmware file.");

@@ -18,7 +18,7 @@
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
     <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing"">Blue</data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
@@ -121,31 +121,30 @@
   <data name="btnCheck.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAAPxJREFUOE+tkz0OgkAUhK08gLG0sbbxFlIZo0ex4KciJsbazs7EQ1iJ4AH0CjTa
-        GwuJuoIzCAniEyXxJV922TczS9ilYnnh1NpECkRgDnrJXKJnrG+1SrawmJrJ1wAwM71QS+xxQFawwBt1
-        IDhLsBdrNlGA+TMkYyZ7070344ZQ7FGTaAOg5QNisJuSELQnMaAMfw3Ygj7gly5iAHbgLcDWnWsVYxdI
-        RtI1nhobvAeYrmpgdID7ASfRyAE8quHyyNvZwnP7Bayxx6IWyAH66lLHkfngkMNnryhgxOYvRW3qywZg
-        l/sEt21cCDTUpj4GSDfsV1T+dy6Dsrxw+gDh67HE8zB+PgAAAABJRU5ErkJggg==
+        wAAADsABataJCQAAAL5JREFUOE9joDqoOvj/Pz6aIKDIAJAiYjBUOUi9MJQJAciS6KDm0H8hINbCZhCK
+        zVAhDACU660++F8dnxqcLgCKt8PkQDQMgyVBAFmw7tB/biCtAZUCySWBxCsP/ueE8vG7AIhToXQQENtA
+        2X5QJYRdAAwoASB9C8r/CcRrocrAACQOZWICmCSQNoRqBmFlsCQUgNTAMFQIuyCQDfJCNJQLB8hqwAAo
+        AE8MIEliMFQ5bgBThIsmCCg2gHjAwAAAb70sCGHniXEAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="btnUpload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAAPxJREFUOE+tkz0OgkAUhK08gLG0sbbxFlIZo0ex4KciJsbazs7EQ1iJ4AH0CjTa
-        GwuJuoIzCAniEyXxJV922TczS9ilYnnh1NpECkRgDnrJXKJnrG+1SrawmJrJ1wAwM71QS+xxQFawwBt1
-        IDhLsBdrNlGA+TMkYyZ7070344ZQ7FGTaAOg5QNisJuSELQnMaAMfw3Ygj7gly5iAHbgLcDWnWsVYxdI
-        RtI1nhobvAeYrmpgdID7ASfRyAE8quHyyNvZwnP7Bayxx6IWyAH66lLHkfngkMNnryhgxOYvRW3qywZg
-        l/sEt21cCDTUpj4GSDfsV1T+dy6Dsrxw+gDh67HE8zB+PgAAAABJRU5ErkJggg==
+        vAAADrwBlbxySQAAAJRJREFUOE+tjEEOQEAMRWdhx87SEdyQWDgaR7IhFsaUP8loa4bwkqbt/781v9MM
+        1sZ6kk8PKPSkEKd8ifGEB1OFs/tD2MKHLImFQk9k7ozULtDC/EjThBjsK+riUVcJQ1pxj/YDTXRzzjWC
+        7xecOeFocVVhdrXRTBrtUzvYGidx/INuXAtI7/AP+nHOIL3DP8CqYMwOAc9fKhSReAUAAAAASUVORK5C
+        YII=
 </value>
   </data>
   <data name="btnBrowse.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAAPxJREFUOE+tkz0OgkAUhK08gLG0sbbxFlIZo0ex4KciJsbazs7EQ1iJ4AH0CjTa
-        GwuJuoIzCAniEyXxJV922TczS9ilYnnh1NpECkRgDnrJXKJnrG+1SrawmJrJ1wAwM71QS+xxQFawwBt1
-        IDhLsBdrNlGA+TMkYyZ7070344ZQ7FGTaAOg5QNisJuSELQnMaAMfw3Ygj7gly5iAHbgLcDWnWsVYxdI
-        RtI1nhobvAeYrmpgdID7ASfRyAE8quHyyNvZwnP7Bayxx6IWyAH66lLHkfngkMNnryhgxOYvRW3qywZg
-        l/sEt21cCDTUpj4GSDfsV1T+dy6Dsrxw+gDh67HE8zB+PgAAAABJRU5ErkJggg==
+        vAAADrwBlbxySQAAARNJREFUOE9joBhUHfznXXXw/ywgno2E+4HiRlAl+AFQ8WUgXgXEXUDcDcVLgfhZ
+        1YG/LlBluAFQ4TUgtoZy4QAolgfEL4G4D4hzgDgXIvbPrWbfD0aoMrgB9lAuCgAqdgXKLQHi7UC8DYj3
+        APEboLgSVAl+A9ABUB0XEIO8qwAVwjQAaDovkD8JiDcC8QYseBOUBsr/i8dmQAKQ/59IfA7FgJr9v5iB
+        7P1QSSLwv1YUA4ACJkD2D4QCvPgLUL02ugETkBQQwltBeuAGVB/4KwSkH0ElicD/QmEGXAdiW6AAKYF3
+        F2ghP8yAdUB8CYjfQSWJwP+KwJpBAMgRBwoWAnEtENcQwNVA9X7APMIM1U4pYGAAANkO8OFy1a+3AAAA
+        AElFTkSuQmCC
 </value>
   </data>
 </root>

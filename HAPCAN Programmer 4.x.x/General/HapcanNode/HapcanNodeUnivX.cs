@@ -7,9 +7,12 @@ using System.Xml.Serialization;
 
 namespace Hapcan.General;
 
-
-public class HapcanNodeUniv1 : HapcanNode
+/// <summary>
+/// Unknown hardware node
+/// </summary>
+public class HapcanNodeUnivX : HapcanNode
 {
+    //not real values
     private byte[] _eeprom = new byte[0x100];           //size of epprom memory
     private byte[] _flash = new byte[0x4000];           //size of flash data memory
     private int _eepromFirstAddress = 0xF00000;         //eeprom 0xF00000-0xF003FF, firmware 0x001000-0x007FFF, data 0x008000-0x010000 
@@ -18,7 +21,7 @@ public class HapcanNodeUniv1 : HapcanNode
     private int _flashFirstDataAddress = 0x004000;      //first address of data flash
     private int _flashEraseBlockSize = 64;              //size of flash erase block
 
-    public HapcanNodeUniv1() : base(1)
+    public HapcanNodeUnivX(byte hardwareVersion) : base(hardwareVersion)
     {
     }
 

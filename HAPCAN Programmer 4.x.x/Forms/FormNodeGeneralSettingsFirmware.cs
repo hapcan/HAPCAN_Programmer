@@ -49,7 +49,7 @@ public partial class FormNodeGeneralSettingsFirmware : Form
             try
             {
                 //read flash memory cells with revision number
-                var rev = await prg.GetFirmwareRevision();
+                var rev = await prg.GetFirmwareRevisionAsync();
                 var revision = " (revision: " + rev + ")";
                 return _node.FullFirmwareVersion + revision;
             }
